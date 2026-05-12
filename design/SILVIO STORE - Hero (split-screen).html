@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SILVIO STORE — Hero (preview)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: 'Roboto', system-ui, sans-serif; color: #121826; background: #faf7f2; -webkit-font-smoothing: antialiased; }
+
+  /* mock site chrome */
+  .mock-header { height: 72px; border-bottom: 1px solid #e4e9f0; background: #fff; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; }
+  .mock-header .logo { font-family: 'Inter', sans-serif; font-weight: 900; letter-spacing: 0.18em; font-size: 14px; }
+  .mock-header nav { display: flex; gap: 28px; font-size: 14px; color: #3b5377; }
+
+  .hero-section { position: relative; background: #faf7f2; overflow: hidden; }
+  .hero-grid { display: grid; grid-template-columns: 1.05fr 1fr; align-items: stretch; min-height: clamp(560px, 78vh, 760px); }
+  @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; min-height: 0; } }
+
+  /* LEFT */
+  .hero-left { position: relative; padding: clamp(40px, 6vw, 88px) clamp(24px, 5vw, 80px); display: flex; flex-direction: column; justify-content: center; gap: 28px; z-index: 2; }
+  .hero-left::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(circle at 0% 0%, rgba(217,119,6,0.06) 0%, transparent 50%), radial-gradient(circle at 100% 100%, rgba(217,119,6,0.04) 0%, transparent 50%); pointer-events: none; }
+  .hero-eyebrow { display: inline-flex; align-items: center; gap: 10px; font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 800; letter-spacing: 0.28em; text-transform: uppercase; color: #d97706; }
+  .hero-eyebrow::before { content: ""; width: 28px; height: 1.5px; background: #d97706; }
+  .hero-title { font-family: 'Inter', sans-serif; font-weight: 900; font-size: clamp(40px, 6.2vw, 88px); line-height: 0.96; letter-spacing: -0.035em; color: #121826; margin: 0; }
+  .hero-title .accent { color: #d97706; font-style: italic; font-weight: 800; }
+  .hero-sub { max-width: 520px; font-family: 'Roboto', sans-serif; font-size: 16px; line-height: 1.65; color: #3b5377; margin: 0; }
+  .hero-ctas { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 4px; }
+  .hero-cta-primary { display: inline-flex; align-items: center; gap: 10px; padding: 16px 28px; background: #121826; color: #fff; font-family: Georgia, serif; font-size: 14px; font-weight: 600; letter-spacing: 0.06em; text-decoration: none; border-radius: 4px; transition: background .2s, transform .2s, box-shadow .2s; box-shadow: 0 8px 24px rgba(18,24,38,0.18); }
+  .hero-cta-primary:hover { background: #d97706; box-shadow: 0 10px 28px rgba(217,119,6,0.32); transform: translateY(-1px); }
+  .hero-cta-primary .arrow { transition: transform .2s; }
+  .hero-cta-primary:hover .arrow { transform: translateX(4px); }
+  .hero-cta-secondary { display: inline-flex; align-items: center; gap: 10px; padding: 16px 24px; background: transparent; color: #121826; font-family: Georgia, serif; font-size: 14px; font-weight: 600; letter-spacing: 0.06em; text-decoration: none; border: 1.5px solid #121826; border-radius: 4px; transition: background .2s, color .2s; }
+  .hero-cta-secondary:hover { background: #121826; color: #fff; }
+
+  .hero-trust { display: flex; flex-wrap: wrap; gap: 28px 36px; margin-top: 32px; padding-top: 28px; border-top: 1px solid rgba(18,24,38,0.10); }
+  .hero-trust-item { display: flex; align-items: center; gap: 12px; }
+  .hero-trust-icon { width: 36px; height: 36px; border-radius: 999px; background: rgba(217,119,6,0.10); color: #d97706; display: grid; place-items: center; flex-shrink: 0; }
+  .hero-trust-num { font-family: 'Inter', sans-serif; font-weight: 800; font-size: 15px; color: #121826; line-height: 1.1; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; display: block; }
+  .hero-trust-label { font-family: 'Roboto', sans-serif; font-size: 12px; color: #6f87aa; line-height: 1.3; margin-top: 2px; display: block; }
+
+  /* RIGHT */
+  .hero-right { position: relative; overflow: hidden; min-height: clamp(360px, 60vh, 760px); transition: color .9s cubic-bezier(0.22, 1, 0.36, 1); }
+  @media (max-width: 900px) { .hero-right { order: -1; min-height: 480px; aspect-ratio: 4 / 5; } }
+  .hero-right-bg { position: absolute; inset: 0; transition: background-color .9s cubic-bezier(0.22, 1, 0.36, 1); }
+  .hero-right-grain { position: absolute; inset: 0; opacity: 0.10; mix-blend-mode: overlay; pointer-events: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' /></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.5'/></svg>"); }
+  .hero-image-frame { position: absolute; inset: clamp(24px, 5vw, 64px); display: flex; align-items: center; justify-content: center; }
+  .hero-image { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 24px 40px rgba(0,0,0,0.25)); transition: opacity .9s cubic-bezier(0.22, 1, 0.36, 1), transform .9s cubic-bezier(0.22, 1, 0.36, 1); }
+  .hero-image.hidden { opacity: 0; transform: scale(1.04); position: absolute; }
+
+  .hero-caption { position: absolute; left: clamp(24px, 5vw, 64px); right: clamp(24px, 5vw, 64px); bottom: clamp(24px, 4vw, 40px); display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; z-index: 3; }
+  .hero-caption-meta { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; opacity: 0.7; }
+  .hero-caption-name { font-family: 'Inter', sans-serif; font-size: clamp(18px, 1.4vw, 22px); font-weight: 700; letter-spacing: -0.01em; margin-top: 4px; line-height: 1.25; max-width: 260px; }
+  .hero-caption-price { font-family: 'Inter', sans-serif; font-weight: 800; font-size: clamp(20px, 1.8vw, 28px); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  .hero-progress { position: absolute; top: clamp(20px, 3vw, 32px); right: clamp(24px, 5vw, 64px); display: flex; align-items: center; gap: 14px; z-index: 3; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; }
+  .hero-progress-num { font-variant-numeric: tabular-nums; }
+  .hero-progress-bar { width: 80px; height: 1.5px; background: rgba(255,255,255,0.18); position: relative; overflow: hidden; }
+  .hero-progress-bar.dark { background: rgba(18,24,38,0.18); }
+  .hero-progress-fill { position: absolute; inset: 0; background: currentColor; transform-origin: left; transform: scaleX(0); }
+  .hero-progress-fill.run { animation: progress 7s linear forwards; }
+  @keyframes progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+  .hero-arrows { position: absolute; left: clamp(24px, 5vw, 64px); top: clamp(20px, 3vw, 32px); display: flex; gap: 8px; z-index: 3; }
+  .hero-arrow { width: 40px; height: 40px; display: grid; place-items: center; background: transparent; color: inherit; border: 1.5px solid currentColor; border-radius: 999px; cursor: pointer; transition: opacity .2s, transform .2s; opacity: 0.55; }
+  .hero-arrow:hover { opacity: 1; transform: scale(1.05); }
+
+  .hero-badge { position: absolute; left: clamp(24px, 5vw, 64px); bottom: clamp(96px, 11vw, 128px); display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: #d97706; color: #fff; font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase; border-radius: 999px; z-index: 3; box-shadow: 0 8px 20px rgba(217,119,6,0.30); }
+  .hero-badge .dot { width: 6px; height: 6px; background: #fff; border-radius: 999px; animation: pulse 1.6s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.7); } }
+
+  @media (max-width: 900px) {
+    .hero-progress, .hero-arrows { display: none; }
+    .hero-caption { left: 20px; right: 20px; bottom: 16px; }
+    .hero-badge { bottom: 84px; left: 20px; }
+    .hero-trust { gap: 16px 24px; margin-top: 24px; padding-top: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="mock-header">
+  <div class="logo">SILVIO STORE</div>
+  <nav><span>Catalogue</span><span>Marques</span><span>Nouveautés</span><span>Compte</span></nav>
+</div>
+
+<section class="hero-section" data-screen-label="Hero">
+  <div class="hero-grid">
+
+    <!-- LEFT -->
+    <div class="hero-left">
+      <span class="hero-eyebrow" id="eyebrow">Nouvelle collection · Sélection 2026</span>
+      <h1 class="hero-title">
+        Le luxe<br />au bout<br /><span class="accent">des doigts.</span>
+      </h1>
+      <p class="hero-sub" id="sub">Coques, étuis cuir et accessoires haut de gamme pour iPhone et Samsung. Sélectionnés à la main, livrés partout en Afrique de l'Ouest.</p>
+      <div class="hero-ctas">
+        <a href="#" class="hero-cta-primary">Explorer le catalogue <span class="arrow">→</span></a>
+        <a href="#" class="hero-cta-secondary">Voir les nouveautés</a>
+      </div>
+      <div class="hero-trust">
+        <div class="hero-trust-item">
+          <div class="hero-trust-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="#d97706"><path d="M12 2l2.4 7h7.6l-6 4.6 2.3 7.4L12 16.8 5.7 21l2.3-7.4-6-4.6h7.6z"/></svg></div>
+          <div><span class="hero-trust-num">4,9 / 5</span><span class="hero-trust-label">200+ avis vérifiés</span></div>
+        </div>
+        <div class="hero-trust-item">
+          <div class="hero-trust-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2"><path d="M14 18V6h4l3 5v7h-3"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/><path d="M3 6h11v12H9"/></svg></div>
+          <div><span class="hero-trust-num">Livraison &lt; 72h</span><span class="hero-trust-label">Sous-région ouest-africaine</span></div>
+        </div>
+        <div class="hero-trust-item">
+          <div class="hero-trust-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2"><path d="M12 2l8 4v6c0 5-4 9-8 10-4-1-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg></div>
+          <div><span class="hero-trust-num">Garantie 30 jours</span><span class="hero-trust-label">Échange ou remboursement</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="hero-right" id="right" style="color: rgba(255,255,255,0.78);">
+      <div class="hero-right-bg" id="bg" style="background:#1f2a3c;"></div>
+      <div class="hero-right-grain"></div>
+      <div class="hero-image-frame" id="frame"></div>
+
+      <div class="hero-arrows">
+        <button class="hero-arrow" id="prev" aria-label="Précédent"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
+        <button class="hero-arrow" id="next" aria-label="Suivant"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+
+      <div class="hero-progress">
+        <span class="hero-progress-num" id="num">01</span>
+        <div class="hero-progress-bar" id="pbar"><div class="hero-progress-fill run" id="pfill"></div></div>
+        <span class="hero-progress-num" id="total">03</span>
+      </div>
+
+      <div class="hero-caption">
+        <div>
+          <div class="hero-caption-meta">En vedette</div>
+          <div class="hero-caption-name" id="cname">Étui cuir Goyard signature</div>
+        </div>
+        <div class="hero-caption-price" id="cprice">59 900 F</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const slides = [
+    { img: 'preview-images/goyard-yellow.jpeg', name: 'Étui cuir Goyard signature', price: '59 900 F', bg: '#1f2a3c', captionColor: 'rgba(255,255,255,0.85)', dark: false },
+    { img: 'preview-images/leather-strap.jpeg',  name: 'Coque cuir noir avec dragonne',     price: '34 900 F', bg: '#f4ecdf', captionColor: '#1f2a3c', dark: true },
+    { img: 'preview-images/leather-shell.jpeg', name: 'Étui texture premium graphite',  price: '42 500 F', bg: '#2d2a26', captionColor: 'rgba(255,255,255,0.88)', dark: false },
+  ];
+
+  const frame = document.getElementById('frame');
+  const bg = document.getElementById('bg');
+  const right = document.getElementById('right');
+  const num = document.getElementById('num');
+  const total = document.getElementById('total');
+  const cname = document.getElementById('cname');
+  const cprice = document.getElementById('cprice');
+  const pbar = document.getElementById('pbar');
+  const pfill = document.getElementById('pfill');
+
+  total.textContent = String(slides.length).padStart(2, '0');
+
+  // Pre-create img elements for crossfade
+  const imgs = slides.map((s, i) => {
+    const im = document.createElement('img');
+    im.src = s.img;
+    im.alt = s.name;
+    im.className = 'hero-image' + (i === 0 ? '' : ' hidden');
+    frame.appendChild(im);
+    return im;
+  });
+
+  let cur = 0;
+  let timer;
+
+  function show(i) {
+    imgs.forEach((im, idx) => im.classList.toggle('hidden', idx !== i));
+    const s = slides[i];
+    bg.style.background = s.bg;
+    right.style.color = s.captionColor;
+    cname.textContent = s.name;
+    cprice.textContent = s.price;
+    num.textContent = String(i + 1).padStart(2, '0');
+    pbar.classList.toggle('dark', s.dark);
+    // restart progress fill
+    pfill.classList.remove('run');
+    void pfill.offsetWidth;
+    pfill.classList.add('run');
+    cur = i;
+  }
+
+  function next() { show((cur + 1) % slides.length); }
+  function prev() { show((cur - 1 + slides.length) % slides.length); }
+
+  function start() { stop(); timer = setInterval(next, 7000); }
+  function stop() { if (timer) clearInterval(timer); }
+
+  document.getElementById('next').addEventListener('click', () => { next(); start(); });
+  document.getElementById('prev').addEventListener('click', () => { prev(); start(); });
+
+  const section = document.querySelector('.hero-section');
+  section.addEventListener('mouseenter', () => { stop(); pfill.style.animationPlayState = 'paused'; });
+  section.addEventListener('mouseleave', () => { start(); pfill.style.animationPlayState = 'running'; });
+
+  start();
+</script>
+
+</body>
+</html>

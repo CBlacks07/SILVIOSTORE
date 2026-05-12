@@ -1,0 +1,35 @@
+import type { Metadata } from "next";
+import { Inter, Roboto } from "next/font/google";
+import { getSetting } from "@/lib/settings";
+import { sanitizeSiteName } from "@/lib/siteBrand";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
+import { AuthSync } from "@/components/auth/AuthSync";
+import "./globals.css";
+import "./typography.css";
+
+const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-inter" });
+const roboto = Roboto({ subsets: ["latin"], weight: ["300", "400", "500", "700"], variable: "--font-roboto" });
+
+export async function generateMetadata(): Promise<Metadata> {
+  const site = await getSetting("site");
+  const brandName = sanitizeSiteName(site.name) || "SILVIO STORE";
+  return {
+    title: { default: `${brandName} | Accessoires mobiles`, template: `%s | ${brandName}` },
+    description: site.description,
+    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000")
+  };
+}
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="fr" className={`${inter.variable} ${roboto.variable}`}>
+      <body className="min-h-screen flex flex-col font-sans">
+        <AuthSync />
+        <Header />
+        <main className="flex-1">{children}</main>
+        <Footer />
+      </body>
+    </html>
+  );
+}

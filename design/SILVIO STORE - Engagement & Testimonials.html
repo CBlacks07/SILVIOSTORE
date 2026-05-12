@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SILVIO STORE — Notre engagement & Témoignages (preview)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand-50:  #f5f7fa;
+    --brand-100: #e4e9f0;
+    --brand-300: #9fb0c8;
+    --brand-500: #4d6890;
+    --brand-600: #3b5377;
+    --brand-700: #314361;
+    --brand-800: #2b3a52;
+    --brand-900: #1f2a3c;
+    --brand-950: #121826;
+    --accent:    #d97706;
+    --accent-d:  #b45309;
+    --paper:     #ffffff;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Roboto', system-ui, sans-serif;
+    color: var(--brand-950);
+    background: #f7f8fa;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, .display { font-family: 'Inter', system-ui, sans-serif; }
+  .container-page {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ───────────────────────── Notre engagement ───────────────────────── */
+  .engagement {
+    position: relative;
+    background: var(--brand-950);
+    color: #fff;
+    padding: 80px 0;
+    overflow: hidden;
+  }
+  .engagement::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 20% 0%, rgba(217,119,6,0.18) 0%, transparent 40%),
+      radial-gradient(circle at 80% 100%, rgba(217,119,6,0.18) 0%, transparent 40%);
+    opacity: 0.4;
+    pointer-events: none;
+  }
+  .engagement .inner { position: relative; }
+  .engagement-eyebrow {
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    margin: 0 0 16px;
+    text-align: center;
+  }
+  .engagement h2 {
+    text-align: center;
+    font-size: clamp(28px, 4vw, 52px);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    margin: 0 0 64px;
+    color: #fff;
+  }
+  .engagement h2 .accent { color: var(--accent); }
+
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+  @media (max-width: 900px) {
+    .pillars { grid-template-columns: 1fr; }
+  }
+
+  .pillar {
+    position: relative;
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.10);
+    background: rgba(255,255,255,0.04);
+    padding: 40px;
+    backdrop-filter: blur(4px);
+    transition: transform .3s cubic-bezier(.22,1,.36,1), background .3s, border-color .3s;
+    overflow: hidden;
+  }
+  .pillar:hover {
+    transform: translateY(-4px);
+    background: rgba(255,255,255,0.07);
+    border-color: rgba(255,255,255,0.20);
+  }
+  .pillar-num {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: 7rem;
+    line-height: 0.85;
+    margin-bottom: 24px;
+    letter-spacing: -0.05em;
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(217,119,6,0.55);
+    user-select: none;
+  }
+  .pillar-num.white {
+    -webkit-text-stroke: 1.5px rgba(255,255,255,0.35);
+  }
+  .pillar h3 {
+    font-size: clamp(28px, 3.2vw, 40px);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    margin: 0 0 16px;
+  }
+  .pillar h3.orange { color: var(--accent); }
+  .pillar h3.white  { color: #fff; }
+  .pillar .rule {
+    height: 2px;
+    width: 48px;
+    border-radius: 999px;
+    margin-bottom: 20px;
+    transition: width .3s cubic-bezier(.22,1,.36,1);
+  }
+  .pillar:hover .rule { width: 80px; }
+  .pillar .rule.orange { background: var(--accent); }
+  .pillar .rule.white  { background: rgba(255,255,255,0.6); }
+  .pillar p {
+    color: rgba(255,255,255,0.75);
+    font-size: 15px;
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  /* ───────────────────────── Témoignages ───────────────────────── */
+  .testimonials {
+    background: linear-gradient(to bottom, rgba(245,247,250,0.7), rgba(245,247,250,0));
+    border-top: 1px solid var(--brand-100);
+    border-bottom: 1px solid var(--brand-100);
+    padding: 80px 0 96px;
+    overflow: hidden;
+  }
+  .testimonials .head {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+  .testimonials .eyebrow {
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    margin: 0 0 16px;
+  }
+  .testimonials h2 {
+    font-size: clamp(28px, 3.5vw, 40px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--brand-950);
+    margin: 0 0 12px;
+  }
+  .testimonials .sub {
+    color: var(--brand-600);
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .marquee {
+    position: relative;
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 80px, #000 calc(100% - 80px), transparent 100%);
+            mask-image: linear-gradient(to right, transparent 0, #000 80px, #000 calc(100% - 80px), transparent 100%);
+  }
+  .marquee-track {
+    display: flex;
+    gap: 24px;
+    width: max-content;
+    animation: scroll 36s linear infinite;
+    will-change: transform;
+    padding: 8px 0;
+  }
+  .marquee:hover .marquee-track,
+  .marquee:focus-within .marquee-track {
+    animation-play-state: paused;
+  }
+  @keyframes scroll {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(-50%, 0, 0); }
+  }
+
+  .tcard {
+    flex: 0 0 auto;
+    width: min(420px, 80vw);
+    background: #fff;
+    border-radius: 16px;
+    padding: 32px 28px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow:
+      0 1px 2px rgba(15,23,42,0.04),
+      0 8px 28px rgba(15,23,42,0.06);
+  }
+  .tcard .quote {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 84px;
+    line-height: 0.7;
+    color: var(--accent);
+    letter-spacing: -0.04em;
+    height: 44px;
+  }
+  .tcard p.text {
+    color: var(--brand-800);
+    font-size: 15px;
+    line-height: 1.65;
+    flex: 1;
+    margin: 0;
+  }
+  .tcard .footer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-top: 8px;
+  }
+  .tcard .avatar {
+    width: 40px; height: 40px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 900;
+    font-size: 14px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 40px;
+  }
+  .tcard .meta { min-width: 0; }
+  .tcard .name {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--brand-950);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .tcard .row2 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 2px;
+  }
+  .tcard .stars {
+    color: var(--accent);
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
+  .tcard .loc {
+    font-size: 12px;
+    color: var(--brand-500);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* dev label */
+  .label-band {
+    background: #fff;
+    border-bottom: 1px solid var(--brand-100);
+    padding: 14px 24px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--brand-500);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .label-band b { color: var(--brand-950); letter-spacing: 0.04em; font-weight: 800; }
+</style>
+</head>
+<body>
+
+<div class="label-band">Preview · <b>WhySilvioStore</b> + <b>Testimonials</b> — code in <b>code-changes/</b></div>
+
+<!-- ════════════════════════ NOTRE ENGAGEMENT ════════════════════════ -->
+<section class="engagement" data-screen-label="01 Notre engagement">
+  <div class="container-page inner">
+    <p class="engagement-eyebrow">Notre engagement</p>
+    <h2 class="display">Trois raisons de choisir <span class="accent">SILVIO STORE</span></h2>
+
+    <div class="pillars">
+      <article class="pillar">
+        <div class="pillar-num">01</div>
+        <h3 class="orange display">Luxe</h3>
+        <div class="rule orange"></div>
+        <p>Des accessoires haut de gamme soigneusement sélectionnés. Matériaux premium, finitions irréprochables — parce que votre appareil mérite le meilleur.</p>
+      </article>
+
+      <article class="pillar">
+        <div class="pillar-num white">02</div>
+        <h3 class="white display">Tendance</h3>
+        <div class="rule white"></div>
+        <p>Les designs qui font tourner les têtes. Nous suivons les dernières tendances pour que vous soyez toujours en avance sur votre style.</p>
+      </article>
+
+      <article class="pillar">
+        <div class="pillar-num">03</div>
+        <h3 class="orange display">Protection</h3>
+        <div class="rule orange"></div>
+        <p>Au-delà du style, une protection sérieuse. Coques renforcées, pochettes rembourrées, verres trempés — votre appareil est entre de bonnes mains.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ TÉMOIGNAGES ════════════════════════ -->
+<section class="testimonials" data-screen-label="02 Témoignages">
+  <div class="container-page">
+    <div class="head">
+      <p class="eyebrow">Témoignages</p>
+      <h2 class="display">Ce que nos clients en disent</h2>
+      <p class="sub">Plus de 4 500 commandes livrées dans la sous-région · Note moyenne 4,9/5</p>
+    </div>
+  </div>
+
+  <div class="marquee">
+    <div class="marquee-track" id="track"><!-- filled by JS --></div>
+  </div>
+</section>
+
+<script>
+  const items = [
+    { name: "Fatou D.",   location: "Cotonou, Bénin",        rating: 5, text: "Service au top. La coque en cuir est superbe, la livraison super rapide à Cotonou. Je recommande à 200%." },
+    { name: "Jean-Marc K.", location: "Lomé, Togo",            rating: 5, text: "J'ai commandé un étui Goyard pour ma femme — qualité parfaite, même la couture. Elle ne le quitte plus." },
+    { name: "Aïcha B.",   location: "Abidjan, Côte d'Ivoire", rating: 5, text: "Premier achat sur SILVIO STORE et clairement pas le dernier. Emballage premium, suivi impeccable." },
+    { name: "Ousmane T.", location: "Ouagadougou, Burkina",   rating: 4, text: "Très satisfait du protecteur d'objectif. Excellent rapport qualité-prix, l'équipe répond vite sur WhatsApp." },
+    { name: "Clarisse M.", location: "Dakar, Sénégal",        rating: 5, text: "La pochette en cuir avec la dragonne est une tuerie. Je reçois des compliments partout. Merci !" },
+    { name: "Adébayo S.", location: "Lagos, Nigeria",         rating: 5, text: "Commandé depuis Lagos, livré en moins d'une semaine. Le produit correspond parfaitement aux photos." },
+    { name: "Mariam G.",  location: "Bamako, Mali",           rating: 5, text: "L'étui transparent protège super bien et reste discret. Service client réactif, je suis conquise." },
+  ];
+
+  const initial = (n) => n.charAt(0).toUpperCase();
+
+  const card = (t, isClone) => `
+    <article class="tcard" ${isClone ? 'aria-hidden="true"' : ''}>
+      <div class="quote" aria-hidden="true">&ldquo;</div>
+      <p class="text">${t.text}</p>
+      <div class="footer">
+        <div class="avatar">${initial(t.name)}</div>
+        <div class="meta">
+          <p class="name">${t.name}</p>
+          <div class="row2">
+            <span class="stars" aria-label="${t.rating} sur 5">${'★'.repeat(t.rating)}</span>
+            <span class="loc">${t.location}</span>
+          </div>
+        </div>
+      </div>
+    </article>
+  `;
+
+  const track = document.getElementById('track');
+  // Render the loop: original set + duplicate (clones marked aria-hidden)
+  track.innerHTML = items.map(t => card(t, false)).join('') + items.map(t => card(t, true)).join('');
+</script>
+
+</body>
+</html>

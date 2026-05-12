@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm -v)",
+      "Bash(npx --yes create-next-app@latest . --typescript --tailwind --app --src-dir --import-alias \"@/*\" --eslint --no-turbopack --use-npm --no-import-alias)",
+      "Bash(npm install *)",
+      "Bash(echo \"exit=$?\")",
+      "Bash(where psql *)",
+      "Read(//c/Program Files/PostgreSQL//**)",
+      "Read(//c/Program Files \\(x86\\)/**)",
+      "Bash('/c/Program Files/PostgreSQL/18/bin/psql.exe' -U postgres -h localhost -p 5432 -d postgres -c 'drop table if exists public.order_items cascade; drop table if exists public.orders cascade; drop table if exists public.addresses cascade; drop table if exists public.products cascade; drop table if exists public.categories cascade; drop table if exists public.users cascade; drop function if exists public.set_updated_at\\(\\) cascade;')",
+      "Bash('/c/Program Files/PostgreSQL/18/bin/psql.exe' -U postgres -h localhost -p 5432 -d store -v ON_ERROR_STOP=1 -f 'c:/Users/CCL/Desktop/SILVIO STORE/sql/schema.sql')",
+      "Bash('/c/Program Files/PostgreSQL/18/bin/psql.exe' -U postgres -h localhost -p 5432 -d postgres -c 'create database store;')",
+      "Bash('/c/Program Files/PostgreSQL/18/bin/psql.exe' -U postgres -h localhost -p 5432 -d store -v ON_ERROR_STOP=1 -f 'c:/Users/CCL/Desktop/SILVIO STORE/sql/seed.sql')",
+      "Bash('/c/Program Files/PostgreSQL/18/bin/psql.exe' -U postgres -h localhost -p 5432 -d store -c 'select '\\\\''users'\\\\'' as t, count\\(*\\) from users union all select '\\\\''categories'\\\\'', count\\(*\\) from categories union all select '\\\\''products'\\\\'', count\\(*\\) from products;')",
+      "Bash('/c/Program Files/PostgreSQL/18/bin/psql.exe' -U postgres -h localhost -p 5432 -d store -c 'update products set images = array['\\\\''/placeholder-product.svg'\\\\''] where images::text like '\\\\''%unsplash%'\\\\''; select slug, images from products order by slug;')",
+      "Bash('/c/Program Files/PostgreSQL/18/bin/psql.exe' -U postgres -h localhost -p 5432 -d store -c 'update users set password_hash = '\\\\''$2a$10$DQPo9/hgScSBfShWgmoyxON4GiOeUIkd.fu//Mig8wuuhKhyGy8K6'\\\\'' where email = '\\\\''admin@silviostore.com'\\\\'' returning email, role;')",
+      "Bash('/c/Program Files/PostgreSQL/18/bin/psql.exe' -U postgres -h localhost -p 5432 -d store -v ON_ERROR_STOP=1 -f 'c:/Users/CCL/Desktop/SILVIO STORE/sql/seed_settings.sql')",
+      "Read(//c/Users/CCL/.claude/projects/c--Users-CCL-Desktop-SILVIO-STORE/**)",
+      "Bash(grep -o '\"text\":\"[^\"]\\\\{20,200\\\\}\"' \"C:\\\\Users\\\\CCL\\\\.claude\\\\projects\\\\c--Users-CCL-Desktop-SILVIO-STORE\\\\b3a76091-ce28-43eb-870a-305e71d8edce.jsonl\")",
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(awk 'NR<355 || NR>688' src/components/admin/SettingsForms.tsx)",
+      "Bash(mv src/components/admin/SettingsForms.tsx.new src/components/admin/SettingsForms.tsx)",
+      "Bash(awk 'NR==100{skip=1} skip && /^      <div className=\"hero-grid\">/{skip=0} !skip' src/components/home/Hero.tsx)",
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\CCL\\\\Desktop\\\\SILVIO STORE\\\\src\" -Recurse -Directory)",
+      "Bash(Select-Object -First 20)",
+      "Bash(git init *)",
+      "Bash(git add *)",
+      "Bash(git commit *)"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\CCL\\.claude\\projects\\c--Users-CCL-Desktop-SILVIO-STORE\\memory"
+    ]
+  }
+}

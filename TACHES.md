@@ -1,0 +1,3 @@
+-la page des utilisateurs. faut ameliorer le design là bas aussi. et rendre bien dynamique les choses.
+-token et cache des sessions. quand on seconeecte ça reste connecter coomme ça dans les navigateur. faut vraiment sécuriser ça stp.
+-Audi de sécurité et d'amelioration de design stp. Pour voir ce qu'on peut encoer améliorer.

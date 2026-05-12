@@ -1,0 +1,35 @@
+import { NextResponse } from "next/server";
+import { sql } from "@/lib/db";
+import { requireAdmin } from "@/lib/auth";
+
+const FIELDS = ["code", "description", "discount_type", "discount_value", "min_order", "max_uses", "starts_at", "ends_at", "is_active"] as const;
+
+export async function PATCH(req: Request, { params }: { params: { id: string } }) {
+  const auth = await requireAdmin();
+  if (!auth.ok) return NextResponse.json({ error: auth.message }, { status: auth.status });
+
+  const body = await req.json();
+  const patch: Record<string, unknown> = {};
+  for (const k of FIELDS) if (k in body) patch[k] = body[k];
+  if ("code" in patch) patch.code = String(patch.code).toUpperCase();
+
+  if (Object.keys(patch).length === 0) {
+    return NextResponse.json({ error: "Aucun champ à modifier" }, { status: 400 });
+  }
+
+  try {
+    const rows = await sql`update promotions set ${sql(patch)} where id = ${params.id} returning *`;
+    if (!rows[0]) return NextResponse.json({ error: "Promo introuvable" }, { status: 404 });
+    return NextResponse.json(rows[0]);
+  } catch (e: any) {
+    return NextResponse.json({ error: "Erreur interne" }, { status: 400 });
+  }
+}
+
+export async function DELETE(_: Request, { params }: { params: { id: string } }) {
+  const auth = await requireAdmin();
+  if (!auth.ok) return NextResponse.json({ error: auth.message }, { status: auth.status });
+
+  await sql`delete from promotions where id = ${params.id}`;
+  return NextResponse.json({ ok: true });
+}

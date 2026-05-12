@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" role="img" aria-label="SILVIO STORE">
+  <defs>
+    <linearGradient id="hero" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0f172a"/>
+      <stop offset="1" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f97316"/>
+      <stop offset="1" stop-color="#ea580c"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#hero)"/>
+  <g transform="translate(600 450)">
+    <rect x="-140" y="-260" width="280" height="520" rx="40" fill="#0b1220" stroke="#334155" stroke-width="4"/>
+    <rect x="-110" y="-220" width="220" height="440" rx="18" fill="url(#accent)" opacity="0.92"/>
+    <circle cx="0" cy="240" r="12" fill="#334155"/>
+  </g>
+  <g fill="#e2e8f0" font-family="Inter, Arial, sans-serif">
+    <text x="80" y="120" font-size="38" font-weight="700">SILVIO STORE</text>
+    <text x="80" y="160" font-size="20" fill="#94a3b8">Téléphones &amp; accessoires — Sous région</text>
+  </g>
+</svg>
