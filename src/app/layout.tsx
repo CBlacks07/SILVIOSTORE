@@ -5,6 +5,7 @@ import { sanitizeSiteName } from "@/lib/siteBrand";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { AuthSync } from "@/components/auth/AuthSync";
+import { PageAnimations } from "@/components/layout/PageAnimations";
 import "./globals.css";
 import "./typography.css";
 
@@ -26,6 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="fr" className={`${inter.variable} ${roboto.variable}`}>
       <body className="min-h-screen flex flex-col font-sans">
         <AuthSync />
+        <PageAnimations />
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />

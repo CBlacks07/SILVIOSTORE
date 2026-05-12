@@ -23,15 +23,7 @@ export function HeaderLogo({ siteName, onMobileMenuOpen }: Props) {
       {/* Logo */}
       <Link
         href="/"
-        className="hover:text-accent transition-colors duration-200 whitespace-nowrap"
-        style={{
-          fontFamily: "Georgia, 'Times New Roman', serif",
-          fontSize: "clamp(15px, 1.4vw, 19px)",
-          fontWeight: 700,
-          letterSpacing: "0.18em",
-          color: "#d97706",
-          textDecoration: "none",
-        }}
+        className="logo-brand whitespace-nowrap"
       >
         {siteName.toUpperCase()}
       </Link>

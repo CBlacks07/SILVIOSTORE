@@ -150,7 +150,7 @@ export default async function HomePage() {
               Aucun produit vedette pour le moment. Connectez-vous à l'admin pour en ajouter.
             </div>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-5">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-5 grid-stagger">
               {featured.map((p) => (
                 <ProductCard key={p.id} product={p} />
               ))}
