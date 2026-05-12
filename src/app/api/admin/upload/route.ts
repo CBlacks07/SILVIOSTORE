@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { put } from "@vercel/blob";
 import { writeFile, mkdir } from "node:fs/promises";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
@@ -10,6 +11,8 @@ const VIDEO_TYPES = ["video/mp4", "video/webm", "video/ogg", "video/quicktime"];
 const IMAGE_MAX = 5 * 1024 * 1024;
 const VIDEO_MAX = 30 * 1024 * 1024;
 const ALLOWED_FOLDERS = ["products", "banners", "brands", "site"] as const;
+
+const USE_BLOB = !!process.env.BLOB_READ_WRITE_TOKEN;
 
 export async function POST(req: Request) {
   const auth = await requireAdmin();
@@ -28,9 +31,6 @@ export async function POST(req: Request) {
     const formData = await req.formData();
     const urls: string[] = [];
 
-    const uploadDir = path.join(process.cwd(), "public", "uploads", folder);
-    await mkdir(uploadDir, { recursive: true });
-
     for (const entry of formData.getAll("files")) {
       if (!(entry instanceof File)) continue;
       if (!allowedTypes.includes(entry.type)) {
@@ -39,14 +39,29 @@ export async function POST(req: Request) {
       if (entry.size > maxSize) {
         return NextResponse.json({ error: "Fichier trop volumineux (max " + maxLabel + ")" }, { status: 400 });
       }
+
       const ext = entry.name.split(".").pop() || (kind === "video" ? "mp4" : "jpg");
       const filename = randomUUID() + "." + ext.toLowerCase();
-      const buffer = Buffer.from(await entry.arrayBuffer());
-      await writeFile(path.join(uploadDir, filename), buffer);
-      const fileUrl = "/uploads/" + folder + "/" + filename;
+      let fileUrl: string;
+
+      if (USE_BLOB) {
+        // Production : Vercel Blob
+        const blob = await put(`silvio-store/${folder}/${filename}`, entry, {
+          access: "public",
+          contentType: entry.type,
+        });
+        fileUrl = blob.url;
+      } else {
+        // Dev local : filesystem
+        const uploadDir = path.join(process.cwd(), "public", "uploads", folder);
+        await mkdir(uploadDir, { recursive: true });
+        const buffer = Buffer.from(await entry.arrayBuffer());
+        await writeFile(path.join(uploadDir, filename), buffer);
+        fileUrl = "/uploads/" + folder + "/" + filename;
+      }
+
       urls.push(fileUrl);
 
-      // Log in media library (best-effort — don't fail upload if this errors)
       try {
         await sql`
           insert into media (filename, url, type, mime_type, size_bytes, folder)

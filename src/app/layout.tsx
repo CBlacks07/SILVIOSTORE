@@ -6,6 +6,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { AuthSync } from "@/components/auth/AuthSync";
 import { PageAnimations } from "@/components/layout/PageAnimations";
+import { WhatsAppFloat } from "@/components/layout/WhatsAppFloat";
 import "./globals.css";
 import "./typography.css";
 
@@ -31,6 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
+        <WhatsAppFloat />
       </body>
     </html>
   );

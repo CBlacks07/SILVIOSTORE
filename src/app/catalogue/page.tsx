@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { ProductCard } from "@/components/product/ProductCard";
 import { SortSelect } from "@/components/catalogue/SortSelect";
 import { CatalogueSidebar } from "@/components/catalogue/CatalogueSidebar";
+import { MobileFilterDrawer } from "@/components/catalogue/MobileFilterDrawer";
 import { getCategories, searchProducts } from "@/lib/queries";
 import { listActiveBanners, listActiveBrands } from "@/lib/settings";
 
@@ -174,14 +175,26 @@ export default async function CataloguePage({ searchParams }: { searchParams: Se
           {/* Right column */}
           <div className="flex-1 min-w-0">
             {/* Toolbar */}
-            <div className="mb-6 flex items-center justify-between gap-4 flex-wrap">
-              <div>
-                <p className="text-xs font-black uppercase tracking-[0.22em] text-accent mb-0.5">Catalogue</p>
-                <p className="text-sm text-brand-600">
-                  <span className="font-semibold text-brand-950">{products.length}</span>{" "}
-                  résultat{products.length > 1 ? "s" : ""}
-                  {activeCat ? ` dans ${activeCat.name}` : ""}
-                </p>
+            <div className="mb-6 flex items-center justify-between gap-3 flex-wrap">
+              <div className="flex items-center gap-3">
+                <MobileFilterDrawer
+                  categories={categories}
+                  brands={brands}
+                  activeCategory={searchParams.categorie}
+                  activeBrand={searchParams.marque}
+                  q={searchParams.q}
+                  prixMin={searchParams.prixMin}
+                  prixMax={searchParams.prixMax}
+                  resultCount={products.length}
+                />
+                <div>
+                  <p className="text-xs font-black uppercase tracking-[0.22em] text-accent mb-0.5">Catalogue</p>
+                  <p className="text-sm text-brand-600">
+                    <span className="font-semibold text-brand-950">{products.length}</span>{" "}
+                    résultat{products.length > 1 ? "s" : ""}
+                    {activeCat ? ` dans ${activeCat.name}` : ""}
+                  </p>
+                </div>
               </div>
               <SortSelect value={searchParams.tri || "recent"} />
             </div>
