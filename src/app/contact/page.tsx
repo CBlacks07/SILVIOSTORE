@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { Mail, MapPin, Phone, Clock, MessageSquare } from "lucide-react";
 import { SITE } from "@/lib/constants";
