@@ -12,10 +12,10 @@ const ease = [0.22, 1, 0.36, 1] as const;
 // Per-slide right-pane background colors (cycles if there are more slides than swatches).
 // These pull from the brand-orange family + a warm cream + a charbon dark for rhythm.
 const PANEL_BGS = [
-  { bg: "#1f2a3c", caption: "rgba(255,255,255,0.78)" }, // navy
-  { bg: "#f4ecdf", caption: "#1f2a3c" },                // warm cream
-  { bg: "#2d2a26", caption: "rgba(255,255,255,0.82)" }, // charbon
-  { bg: "#e8e3da", caption: "#1f2a3c" },                // stone
+  { bg: "transparent", caption: "rgba(255,255,255,0.88)" },
+  { bg: "transparent", caption: "rgba(255,255,255,0.88)" },
+  { bg: "transparent", caption: "rgba(255,255,255,0.88)" },
+  { bg: "transparent", caption: "rgba(255,255,255,0.88)" },
 ];
 
 type Slide = {
@@ -41,23 +41,26 @@ export function Hero({ hero, extraImages = [] }: any) {
 
     if (Array.isArray(hero?.slides)) {
       hero.slides.forEach((s: any) => {
-        if (s?.image_url) arr.push(s);
+        // Accept slide if it has an image OR meaningful text
+        if (s?.image_url || s?.title) arr.push(s);
       });
     }
 
-    if (arr.length === 0 && (hero?.image_url || hero?.image)) {
+    // Fallback: single slide from top-level hero settings
+    if (arr.length === 0) {
       arr.push({
-        image_url:  hero.image_url || hero.image,
-        title:      hero.title      || "Le luxe au bout des doigts",
-        subtitle:   hero.subtitle   || "",
-        badge_text: hero.badge_text || "",
-        cta_label:  hero.cta_label  || "Découvrir",
-        cta_link:   hero.cta_link   || "/catalogue",
-        cta2_label: hero.cta2_label || "",
-        cta2_link:  hero.cta2_link  || "",
+        image_url:  hero?.image_url || hero?.image || "",
+        title:      hero?.title      || "Le luxe au bout des doigts",
+        subtitle:   hero?.subtitle   || "La référence des accessoires premium dans la sous région.",
+        badge_text: hero?.badge_text || "SILVIO STORE",
+        cta_label:  hero?.cta_label  || "Découvrir la collection",
+        cta_link:   hero?.cta_link   || "/catalogue",
+        cta2_label: hero?.cta2_label || "",
+        cta2_link:  hero?.cta2_link  || "",
       });
     }
 
+    // Add banner images as extra slides
     if (Array.isArray(extraImages)) {
       extraImages.forEach((url: string) => {
         if (url && !arr.find((s) => s.image_url === url)) {
@@ -327,13 +330,13 @@ export function Hero({ hero, extraImages = [] }: any) {
         }
         @media (max-width: 1024px) {
           .hero-right {
-            order: -1;
-            min-height: clamp(400px, 60vh, 600px);
+            order: 1;
+            min-height: clamp(260px, 50vw, 420px);
           }
         }
         @media (max-width: 640px) {
           .hero-right {
-            min-height: 480px;
+            min-height: 240px;
           }
         }
         .hero-right-bg {
@@ -620,9 +623,9 @@ export function Hero({ hero, extraImages = [] }: any) {
           </div>
         </div>
 
-        {/* ─────────── RIGHT: product showcase ─────────── */}
+        {/* ─────────── RIGHT: product showcase (hide on mobile if no image) ─────────── */}
         <div
-          className="hero-right"
+          className={`hero-right${!slide.image_url ? " hidden lg:block" : ""}`}
           style={{ color: panel.caption }}
         >
           {/* Animated background swatch — color crossfades between slides */}
