@@ -1,4 +1,3 @@
-export const dynamic = "force-dynamic";
 ﻿import { getCurrentUser } from "@/lib/auth";
 import { ProfileForm } from "@/components/account/ProfileForm";
 

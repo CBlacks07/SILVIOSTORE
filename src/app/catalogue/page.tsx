@@ -4,7 +4,6 @@ import type { Metadata } from "next";
 import { ProductCard } from "@/components/product/ProductCard";
 import { SortSelect } from "@/components/catalogue/SortSelect";
 import { CatalogueSidebar } from "@/components/catalogue/CatalogueSidebar";
-import { MobileFilterDrawer } from "@/components/catalogue/MobileFilterDrawer";
 import { getCategories, searchProducts } from "@/lib/queries";
 import { listActiveBanners, listActiveBrands } from "@/lib/settings";
 
@@ -69,7 +68,7 @@ export default async function CataloguePage({ searchParams }: { searchParams: Se
   }
 
   return (
-    <div className="min-h-screen" style={{ background: "rgb(245,247,250)" }}>
+    <div className="min-h-screen bg-white">
       {/* Category hero */}
       <div className="bg-brand-950 text-white">
         <div className="container-page py-10 md:py-12">
@@ -158,9 +157,10 @@ export default async function CataloguePage({ searchParams }: { searchParams: Se
 
       {/* Main content */}
       <div className="container-page py-8">
-        <div className="flex gap-8 items-start">
-          {/* Sidebar — hidden on mobile */}
-          <aside className="hidden lg:block shrink-0" style={{ width: "260px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "280px 1fr", gap: "2rem", alignItems: "start" }}
+          className="lg-catalogue-grid">
+          {/* Sidebar */}
+          <aside>
             <CatalogueSidebar
               categories={categories}
               brands={brands}
@@ -173,45 +173,31 @@ export default async function CataloguePage({ searchParams }: { searchParams: Se
           </aside>
 
           {/* Right column */}
-          <div className="flex-1 min-w-0">
+          <div>
             {/* Toolbar */}
-            <div className="mb-6 flex items-center justify-between gap-3 flex-wrap">
-              <div className="flex items-center gap-3">
-                <MobileFilterDrawer
-                  categories={categories}
-                  brands={brands}
-                  activeCategory={searchParams.categorie}
-                  activeBrand={searchParams.marque}
-                  q={searchParams.q}
-                  prixMin={searchParams.prixMin}
-                  prixMax={searchParams.prixMax}
-                  resultCount={products.length}
-                />
-                <div>
-                  <p className="text-xs font-black uppercase tracking-[0.22em] text-accent mb-0.5">Catalogue</p>
-                  <p className="text-sm text-brand-600">
-                    <span className="font-semibold text-brand-950">{products.length}</span>{" "}
-                    résultat{products.length > 1 ? "s" : ""}
-                    {activeCat ? ` dans ${activeCat.name}` : ""}
-                  </p>
-                </div>
-              </div>
+            <div className="mb-5 flex items-center justify-between gap-4">
+              <p className="text-sm text-brand-600">
+                <span className="font-semibold text-brand-950">{products.length}</span>{" "}
+                résultat{products.length > 1 ? "s" : ""}
+              </p>
               <SortSelect value={searchParams.tri || "recent"} />
             </div>
 
             {products.length === 0 ? (
-              <div className="rounded-xl border border-brand-100 bg-white p-16 text-center">
+              <div className="rounded-2xl border border-brand-100 bg-brand-50/50 p-16 text-center">
                 <div className="h-16 w-16 rounded-full bg-brand-100 grid place-items-center mx-auto mb-4">
                   <SlidersHorizontal className="h-7 w-7 text-brand-400" />
                 </div>
                 <h3 className="font-display text-lg font-semibold text-brand-950 mb-2">Aucun produit trouvé</h3>
-                <p className="text-sm text-brand-600 mb-5">Ajustez vos filtres ou parcourez tout le catalogue.</p>
-                <Link href="/catalogue" className="btn-hero-secondary inline-flex">
+                <p className="text-sm text-brand-600 mb-5">
+                  Essayez d'ajuster vos filtres ou parcourez tout le catalogue.
+                </p>
+                <Link href="/catalogue" className="btn-accent inline-flex">
                   Voir tout le catalogue
                 </Link>
               </div>
             ) : (
-              <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 grid-stagger">
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1.25rem" }}>
                 {products.map((p) => (
                   <ProductCard key={p.id} product={p} />
                 ))}

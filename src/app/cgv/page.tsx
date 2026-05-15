@@ -1,4 +1,3 @@
-export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { Building2, Package, CreditCard, Truck, Shield, Lock } from "lucide-react";
 import { SITE } from "@/lib/constants";

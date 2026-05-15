@@ -19,7 +19,7 @@ export function ProductCard({ product }: { product: Product }) {
       href={"/produit/" + product.slug} 
       className="group card overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1 hover:shadow-lift"
     >
-      <div className="relative aspect-square w-full overflow-hidden border-b border-brand-100" style={{ background: "rgb(245,247,250)" }}>
+      <div className="relative aspect-square w-full bg-white overflow-hidden border-b border-brand-100">
         {cover ? (
           <Image
             src={cover}
