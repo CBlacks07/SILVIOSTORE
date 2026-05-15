@@ -354,15 +354,11 @@ export function Hero({ hero, extraImages = [] }: any) {
         }
         .hero-image-frame {
           position: absolute;
-          inset: clamp(32px, 6vw, 80px);
+          inset: 0;
           display: flex;
           align-items: center;
           justify-content: center;
-        }
-        @media (max-width: 640px) {
-          .hero-image-frame {
-            inset: 24px;
-          }
+          overflow: hidden;
         }
         .hero-image-wrap {
           position: relative;
@@ -663,10 +659,7 @@ export function Hero({ hero, extraImages = [] }: any) {
                   fill
                   priority={current === 0}
                   sizes="(max-width: 900px) 100vw, 50vw"
-                  style={{
-                    objectFit: "contain",
-                    filter: "drop-shadow(0 24px 40px rgba(0,0,0,0.25))",
-                  }}
+                  style={{ objectFit: "cover" }}
                 />
               </div>
             </motion.div>
