@@ -35,13 +35,16 @@ export function ProductCard({ product }: { product: Product }) {
         )}
         
         {/* Badges */}
-        <div className="absolute left-2.5 top-2.5 flex flex-col gap-1.5 z-10">
-          {discount && (
-            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-black bg-accent text-white shadow-sm ring-1 ring-white/20">
+        {discount && discount > 0 && discount <= 95 && (
+          <div className="absolute left-2 top-2 z-10">
+            <span
+              className="text-[10px] font-black"
+              style={{ background: "#d97706", color: "#fff", padding: "2px 8px", borderRadius: "999px", display: "inline-block" }}
+            >
               -{discount}%
             </span>
-          )}
-        </div>
+          </div>
+        )}
 
         <div className="absolute right-2.5 top-2.5 z-10">
           {outOfStock && (

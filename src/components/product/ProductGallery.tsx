@@ -48,8 +48,13 @@ export function ProductGallery({ images, alt, discount }: Props) {
             </motion.div>
           )}
         </AnimatePresence>
-        {discount && (
-          <span className="absolute left-5 top-5 badge bg-accent text-white z-10 px-3 py-1 font-black shadow-lg">-{discount}%</span>
+        {discount && discount > 0 && discount <= 95 && (
+          <span
+            className="absolute left-3 top-3 z-10 font-black text-xs"
+            style={{ background: "#d97706", color: "#fff", padding: "4px 10px", borderRadius: "999px", boxShadow: "0 2px 8px rgba(0,0,0,0.15)" }}
+          >
+            -{discount}%
+          </span>
         )}
         {hasMany && (
           <>
@@ -57,19 +62,24 @@ export function ProductGallery({ images, alt, discount }: Props) {
               type="button"
               onClick={prev}
               aria-label="Image précédente"
-              className="absolute left-3 top-1/2 -translate-y-1/2 z-10 grid h-10 w-10 place-items-center rounded-full bg-white/95 text-brand-950 shadow-xl border border-brand-100 hover:bg-white hover:scale-105 active:scale-95 transition-all"
+              className="absolute left-3 top-1/2 -translate-y-1/2 z-10 grid h-9 w-9 place-items-center rounded-full border border-brand-100 transition-all hover:scale-105 active:scale-95"
+              style={{ background: "rgba(255,255,255,0.95)", boxShadow: "0 2px 12px rgba(0,0,0,0.12)" }}
             >
-              <ChevronLeft className="h-6 w-6" />
+              <ChevronLeft className="h-5 w-5" />
             </button>
             <button
               type="button"
               onClick={next}
               aria-label="Image suivante"
-              className="absolute right-3 top-1/2 -translate-y-1/2 z-10 grid h-10 w-10 place-items-center rounded-full bg-white/95 text-brand-950 shadow-xl border border-brand-100 hover:bg-white hover:scale-105 active:scale-95 transition-all"
+              className="absolute right-3 top-1/2 -translate-y-1/2 z-10 grid h-9 w-9 place-items-center rounded-full border border-brand-100 transition-all hover:scale-105 active:scale-95"
+              style={{ background: "rgba(255,255,255,0.95)", boxShadow: "0 2px 12px rgba(0,0,0,0.12)" }}
             >
-              <ChevronRight className="h-6 w-6" />
+              <ChevronRight className="h-5 w-5" />
             </button>
-            <span className="absolute bottom-4 right-4 z-10 rounded-full bg-black/60 backdrop-blur-md px-3 py-1 text-xs font-bold text-white tracking-widest shadow-lg">
+            <span
+              className="absolute bottom-3 right-3 z-10 text-xs font-bold"
+              style={{ background: "rgba(0,0,0,0.55)", color: "#fff", padding: "3px 10px", borderRadius: "999px" }}
+            >
               {index + 1} / {safeImages.length}
             </span>
           </>
