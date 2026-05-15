@@ -32,7 +32,8 @@ export function HeaderSearch() {
           />
           <button
             type="submit"
-            className="h-full px-5 bg-[#a3752c] hover:bg-[#825c23] text-white text-[10px] font-black uppercase tracking-widest rounded-r-full transition-colors shrink-0"
+            style={{ backgroundColor: '#a3752c', color: '#ffffff' }}
+            className="search-btn h-full px-5 text-[10px] font-black uppercase tracking-widest rounded-r-full transition-colors shrink-0"
           >
             Rechercher
           </button>

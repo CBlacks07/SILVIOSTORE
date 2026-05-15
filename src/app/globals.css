@@ -934,6 +934,17 @@ video {
 .btn-whatsapp:hover {
   background-color: #15803d;
 }
+.search-btn {
+  background-color: #a3752c !important;
+  color: #ffffff !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.search-btn:hover {
+  background-color: #825c23 !important;
+}
+
 .input {
   display: block;
   width: 100%;
