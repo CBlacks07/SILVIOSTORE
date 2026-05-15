@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -128,39 +128,41 @@ export function BrandManager({ initial }: { initial: Brand[] }) {
 
   return (
     <div className="space-y-6">
-      <form onSubmit={add} className="card flex items-end gap-3 p-5">
-        <div className="flex-1">
-          <label className="mb-1 block text-sm font-medium text-brand-800">Nouvelle marque</label>
-          <input className="input" value={name} onChange={(e) => setName(e.target.value)} placeholder="Ex: OnePlus" />
+      <form onSubmit={add} className="card p-4 md:p-5">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-end gap-3">
+          <div className="flex-1">
+            <label className="mb-1 block text-sm font-medium text-brand-800">Nouvelle marque</label>
+            <input className="input" value={name} onChange={(e) => setName(e.target.value)} placeholder="Ex: OnePlus" />
+          </div>
+          <button type="submit" disabled={busy} className="btn-primary sm:shrink-0">
+            {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <><Plus className="h-4 w-4" />Ajouter</>}
+          </button>
         </div>
-
-        <button type="submit" disabled={busy} className="btn-primary">
-          {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <><Plus className="h-4 w-4" />Ajouter</>}
-        </button>
       </form>
 
       {error && <p className="text-sm text-red-700">{error}</p>}
 
-      <div className="card overflow-hidden">
+      {/* Desktop table */}
+      <div className="hidden md:block card overflow-hidden">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-brand-100 bg-brand-50/60 text-left text-brand-500">
-              <th className="w-20 px-4 py-3">Logo</th>
-              <th className="px-4 py-3">Nom</th>
-              <th className="px-4 py-3">Slug</th>
-              <th className="w-28 px-4 py-3">Ordre</th>
-              <th className="w-28 px-4 py-3">Active</th>
+              <th className="w-20 px-4 py-3 text-xs font-semibold uppercase tracking-wide">Logo</th>
+              <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Nom</th>
+              <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Slug</th>
+              <th className="w-28 px-4 py-3 text-xs font-semibold uppercase tracking-wide">Ordre</th>
+              <th className="w-28 px-4 py-3 text-xs font-semibold uppercase tracking-wide">Active</th>
               <th className="px-4 py-3"></th>
             </tr>
           </thead>
           <tbody>
             {brands.map((b) => (
-              <tr key={b.id} className="border-b border-brand-100 last:border-0">
+              <tr key={b.id} className="border-b border-brand-100 last:border-0 hover:bg-brand-50/30 transition-colors">
                 <td className="px-4 py-3">
                   <LogoCell brand={b} onUpload={(file) => uploadLogo(b, file)} onClear={() => clearLogo(b)} />
                 </td>
-                <td className="px-4 py-3 text-brand-900">{b.name}</td>
-                <td className="px-4 py-3 text-brand-600">{b.slug}</td>
+                <td className="px-4 py-3 text-brand-900 font-medium">{b.name}</td>
+                <td className="px-4 py-3 text-brand-600 font-mono text-xs">{b.slug}</td>
                 <td className="px-4 py-3">
                   <input
                     type="number"
@@ -177,7 +179,7 @@ export function BrandManager({ initial }: { initial: Brand[] }) {
                   </label>
                 </td>
                 <td className="px-4 py-3 text-right">
-                  <button type="button" onClick={() => remove(b.id)} className="text-red-600 hover:text-red-700">
+                  <button type="button" onClick={() => remove(b.id)} className="text-red-600 hover:text-red-700 p-1">
                     <Trash2 className="h-4 w-4" />
                   </button>
                 </td>
@@ -194,6 +196,46 @@ export function BrandManager({ initial }: { initial: Brand[] }) {
           </tbody>
         </table>
       </div>
+
+      {/* Mobile cards */}
+      <div className="md:hidden space-y-3">
+        {brands.map((b) => (
+          <div key={b.id} className="card p-3">
+            <div className="flex items-center gap-3">
+              <LogoCell brand={b} onUpload={(file) => uploadLogo(b, file)} onClear={() => clearLogo(b)} />
+              <div className="flex-1 min-w-0">
+                <p className="font-medium text-brand-900 text-sm">{b.name}</p>
+                <p className="text-[10px] text-brand-400 font-mono">{b.slug}</p>
+              </div>
+              <button type="button" onClick={() => remove(b.id)} className="text-red-500 hover:text-red-700 p-1.5 shrink-0">
+                <Trash2 className="h-4 w-4" />
+              </button>
+            </div>
+            <div className="flex items-center justify-between mt-2 pt-2 border-t border-brand-50">
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-brand-500">Ordre :</span>
+                <input
+                  type="number"
+                  className="input py-1 text-center w-14"
+                  value={b.sort_order}
+                  onChange={(e) => updateSortLocally(b.id, Number(e.target.value) || 0)}
+                  onBlur={(e) => saveSort(b.id, Number(e.target.value) || 0)}
+                />
+              </div>
+              <label className="inline-flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" checked={b.is_active} onChange={() => toggleActive(b)} className="h-4 w-4" />
+                <span className="text-xs text-brand-600">{b.is_active ? "Active" : "Inactive"}</span>
+              </label>
+            </div>
+          </div>
+        ))}
+
+        {brands.length === 0 && (
+          <div className="card px-4 py-8 text-center text-brand-500">
+            Aucune marque
+          </div>
+        )}
+      </div>
     </div>
   );
 }
@@ -202,7 +244,7 @@ function LogoCell({ brand, onUpload, onClear }: { brand: Brand; onUpload: (f: Fi
   const inputRef = useRef<HTMLInputElement>(null);
 
   return (
-    <div className="relative grid h-12 w-16 place-items-center rounded border border-brand-100 bg-white">
+    <div className="relative grid h-12 w-16 shrink-0 place-items-center rounded border border-brand-100 bg-white">
       {brand.logo_url ? (
         <>
           <Image src={brand.logo_url} alt={brand.name} fill className="object-contain p-1" sizes="64px" />

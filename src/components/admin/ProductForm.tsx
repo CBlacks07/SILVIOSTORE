@@ -273,14 +273,14 @@ export function ProductForm({ product, categories }: Props) {
 
       {error && <p className="text-sm text-red-700">{error}</p>}
 
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-3">
         {isEdit ? (
-          <button type="button" onClick={handleDelete} disabled={deleting} className="btn text-red-700 hover:bg-red-50">
+          <button type="button" onClick={handleDelete} disabled={deleting} className="btn text-red-700 hover:bg-red-50 w-full sm:w-auto justify-center">
             <Trash2 className="h-4 w-4" /> Supprimer
           </button>
-        ) : <span />}
+        ) : <span className="hidden sm:block" />}
 
-        <button type="submit" disabled={saving} className="btn-primary">
+        <button type="submit" disabled={saving} className="btn-primary w-full sm:w-auto justify-center">
           {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : isEdit ? "Enregistrer" : "Créer le produit"}
         </button>
       </div>

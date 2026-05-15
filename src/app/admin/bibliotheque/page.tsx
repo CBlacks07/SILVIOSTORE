@@ -16,14 +16,14 @@ export default async function AdminMediaPage() {
   return (
     <>
       <header className="sticky top-0 z-20 bg-white/90 backdrop-blur border-b border-brand-100">
-        <div className="px-8 py-4">
+        <div className="px-4 py-3 md:px-8 md:py-4">
           <div className="flex items-center gap-1.5 text-xs text-brand-400 mb-1">
             <span>Admin</span><span>›</span><span className="text-brand-700 font-medium">Marketing</span>
           </div>
-          <h1 className="font-display text-[22px] font-bold text-brand-950">Bibliothèque de médias</h1>
+          <h1 className="font-display text-lg md:text-[22px] font-bold text-brand-950">Bibliothèque de médias</h1>
         </div>
       </header>
-      <div className="px-8 py-6">
+      <div className="px-4 py-4 md:px-8 md:py-6">
         <MediaLibrary stats={stats[0] ?? { total: 0, images: 0, videos: 0, folders: [] }} />
       </div>
     </>

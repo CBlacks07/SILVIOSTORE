@@ -1,8 +1,8 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, Plus, Trash2, X, Upload, Save, GripVertical } from "lucide-react";
+import { Loader2, Plus, Trash2, X, Upload } from "lucide-react";
 import { slugify } from "@/lib/utils";
 import { ImageUploader } from "@/components/admin/ImageUploader";
 import type { Category } from "@/lib/types";
@@ -28,8 +28,8 @@ export function CategoryManager({ initial }: { initial: Category[] }) {
       const res = await fetch("/api/admin/categories", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          name: trimmed, 
+        body: JSON.stringify({
+          name: trimmed,
           slug: slugify(trimmed),
           description: newDesc,
           image_url: newImage
@@ -105,19 +105,19 @@ export function CategoryManager({ initial }: { initial: Category[] }) {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-3">
         <h2 className="text-sm font-semibold text-brand-900 uppercase tracking-wider">Liste des catégories</h2>
-        <button 
-          onClick={() => setShowAdd(!showAdd)} 
-          className="btn-primary py-2 text-xs"
+        <button
+          onClick={() => setShowAdd(!showAdd)}
+          className="btn-primary py-2 text-xs shrink-0"
         >
-          {showAdd ? <><X className="h-4 w-4" /> Annuler</> : <><Plus className="h-4 w-4" /> Ajouter une catégorie</>}
+          {showAdd ? <><X className="h-4 w-4" /> Annuler</> : <><Plus className="h-4 w-4" /> <span className="hidden sm:inline">Ajouter une catégorie</span><span className="sm:hidden">Ajouter</span></>}
         </button>
       </div>
 
       {showAdd && (
-        <form onSubmit={add} className="card p-6 border-2 border-accent/20 bg-accent/5 space-y-4">
-          <div className="grid gap-4 md:grid-cols-2">
+        <form onSubmit={add} className="card p-4 md:p-6 border-2 border-accent/20 bg-accent/5 space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-4">
               <div>
                 <label className="mb-1 block text-sm font-medium text-brand-800">Nom de la catégorie</label>
@@ -144,14 +144,15 @@ export function CategoryManager({ initial }: { initial: Category[] }) {
 
       {error && <p className="text-sm text-red-700 bg-red-50 p-3 rounded-lg border border-red-100">{error}</p>}
 
-      <div className="card overflow-hidden">
+      {/* Desktop table */}
+      <div className="hidden md:block card overflow-hidden">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-brand-100 bg-brand-50/60 text-left text-brand-500">
-              <th className="w-16 px-4 py-3 text-center">Ordre</th>
-              <th className="w-24 px-4 py-3">Image</th>
-              <th className="px-4 py-3">Catégorie</th>
-              <th className="px-4 py-3 hidden md:table-cell">Description</th>
+              <th className="w-16 px-4 py-3 text-center text-xs font-semibold uppercase tracking-wide">Ordre</th>
+              <th className="w-24 px-4 py-3 text-xs font-semibold uppercase tracking-wide">Image</th>
+              <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Catégorie</th>
+              <th className="px-4 py-3 hidden md:table-cell text-xs font-semibold uppercase tracking-wide">Description</th>
               <th className="w-20 px-4 py-3"></th>
             </tr>
           </thead>
@@ -159,9 +160,9 @@ export function CategoryManager({ initial }: { initial: Category[] }) {
             {categories.map((c) => (
               <tr key={c.id} className="border-b border-brand-100 last:border-0 hover:bg-brand-50/30 transition-colors">
                 <td className="px-4 py-3">
-                  <input 
-                    type="number" 
-                    className="input py-1 text-center w-12 mx-auto" 
+                  <input
+                    type="number"
+                    className="input py-1 text-center w-12 mx-auto"
                     defaultValue={c.sort_order || 0}
                     onBlur={(e) => updateSort(c.id, parseInt(e.target.value) || 0)}
                   />
@@ -177,9 +178,9 @@ export function CategoryManager({ initial }: { initial: Category[] }) {
                     )}
                     <label className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center cursor-pointer transition-opacity">
                       <Plus className="h-4 w-4 text-white" />
-                      <input 
-                        type="file" 
-                        className="hidden" 
+                      <input
+                        type="file"
+                        className="hidden"
                         accept="image/*"
                         onChange={async (e) => {
                           const f = e.target.files?.[0];
@@ -218,6 +219,69 @@ export function CategoryManager({ initial }: { initial: Category[] }) {
             )}
           </tbody>
         </table>
+      </div>
+
+      {/* Mobile cards */}
+      <div className="md:hidden space-y-3">
+        {categories.map((c) => (
+          <div key={c.id} className="card p-3">
+            <div className="flex items-center gap-3">
+              <div className="relative h-12 w-12 shrink-0 rounded-lg bg-white border border-brand-100 overflow-hidden group">
+                {c.image_url ? (
+                  <img src={c.image_url} alt="" className="h-full w-full object-cover" />
+                ) : (
+                  <div className="h-full w-full flex items-center justify-center text-brand-300">
+                    <Upload className="h-4 w-4" />
+                  </div>
+                )}
+                <label className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center cursor-pointer transition-opacity">
+                  <Plus className="h-4 w-4 text-white" />
+                  <input
+                    type="file"
+                    className="hidden"
+                    accept="image/*"
+                    onChange={async (e) => {
+                      const f = e.target.files?.[0];
+                      if (!f) return;
+                      const fd = new FormData();
+                      fd.append("files", f);
+                      const res = await fetch("/api/admin/upload?folder=site", { method: "POST", body: fd });
+                      const data = await res.json();
+                      if (data.urls?.[0]) updateImage(c.id, data.urls[0]);
+                    }}
+                  />
+                </label>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-brand-950 text-sm">{c.name}</p>
+                <p className="text-[10px] text-brand-400 font-mono uppercase">{c.slug}</p>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <div className="flex items-center gap-1">
+                  <span className="text-xs text-brand-400">Ordre</span>
+                  <input
+                    type="number"
+                    className="input py-1 text-center w-12"
+                    defaultValue={c.sort_order || 0}
+                    onBlur={(e) => updateSort(c.id, parseInt(e.target.value) || 0)}
+                  />
+                </div>
+                <button type="button" onClick={() => remove(c.id)} className="p-1.5 text-brand-400 hover:text-red-600 transition-colors">
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+            {c.description && (
+              <p className="mt-2 text-xs text-brand-500 pl-15 leading-relaxed line-clamp-2">{c.description}</p>
+            )}
+          </div>
+        ))}
+
+        {categories.length === 0 && (
+          <div className="card px-4 py-12 text-center text-brand-500 italic">
+            Aucune catégorie définie pour le moment.
+          </div>
+        )}
       </div>
     </div>
   );

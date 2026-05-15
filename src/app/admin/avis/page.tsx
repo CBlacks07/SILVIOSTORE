@@ -36,13 +36,21 @@ export default async function AdminReviewsPage() {
   `;
 
   return (
-    <div className="max-w-6xl">
-      <h1 className="mb-2 font-display text-2xl font-bold text-brand-950">Avis clients</h1>
-      <p className="mb-6 text-sm text-brand-600">
-        Modérez les avis publiés sur les fiches accessoires.
-      </p>
-      <ReviewManager initial={rows} />
-    </div>
+    <>
+      <header className="sticky top-0 z-20 bg-white/90 backdrop-blur border-b border-brand-100">
+        <div className="px-4 py-3 md:px-8 md:py-4">
+          <div className="flex items-center gap-1.5 text-xs text-brand-400 mb-1">
+            <span>Admin</span><span>›</span><span className="text-brand-700 font-medium">Ventes</span>
+          </div>
+          <h1 className="font-display text-lg md:text-[22px] font-bold text-brand-950">Avis clients</h1>
+        </div>
+      </header>
+      <div className="px-4 py-4 md:px-8 md:py-6">
+        <p className="mb-4 text-sm text-brand-600">
+          Modérez les avis publiés sur les fiches accessoires.
+        </p>
+        <ReviewManager initial={rows} />
+      </div>
+    </>
   );
 }
-

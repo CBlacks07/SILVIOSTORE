@@ -85,19 +85,19 @@ export default async function AdminDashboardPage() {
   return (
     <>
       <header className="sticky top-0 z-20 bg-white/90 backdrop-blur border-b border-brand-100">
-        <div className="flex items-center justify-between px-8 py-4">
+        <div className="flex items-center justify-between px-4 py-3 md:px-8 md:py-4">
           <div>
             <div className="flex items-center gap-1.5 text-xs text-brand-400 mb-1">
               <span>Admin</span><span>›</span><span className="text-brand-700 font-medium">Vue générale</span>
             </div>
-            <h1 className="font-display text-[22px] font-bold text-brand-950">Tableau de bord</h1>
+            <h1 className="font-display text-lg md:text-[22px] font-bold text-brand-950">Tableau de bord</h1>
           </div>
         </div>
       </header>
 
-      <div className="px-8 py-6 space-y-5">
+      <div className="px-4 py-4 md:px-8 md:py-6 space-y-4 md:space-y-5">
         {/* KPI row */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: "1rem" }}>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
           <KpiCard label="Chiffre d'affaires" value={formatPrice(kpi.revenue)} pct={revPct} sub="14 derniers jours" />
           <KpiCard label="Commandes" value={kpi.orders} pct={ordersPct} sub="14 derniers jours" />
           <KpiCard label="Nouveaux clients" value={kpi.customers} pct={null} sub="14 derniers jours" />
@@ -105,8 +105,8 @@ export default async function AdminDashboardPage() {
         </div>
 
         {/* Pipeline */}
-        <div className="card p-5">
-          <div className="flex items-baseline justify-between mb-5">
+        <div className="card p-4 md:p-5">
+          <div className="flex items-baseline justify-between mb-4 md:mb-5">
             <div>
               <h2 className="font-display font-semibold text-brand-950">Pipeline des commandes</h2>
               <p className="text-xs text-brand-500 mt-0.5">État du flux des 30 derniers jours</p>
@@ -115,8 +115,8 @@ export default async function AdminDashboardPage() {
               Détails <ArrowUpRight className="h-3.5 w-3.5" />
             </Link>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(5,1fr)", gap: "1rem" }}>
-            {PIPELINE_STATUSES.map((status, i) => {
+          <div className="grid grid-cols-3 sm:grid-cols-5 gap-3 md:gap-4">
+            {PIPELINE_STATUSES.map((status) => {
               const meta = STATUS_META[status];
               const count = pipelineMap[status] || 0;
               const total = Object.values(pipelineMap).reduce((a, b) => a + b, 0) || 1;
@@ -131,20 +131,17 @@ export default async function AdminDashboardPage() {
                   <div className="mt-2 h-1 rounded-full bg-brand-100 overflow-hidden">
                     <div className={"h-full rounded-full " + meta.dot} style={{ width: `${pct}%` }} />
                   </div>
-                  {i < PIPELINE_STATUSES.length - 1 && (
-                    <div className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 text-brand-200 select-none pointer-events-none">›</div>
-                  )}
                 </div>
               );
             })}
           </div>
         </div>
 
-        {/* Bottom 2-column */}
-        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "1.25rem" }}>
+        {/* Bottom — stacked on mobile, 2-column on lg */}
+        <div className="grid grid-cols-1 lg:grid-cols-[2fr,1fr] gap-4 md:gap-5">
           {/* Recent orders */}
           <div className="card overflow-hidden">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-brand-100">
+            <div className="flex items-center justify-between px-4 py-3 md:px-6 md:py-4 border-b border-brand-100">
               <div>
                 <h2 className="font-display font-semibold text-brand-950">Commandes récentes</h2>
                 <p className="text-xs text-brand-500 mt-0.5">Les 8 dernières commandes reçues</p>
@@ -153,64 +150,97 @@ export default async function AdminDashboardPage() {
                 Tout voir <ArrowUpRight className="h-3.5 w-3.5" />
               </Link>
             </div>
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="text-left text-[11px] uppercase tracking-wider text-brand-400 bg-brand-50/50 border-b border-brand-100">
-                  <th className="px-6 py-2.5 font-medium">Référence</th>
-                  <th className="px-4 py-2.5 font-medium">Client</th>
-                  <th className="px-4 py-2.5 font-medium">Statut</th>
-                  <th className="px-6 py-2.5 font-medium text-right">Total</th>
-                  <th className="px-6 py-2.5 font-medium text-right">Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                {recentOrders.map((o) => {
-                  const s = STATUS_META[o.status] || STATUS_META.pending;
-                  const initials = o.customer_name.split(" ").map((p: string) => p[0]).slice(0, 2).join("");
-                  const date = new Date(o.created_at).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit" });
-                  const time = new Date(o.created_at).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
-                  return (
-                    <tr key={o.id} className="border-b border-brand-50 last:border-0 hover:bg-brand-50/30 transition-colors">
-                      <td className="px-6 py-3">
-                        <Link href={`/admin/commandes/${o.id}`} className="font-mono text-[12px] font-semibold text-brand-950 hover:text-accent transition-colors">
-                          {o.reference}
-                        </Link>
-                      </td>
-                      <td className="px-4 py-3">
-                        <div className="flex items-center gap-2.5">
-                          <div className="h-8 w-8 rounded-full bg-brand-950 text-white grid place-items-center text-[11px] font-bold shrink-0">
-                            {initials}
+
+            {/* Desktop table */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="text-left text-[11px] uppercase tracking-wider text-brand-400 bg-brand-50/50 border-b border-brand-100">
+                    <th className="px-6 py-2.5 font-medium">Référence</th>
+                    <th className="px-4 py-2.5 font-medium">Client</th>
+                    <th className="px-4 py-2.5 font-medium">Statut</th>
+                    <th className="px-6 py-2.5 font-medium text-right">Total</th>
+                    <th className="px-6 py-2.5 font-medium text-right">Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {recentOrders.map((o) => {
+                    const s = STATUS_META[o.status] || STATUS_META.pending;
+                    const initials = o.customer_name.split(" ").map((p: string) => p[0]).slice(0, 2).join("");
+                    const date = new Date(o.created_at).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit" });
+                    const time = new Date(o.created_at).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
+                    return (
+                      <tr key={o.id} className="border-b border-brand-50 last:border-0 hover:bg-brand-50/30 transition-colors">
+                        <td className="px-6 py-3">
+                          <Link href={`/admin/commandes/${o.id}`} className="font-mono text-[12px] font-semibold text-brand-950 hover:text-accent transition-colors">
+                            {o.reference}
+                          </Link>
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-2.5">
+                            <div className="h-8 w-8 rounded-full bg-brand-950 text-white grid place-items-center text-[11px] font-bold shrink-0">
+                              {initials}
+                            </div>
+                            <div className="min-w-0">
+                              <div className="text-brand-950 font-medium text-sm truncate leading-tight">{o.customer_name}</div>
+                              <div className="text-[11px] text-brand-400 leading-tight">{o.shipping_city}, {o.shipping_country}</div>
+                            </div>
                           </div>
-                          <div className="min-w-0">
-                            <div className="text-brand-950 font-medium text-sm truncate leading-tight">{o.customer_name}</div>
-                            <div className="text-[11px] text-brand-400 leading-tight">{o.shipping_city}, {o.shipping_country}</div>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-4 py-3">
-                        <span className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-[11px] font-medium ring-1 ring-inset ${s.badge}`}>
-                          <span className={`h-1.5 w-1.5 rounded-full ${s.dot}`} />
-                          {s.label}
-                        </span>
-                      </td>
-                      <td className="px-6 py-3 text-right font-semibold tabular-nums text-brand-950 text-sm">
-                        {formatPrice(o.total)}
-                      </td>
-                      <td className="px-6 py-3 text-right">
-                        <div className="text-sm text-brand-700 tabular-nums">{date}</div>
-                        <div className="text-[11px] text-brand-400">{time}</div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-[11px] font-medium ring-1 ring-inset ${s.badge}`}>
+                            <span className={`h-1.5 w-1.5 rounded-full ${s.dot}`} />
+                            {s.label}
+                          </span>
+                        </td>
+                        <td className="px-6 py-3 text-right font-semibold tabular-nums text-brand-950 text-sm">
+                          {formatPrice(o.total)}
+                        </td>
+                        <td className="px-6 py-3 text-right">
+                          <div className="text-sm text-brand-700 tabular-nums">{date}</div>
+                          <div className="text-[11px] text-brand-400">{time}</div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile cards */}
+            <div className="md:hidden divide-y divide-brand-50">
+              {recentOrders.map((o) => {
+                const s = STATUS_META[o.status] || STATUS_META.pending;
+                const date = new Date(o.created_at).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit" });
+                return (
+                  <div key={o.id} className="px-4 py-3 space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <Link href={`/admin/commandes/${o.id}`} className="font-mono text-xs font-semibold text-brand-950 hover:text-accent">
+                        {o.reference}
+                      </Link>
+                      <span className="text-xs text-brand-400">{date}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-brand-700 truncate mr-2">{o.customer_name}</span>
+                      <span className="font-semibold text-sm text-brand-950 tabular-nums shrink-0">{formatPrice(o.total)}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-brand-400">{o.shipping_city}, {o.shipping_country}</span>
+                      <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium ring-1 ring-inset ${s.badge}`}>
+                        <span className={`h-1.5 w-1.5 rounded-full ${s.dot}`} />
+                        {s.label}
+                      </span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
           {/* Right column */}
-          <div className="space-y-5">
+          <div className="space-y-4 md:space-y-5">
             {/* Revenue mini bar chart */}
-            <div className="card p-5">
+            <div className="card p-4 md:p-5">
               <div className="flex items-baseline justify-between mb-4">
                 <div>
                   <h2 className="font-display font-semibold text-brand-950">Chiffre d'affaires</h2>
@@ -237,7 +267,7 @@ export default async function AdminDashboardPage() {
 
             {/* Low stock */}
             <div className="card overflow-hidden">
-              <div className="flex items-center gap-2 px-5 py-4 border-b border-brand-100">
+              <div className="flex items-center gap-2 px-4 py-3 md:px-5 md:py-4 border-b border-brand-100">
                 <AlertTriangle className="h-4 w-4 text-amber-500 shrink-0" />
                 <div>
                   <h2 className="font-display font-semibold text-brand-950 text-sm">Stock faible</h2>
@@ -246,7 +276,7 @@ export default async function AdminDashboardPage() {
               </div>
               <ul className="divide-y divide-brand-50">
                 {lowStock.map((p) => (
-                  <li key={p.id} className="flex items-center gap-3 px-5 py-3 hover:bg-brand-50/40 transition-colors">
+                  <li key={p.id} className="flex items-center gap-3 px-4 py-3 md:px-5 hover:bg-brand-50/40 transition-colors">
                     <div className="h-9 w-9 rounded-lg bg-brand-100 shrink-0 overflow-hidden">
                       {p.images?.[0] && (
                         // eslint-disable-next-line @next/next/no-img-element
@@ -277,20 +307,20 @@ export default async function AdminDashboardPage() {
 function KpiCard({ label, value, pct, sub }: { label: string; value: string | number; pct: number | null; sub: string }) {
   const isUp = pct !== null && pct >= 0;
   return (
-    <div className="card p-5">
+    <div className="card p-4 md:p-5">
       <div className="flex items-start justify-between gap-2">
-        <span className="text-sm text-brand-500">{label}</span>
+        <span className="text-xs md:text-sm text-brand-500 leading-tight">{label}</span>
         {pct !== null && (
-          <span className={`inline-flex items-center gap-0.5 text-[11px] font-semibold px-1.5 py-0.5 rounded-full shrink-0 ${isUp ? "bg-emerald-50 text-emerald-700" : "bg-rose-50 text-rose-700"}`}>
+          <span className={`inline-flex items-center gap-0.5 text-[10px] md:text-[11px] font-semibold px-1.5 py-0.5 rounded-full shrink-0 ${isUp ? "bg-emerald-50 text-emerald-700" : "bg-rose-50 text-rose-700"}`}>
             {isUp ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
             {isUp ? "+" : ""}{pct.toFixed(1)}%
           </span>
         )}
       </div>
-      <div className="mt-2 font-display text-[26px] font-bold text-brand-950 tabular-nums leading-none">
+      <div className="mt-2 font-display text-xl md:text-[26px] font-bold text-brand-950 tabular-nums leading-none">
         {value}
       </div>
-      <p className="mt-2 text-[11px] text-brand-400">{sub}</p>
+      <p className="mt-2 text-[10px] md:text-[11px] text-brand-400">{sub}</p>
     </div>
   );
 }

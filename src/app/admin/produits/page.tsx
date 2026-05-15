@@ -84,22 +84,22 @@ export default async function AdminProductsPage({
     <>
       {/* Topbar */}
       <header className="sticky top-0 z-20 bg-white/90 backdrop-blur border-b border-brand-100">
-        <div className="flex items-center justify-between px-8 py-4">
-          <div>
+        <div className="flex items-center justify-between px-4 py-3 md:px-8 md:py-4 gap-3">
+          <div className="min-w-0">
             <div className="flex items-center gap-1.5 text-xs text-brand-400 mb-1">
               <span>Admin</span><span>›</span><span className="text-brand-700 font-medium">Catalogue</span>
             </div>
-            <h1 className="font-display text-[22px] font-bold text-brand-950">Catalogue produits</h1>
+            <h1 className="font-display text-lg md:text-[22px] font-bold text-brand-950">Catalogue produits</h1>
           </div>
-          <Link href="/admin/produits/nouveau" className="btn-accent">
-            <Plus className="h-4 w-4" /> Nouveau produit
+          <Link href="/admin/produits/nouveau" className="btn-accent shrink-0 text-sm">
+            <Plus className="h-4 w-4" /> <span className="hidden sm:inline">Nouveau produit</span><span className="sm:hidden">Nouveau</span>
           </Link>
         </div>
       </header>
 
-      <div className="px-8 py-6 space-y-4">
-        {/* Filter tabs */}
-        <div className="flex items-center gap-1 border-b border-brand-100 pb-0">
+      <div className="px-4 py-4 md:px-8 md:py-6 space-y-4">
+        {/* Filter tabs — scrollable on mobile */}
+        <div className="flex items-center gap-1 border-b border-brand-100 overflow-x-auto pb-0 -mx-4 px-4 md:mx-0 md:px-0">
           {TABS.map((t) => {
             const count = counts?.[t.countKey as keyof Counts] ?? 0;
             const active = tab === t.key;
@@ -108,14 +108,14 @@ export default async function AdminProductsPage({
                 key={t.key}
                 href={t.key === "all" ? "/admin/produits" : `/admin/produits?tab=${t.key}`}
                 className={
-                  "inline-flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors -mb-px " +
+                  "inline-flex items-center gap-1.5 px-3 py-2.5 text-xs md:text-sm font-medium border-b-2 transition-colors -mb-px whitespace-nowrap " +
                   (active
                     ? "border-accent text-brand-950"
                     : "border-transparent text-brand-500 hover:text-brand-900")
                 }
               >
                 {t.label}
-                <span className={"rounded-full px-1.5 py-0.5 text-[11px] font-bold leading-none " +
+                <span className={"rounded-full px-1.5 py-0.5 text-[10px] font-bold leading-none " +
                   (active ? "bg-accent text-white" : "bg-brand-100 text-brand-600")}>
                   {count}
                 </span>
@@ -124,8 +124,8 @@ export default async function AdminProductsPage({
           })}
         </div>
 
-        {/* Table */}
-        <div className="rounded-xl border border-brand-100 bg-white overflow-hidden">
+        {/* Desktop table */}
+        <div className="hidden md:block rounded-xl border border-brand-100 bg-white overflow-hidden">
           <table className="w-full text-sm">
             <thead>
               <tr className="text-left border-b border-brand-100 bg-brand-50/60">
@@ -229,6 +229,67 @@ export default async function AdminProductsPage({
             <div className="px-5 py-3 border-t border-brand-50 text-xs text-brand-400">
               {products.length} produit{products.length > 1 ? "s" : ""}
             </div>
+          )}
+        </div>
+
+        {/* Mobile cards */}
+        <div className="md:hidden space-y-2">
+          {products.map((p) => {
+            const { color } = stockBar(p.stock);
+            return (
+              <div key={p.id} className="card p-3">
+                <div className="flex items-center gap-3">
+                  <div className="h-12 w-12 rounded-lg bg-brand-50 overflow-hidden border border-brand-100 shrink-0">
+                    {p.images?.[0] ? (
+                      <Image src={p.images[0]} alt={p.name} width={48} height={48} className="h-full w-full object-cover" />
+                    ) : (
+                      <div className="h-full w-full bg-brand-100" />
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium text-brand-950 truncate text-sm">{p.name}</p>
+                    <p className="text-xs text-brand-500 mt-0.5">{p.brand || "—"} {p.category_name ? `· ${p.category_name}` : ""}</p>
+                  </div>
+                  <div className="flex items-center gap-1 shrink-0">
+                    <Link
+                      href={`/produit/${p.slug}`}
+                      target="_blank"
+                      className="p-1.5 text-brand-400 hover:text-brand-900 hover:bg-brand-100 rounded transition-colors"
+                    >
+                      <Eye className="h-4 w-4" />
+                    </Link>
+                    <Link
+                      href={`/admin/produits/${p.id}`}
+                      className="p-1.5 text-brand-400 hover:text-accent hover:bg-accent/10 rounded transition-colors"
+                    >
+                      <Pencil className="h-4 w-4" />
+                    </Link>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between mt-2 pt-2 border-t border-brand-50">
+                  <span className="font-semibold text-brand-950 text-sm">{formatPrice(p.price)}</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold" style={{ color }}>{p.stock} en stock</span>
+                    <span className={
+                      "badge text-[10px] font-semibold " +
+                      (p.is_active ? "bg-green-100 text-green-800" : "bg-brand-100 text-brand-600")
+                    }>
+                      {p.is_active ? "Actif" : "Brouillon"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+          {products.length === 0 && (
+            <div className="card px-5 py-14 text-center text-sm text-brand-400">
+              Aucun produit dans cet onglet.
+            </div>
+          )}
+          {products.length > 0 && (
+            <p className="text-xs text-brand-400 text-center py-2">
+              {products.length} produit{products.length > 1 ? "s" : ""}
+            </p>
           )}
         </div>
       </div>

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -140,10 +140,10 @@ export function PromotionManager({ initial }: { initial: Promotion[] }) {
       {error && <p className="text-sm text-red-700">{error}</p>}
 
       {draft && (
-        <div className="card space-y-5 p-6">
+        <div className="card space-y-5 p-4 md:p-6">
           <h2 className="font-semibold text-brand-950">{draft.id ? "Modifier le code" : "Nouveau code promo"}</h2>
 
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Field label="Code (majuscules)">
               <input
                 className="input uppercase"
@@ -224,7 +224,7 @@ export function PromotionManager({ initial }: { initial: Promotion[] }) {
             Active
           </label>
 
-          <div className="flex gap-3 border-t border-brand-100 pt-4">
+          <div className="flex flex-wrap gap-3 border-t border-brand-100 pt-4">
             <button className="btn-primary" onClick={save} disabled={busy} type="button">
               {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : "Enregistrer"}
             </button>
@@ -235,22 +235,23 @@ export function PromotionManager({ initial }: { initial: Promotion[] }) {
         </div>
       )}
 
-      <div className="card overflow-hidden">
+      {/* Desktop table */}
+      <div className="hidden md:block card overflow-hidden">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-brand-100 bg-brand-50/60 text-left text-brand-500">
-              <th className="px-4 py-3">Code</th>
-              <th className="px-4 py-3">Remise</th>
-              <th className="px-4 py-3">Min. commande</th>
-              <th className="px-4 py-3">Usages</th>
-              <th className="px-4 py-3">Statut</th>
+              <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Code</th>
+              <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Remise</th>
+              <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Min. commande</th>
+              <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Usages</th>
+              <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Statut</th>
               <th className="px-4 py-3"></th>
             </tr>
           </thead>
           <tbody>
             {rows.map((p) => (
-              <tr key={p.id} className="border-b border-brand-100 last:border-0">
-                <td className="px-4 py-3 font-medium text-brand-900">{p.code}</td>
+              <tr key={p.id} className="border-b border-brand-100 last:border-0 hover:bg-brand-50/30 transition-colors">
+                <td className="px-4 py-3 font-medium text-brand-900 font-mono">{p.code}</td>
                 <td className="px-4 py-3 text-brand-700">
                   {p.discount_type === "percent" ? `${p.discount_value}%` : `${p.discount_value.toLocaleString("fr-FR")} XOF`}
                 </td>
@@ -286,6 +287,51 @@ export function PromotionManager({ initial }: { initial: Promotion[] }) {
             )}
           </tbody>
         </table>
+      </div>
+
+      {/* Mobile cards */}
+      <div className="md:hidden space-y-3">
+        {rows.map((p) => (
+          <div key={p.id} className="card p-4">
+            <div className="flex items-start justify-between gap-2 mb-2">
+              <span className="font-mono font-bold text-brand-950 text-sm">{p.code}</span>
+              <div className="flex items-center gap-2 shrink-0">
+                <button type="button" onClick={() => edit(p)} className="text-brand-500 hover:text-accent p-1">
+                  <Pencil className="h-4 w-4" />
+                </button>
+                <button type="button" onClick={() => remove(p.id)} className="text-red-500 hover:text-red-700 p-1">
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
+              <div>
+                <span className="text-brand-400">Remise : </span>
+                <span className="text-brand-800 font-medium">
+                  {p.discount_type === "percent" ? `${p.discount_value}%` : `${p.discount_value.toLocaleString("fr-FR")} XOF`}
+                </span>
+              </div>
+              <div>
+                <span className="text-brand-400">Min. commande : </span>
+                <span className="text-brand-800">{p.min_order.toLocaleString("fr-FR")} XOF</span>
+              </div>
+              <div>
+                <span className="text-brand-400">Usages : </span>
+                <span className="text-brand-800">{p.used_count}{p.max_uses != null ? ` / ${p.max_uses}` : ""}</span>
+              </div>
+              <div>
+                <span className={"badge text-[10px] " + (p.is_active ? "bg-green-100 text-green-800" : "bg-brand-100 text-brand-700")}>
+                  {p.is_active ? "Active" : "Inactive"}
+                </span>
+              </div>
+            </div>
+          </div>
+        ))}
+        {rows.length === 0 && (
+          <div className="card px-4 py-8 text-center text-brand-500">
+            Aucun code promo
+          </div>
+        )}
       </div>
     </div>
   );
