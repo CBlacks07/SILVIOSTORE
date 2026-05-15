@@ -25,7 +25,7 @@ export function CartDrawer() {
   if (!mounted) return null;
 
   const total = subtotal();
-  const cartProductIds = items.map((i) => i.productId);
+
 
   return createPortal(
     <div className={`fixed inset-0 z-[100000] ${isOpen ? "pointer-events-auto" : "pointer-events-none"}`}>
