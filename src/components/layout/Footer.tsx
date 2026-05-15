@@ -42,7 +42,7 @@ export async function Footer() {
               <img
                 src={site.logo_url}
                 alt={brandName}
-                className="h-10 md:h-12 w-auto object-contain self-start"
+                className="h-7 md:h-8 w-auto max-w-[180px] object-contain self-start"
               />
             )}
             <div className="font-display text-lg font-bold text-white">

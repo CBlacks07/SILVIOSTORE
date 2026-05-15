@@ -66,7 +66,7 @@ export function HeaderMobileMenu({
                 <img
                   src={logoUrl}
                   alt={siteName}
-                  className="h-7 w-auto object-contain"
+                  className="h-6 w-auto max-w-[120px] object-contain"
                 />
               ) : (
                 <span className="font-display font-black text-lg tracking-tighter text-brand-950">
