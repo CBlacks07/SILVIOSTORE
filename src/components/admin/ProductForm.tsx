@@ -3,9 +3,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Loader2, Plus, Trash2, Upload, X } from "lucide-react";
+import { Loader2, Plus, Trash2, Upload, X, Images, Link as LinkIcon, GripVertical } from "lucide-react";
 import { slugify } from "@/lib/utils";
 import type { Product, ProductFaq, ProductSpec } from "@/lib/types";
+import { MediaPicker } from "@/components/admin/MediaPicker";
 
 type Category = { id: string; name: string };
 
@@ -37,6 +38,9 @@ export function ProductForm({ product, categories }: Props) {
   const [specs, setSpecs] = useState<ProductSpec[]>(product?.specifications ?? []);
   const [faq, setFaq] = useState<ProductFaq[]>(product?.faq ?? []);
   const [uploading, setUploading] = useState(false);
+  const [showPicker, setShowPicker] = useState(false);
+  const [urlInput, setUrlInput] = useState("");
+  const [showUrlInput, setShowUrlInput] = useState(false);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -237,28 +241,141 @@ export function ProductForm({ product, categories }: Props) {
       </div>
 
       <div className="card p-6 space-y-4">
-        <h2 className="font-semibold text-brand-950">Images</h2>
-        <div className="grid grid-cols-3 sm:grid-cols-5 gap-3">
-          {images.map((src) => (
-            <div key={src} className="relative aspect-square rounded overflow-hidden border border-brand-100">
-              <Image src={src} alt="" fill className="object-cover" sizes="120px" />
-              <button type="button" onClick={() => removeImage(src)} className="absolute right-1 top-1 grid h-6 w-6 place-items-center rounded-full bg-white/90 text-red-700 hover:bg-white" aria-label="Retirer">
-                <X className="h-3.5 w-3.5" />
-              </button>
-            </div>
-          ))}
-
-          <label className="aspect-square rounded border-2 border-dashed border-brand-200 grid place-items-center cursor-pointer hover:border-brand-400 hover:bg-brand-50">
-            {uploading ? <Loader2 className="h-5 w-5 animate-spin text-brand-500" /> : (
-              <div className="flex flex-col items-center text-brand-500 text-xs">
-                <Upload className="h-5 w-5 mb-1" />
-                Ajouter
-              </div>
-            )}
-            <input type="file" accept="image/*" multiple className="hidden" onChange={handleUpload} />
-          </label>
+        <div className="flex items-center justify-between flex-wrap gap-2">
+          <h2 className="font-semibold text-brand-950">Images ({images.length})</h2>
+          <div className="flex items-center gap-2">
+            {/* Bibliothèque */}
+            <button
+              type="button"
+              onClick={() => setShowPicker(true)}
+              className="btn-outline h-8 px-3 text-xs flex items-center gap-1.5"
+            >
+              <Images className="h-3.5 w-3.5" /> Bibliothèque
+            </button>
+            {/* URL */}
+            <button
+              type="button"
+              onClick={() => setShowUrlInput(!showUrlInput)}
+              className="btn-outline h-8 px-3 text-xs flex items-center gap-1.5"
+            >
+              <LinkIcon className="h-3.5 w-3.5" /> URL
+            </button>
+            {/* Upload direct */}
+            <label className="btn-accent h-8 px-3 text-xs flex items-center gap-1.5 cursor-pointer">
+              {uploading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <><Upload className="h-3.5 w-3.5" />Uploader</>}
+              <input type="file" accept="image/*" multiple className="hidden" onChange={handleUpload} />
+            </label>
+          </div>
         </div>
+
+        {/* URL input */}
+        {showUrlInput && (
+          <div className="flex gap-2">
+            <input
+              type="url"
+              value={urlInput}
+              onChange={(e) => setUrlInput(e.target.value)}
+              placeholder="https://exemple.com/image.jpg"
+              className="input flex-1 text-sm"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  if (urlInput.trim() && !images.includes(urlInput.trim())) {
+                    setImages((prev) => [...prev, urlInput.trim()]);
+                    setUrlInput("");
+                    setShowUrlInput(false);
+                  }
+                }
+              }}
+            />
+            <button
+              type="button"
+              className="btn-primary px-4 text-sm"
+              onClick={() => {
+                if (urlInput.trim() && !images.includes(urlInput.trim())) {
+                  setImages((prev) => [...prev, urlInput.trim()]);
+                  setUrlInput("");
+                  setShowUrlInput(false);
+                }
+              }}
+            >
+              Ajouter
+            </button>
+            <button type="button" onClick={() => { setShowUrlInput(false); setUrlInput(""); }} className="btn-outline px-3 text-sm">
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+        )}
+
+        {/* Images grid */}
+        {images.length > 0 ? (
+          <div className="grid grid-cols-3 sm:grid-cols-5 gap-3">
+            {images.map((src, i) => (
+              <div key={src + i} className="relative aspect-square rounded-lg overflow-hidden border border-brand-100 group bg-brand-50">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={src} alt="" className="h-full w-full object-cover" />
+                {i === 0 && (
+                  <span className="absolute bottom-1 left-1 text-[9px] font-bold bg-accent text-white px-1.5 py-0.5 rounded">
+                    Principale
+                  </span>
+                )}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center gap-1 opacity-0 group-hover:opacity-100">
+                  {i > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const arr = [...images];
+                        [arr[i - 1], arr[i]] = [arr[i], arr[i - 1]];
+                        setImages(arr);
+                      }}
+                      className="grid h-6 w-6 place-items-center rounded-full bg-white text-brand-700 text-xs font-bold"
+                      title="Déplacer à gauche"
+                    >←</button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => removeImage(src)}
+                    className="grid h-6 w-6 place-items-center rounded-full bg-white text-red-600"
+                    aria-label="Retirer"
+                  >
+                    <X className="h-3.5 w-3.5" />
+                  </button>
+                  {i < images.length - 1 && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const arr = [...images];
+                        [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
+                        setImages(arr);
+                      }}
+                      className="grid h-6 w-6 place-items-center rounded-full bg-white text-brand-700 text-xs font-bold"
+                      title="Déplacer à droite"
+                    >→</button>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-xl border-2 border-dashed border-brand-200 p-8 text-center text-sm text-brand-500">
+            Aucune image — utilisez les boutons ci-dessus pour en ajouter
+          </div>
+        )}
+
+        <p className="text-xs text-brand-400">La première image est l'image principale. Utilisez ← → pour réordonner.</p>
       </div>
+
+      {/* MediaPicker portal */}
+      {showPicker && (
+        <MediaPicker
+          accept="image"
+          folder="products"
+          onSelect={(url) => {
+            if (!images.includes(url)) setImages((prev) => [...prev, url]);
+          }}
+          onClose={() => setShowPicker(false)}
+        />
+      )}
 
       <div className="card p-6 space-y-3">
         <label className="flex items-center gap-2 text-sm">
