@@ -48,7 +48,7 @@ export default async function HomePage() {
           {(features.items || []).map((item: any) => {
             const Icon = (LucideIcons as any)[item.icon] || LucideIcons.Package;
             return (
-              <div key={item.title} className="card card-hover px-4 py-3 flex items-center gap-3">
+              <div key={item.title} className="card card-hover px-4 py-3 flex items-center gap-3" style={{ borderColor: "rgba(217,119,6,0.15)" }}>
                 <div className="rounded-lg bg-gradient-to-br from-accent/15 to-accent/5 p-2 text-accent ring-1 ring-accent/15 shrink-0">
                   <Icon className="h-4 w-4" />
                 </div>

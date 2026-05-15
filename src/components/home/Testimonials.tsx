@@ -86,10 +86,11 @@ export function Testimonials({ data }: { data: TestimonialsSettings }) {
                 width: "min(400px, 80vw)",
                 minHeight: "240px",
                 background: "#ffffff",
-                border: "1.5px solid #e4e9f0",
+                border: "1px solid rgba(217,119,6,0.18)",
+                borderLeft: "3px solid #d97706",
                 borderRadius: "4px",
                 padding: "32px 28px 24px",
-                boxShadow: "0 1px 2px rgba(15,23,42,0.03), 0 4px 16px rgba(15,23,42,0.05)",
+                boxShadow: "0 1px 2px rgba(15,23,42,0.03), 0 4px 20px rgba(217,119,6,0.06)",
               }}
               aria-hidden={i >= testimonials.length ? "true" : undefined}
             >

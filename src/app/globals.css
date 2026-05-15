@@ -880,20 +880,21 @@ video {
   justify-content: center;
   padding: 14px 20px;
   background: transparent;
-  color: #121826;
+  color: #1a1008;
   font-family: Georgia, "Times New Roman", serif;
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-decoration: none;
-  border: 1.5px solid #121826;
+  border: 1.5px solid rgba(217,119,6,0.50);
   border-radius: 4px;
-  transition: background .2s ease, color .2s ease;
+  transition: background .2s ease, color .2s ease, border-color .2s ease;
   text-align: center;
 }
 .btn-hero-secondary:hover {
-  background: #121826;
+  background: #d97706;
   color: #ffffff;
+  border-color: #d97706;
 }
 .btn-hero-outline {
   display: inline-flex;
@@ -901,19 +902,20 @@ video {
   justify-content: center;
   padding: 10px 20px;
   background: transparent;
-  color: #121826;
+  color: #1a1008;
   font-family: Georgia, "Times New Roman", serif;
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-decoration: none;
-  border: 1.5px solid #121826;
+  border: 1.5px solid rgba(217,119,6,0.50);
   border-radius: 4px;
-  transition: background .2s ease, color .2s ease;
+  transition: background .2s ease, color .2s ease, border-color .2s ease;
 }
 .btn-hero-outline:hover {
-  background: #121826;
+  background: #d97706;
   color: #ffffff;
+  border-color: #d97706;
 }
 .btn-whatsapp {
   display: flex;
@@ -1001,8 +1003,7 @@ video {
 .card-hover:hover {
   --tw-translate-y: -0.125rem;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-  --tw-border-opacity: 1;
-  border-color: rgb(200 210 224 / var(--tw-border-opacity, 1));
+  border-color: rgba(217, 119, 6, 0.30) !important;
   --tw-shadow: 0 8px 24px rgba(15,23,42,0.08);
   --tw-shadow-colored: 0 8px 24px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
@@ -2455,7 +2456,7 @@ video {
   }
 
 :root {
-  --background: 245 247 250;
+  --background: 250 248 245;
   --surface: 255 255 255;
   --foreground: 18 24 38;
 }
