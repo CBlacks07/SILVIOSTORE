@@ -330,13 +330,13 @@ export function Hero({ hero, extraImages = [] }: any) {
         }
         @media (max-width: 1024px) {
           .hero-right {
-            order: 1;
-            min-height: clamp(260px, 50vw, 420px);
+            order: -1;
+            min-height: clamp(260px, 55vw, 420px);
           }
         }
         @media (max-width: 640px) {
           .hero-right {
-            min-height: 240px;
+            min-height: 260px;
           }
         }
         .hero-right-bg {
@@ -502,13 +502,27 @@ export function Hero({ hero, extraImages = [] }: any) {
         }
 
         @media (max-width: 1024px) {
-          .hero-progress, .hero-arrows { display: none; }
-          .hero-caption {
-            left: 20px;
-            right: 20px;
-            bottom: 16px;
+          .hero-progress {
+            display: flex;
+            top: 12px;
+            right: 16px;
+            font-size: 11px;
+            gap: 10px;
           }
-          .hero-badge { bottom: 96px; left: 24px; }
+          .hero-progress-bar { width: 50px; }
+          .hero-arrows {
+            display: flex;
+            top: 8px;
+            left: 12px;
+            gap: 6px;
+          }
+          .hero-arrow { width: 32px; height: 32px; }
+          .hero-caption {
+            left: 16px;
+            right: 16px;
+            bottom: 12px;
+          }
+          .hero-badge { bottom: 80px; left: 16px; }
           .hero-trust {
             gap: 16px 20px;
             margin-top: 24px;
