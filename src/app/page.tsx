@@ -72,17 +72,45 @@ export default async function HomePage() {
             Tout voir
           </Link>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+        <div className="categories-scroll-row">
           {categories.map((c) => (
             <Link
               key={c.slug}
               href={"/catalogue?categorie=" + c.slug}
-              className="btn-hero-secondary"
+              className="btn-hero-secondary whitespace-nowrap shrink-0 sm:shrink"
             >
               {c.name}
             </Link>
           ))}
         </div>
+        <style>{`
+          .categories-scroll-row {
+            display: flex;
+            gap: 0.75rem;
+            overflow-x: auto;
+            padding: 4px 4px 12px 4px;
+            margin: -4px -4px 0 -4px;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+          }
+          .categories-scroll-row::-webkit-scrollbar {
+            display: none;
+          }
+          @media (min-width: 768px) {
+            .categories-scroll-row {
+              display: grid;
+              grid-template-columns: repeat(3, 1fr);
+              overflow-x: visible;
+              padding: 0;
+              margin: 0;
+            }
+          }
+          @media (min-width: 1024px) {
+            .categories-scroll-row {
+              grid-template-columns: repeat(6, 1fr);
+            }
+          }
+        `}</style>
       </Reveal>
 
       {brands.length > 0 && (
