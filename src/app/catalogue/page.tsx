@@ -3,6 +3,7 @@ import { ArrowRight, ChevronRight, SlidersHorizontal, X } from "lucide-react";
 import type { Metadata } from "next";
 import { ProductCard } from "@/components/product/ProductCard";
 import { SortSelect } from "@/components/catalogue/SortSelect";
+import { MobileFilterDrawer } from "@/components/catalogue/MobileFilterDrawer";
 import { CatalogueSidebar } from "@/components/catalogue/CatalogueSidebar";
 import { getCategories, searchProducts } from "@/lib/queries";
 import { listActiveBanners, listActiveBrands } from "@/lib/settings";
@@ -157,10 +158,9 @@ export default async function CataloguePage({ searchParams }: { searchParams: Se
 
       {/* Main content */}
       <div className="container-page py-8">
-        <div style={{ display: "grid", gridTemplateColumns: "280px 1fr", gap: "2rem", alignItems: "start" }}
-          className="lg-catalogue-grid">
+        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8 items-start">
           {/* Sidebar */}
-          <aside>
+          <aside className="hidden lg:block">
             <CatalogueSidebar
               categories={categories}
               brands={brands}
@@ -175,16 +175,31 @@ export default async function CataloguePage({ searchParams }: { searchParams: Se
           {/* Right column */}
           <div>
             {/* Toolbar */}
-            <div className="mb-5 flex items-center justify-between gap-4">
-              <p className="text-sm text-brand-600">
-                <span className="font-semibold text-brand-950">{products.length}</span>{" "}
-                résultat{products.length > 1 ? "s" : ""}
-              </p>
+            <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="flex items-center justify-between w-full sm:w-auto">
+                <p className="text-sm text-brand-600">
+                  <span className="font-semibold text-brand-950">{products.length}</span>{" "}
+                  résultat{products.length > 1 ? "s" : ""}
+                </p>
+                {/* Mobile Filter Trigger */}
+                <div className="lg:hidden">
+                   <MobileFilterDrawer
+                      categories={categories}
+                      brands={brands}
+                      activeCategory={searchParams.categorie}
+                      activeBrand={searchParams.marque}
+                      q={searchParams.q}
+                      prixMin={searchParams.prixMin}
+                      prixMax={searchParams.prixMax}
+                      resultCount={products.length}
+                   />
+                </div>
+              </div>
               <SortSelect value={searchParams.tri || "recent"} />
             </div>
 
             {products.length === 0 ? (
-              <div className="rounded-2xl border border-brand-100 bg-brand-50/50 p-16 text-center">
+              <div className="rounded-2xl border border-brand-100 bg-brand-50/50 p-10 md:p-16 text-center">
                 <div className="h-16 w-16 rounded-full bg-brand-100 grid place-items-center mx-auto mb-4">
                   <SlidersHorizontal className="h-7 w-7 text-brand-400" />
                 </div>
@@ -197,7 +212,7 @@ export default async function CataloguePage({ searchParams }: { searchParams: Se
                 </Link>
               </div>
             ) : (
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1.25rem" }}>
+              <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
                 {products.map((p) => (
                   <ProductCard key={p.id} product={p} />
                 ))}
