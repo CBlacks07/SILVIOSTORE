@@ -6,21 +6,21 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          50:  "#fffbeb",
-          100: "#fef3c7",
-          200: "#fde68a",
-          300: "#fcd34d",
-          400: "#fbbf24",
-          500: "#f59e0b",
-          600: "#d97706",
-          700: "#b45309",
-          800: "#92400e",
-          900: "#78350f",
-          950: "#451a03"
+          50:  "#fcf9f2",
+          100: "#f7f0e2",
+          200: "#ebdcb9",
+          300: "#dec48d",
+          400: "#d1a861",
+          500: "#c5903b",
+          600: "#a3752c",
+          700: "#825c23",
+          800: "#61491e",
+          900: "#4f3c1a",
+          950: "#1a1612" // Très sombre brun chocolaté/bronze
         },
         accent: {
-          DEFAULT: "#f59e0b",
-          dark:    "#d97706"
+          DEFAULT: "#d1a861", // Gold
+          dark:    "#a3752c"  // Bronze
         }
       },
       fontFamily: {
