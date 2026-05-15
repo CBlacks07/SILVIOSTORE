@@ -369,14 +369,20 @@ export function Hero({ hero, extraImages = [] }: any) {
         /* product caption (bottom right of right pane) */
         .hero-caption {
           position: absolute;
-          left: clamp(24px, 5vw, 64px);
-          right: clamp(24px, 5vw, 64px);
-          bottom: clamp(24px, 4vw, 40px);
+          left: clamp(16px, 4vw, 40px);
+          right: clamp(16px, 4vw, 40px);
+          bottom: clamp(16px, 3vw, 32px);
           display: flex;
           align-items: flex-end;
           justify-content: space-between;
-          gap: 20px;
+          gap: 16px;
           z-index: 3;
+          background: rgba(15, 10, 4, 0.55);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          border: 1px solid rgba(217, 119, 6, 0.20);
+          border-radius: 12px;
+          padding: 14px 20px;
         }
         .hero-caption-meta {
           font-family: var(--font-inter), Inter, system-ui, sans-serif;
@@ -718,18 +724,18 @@ export function Hero({ hero, extraImages = [] }: any) {
             </>
           )}
 
-          {/* Bottom: product caption */}
-          <div className="hero-caption">
+          {/* Bottom: product caption with frosted glass */}
+          <div className="hero-caption" style={{ color: "#ffffff" }}>
             <div>
-              <div className="hero-caption-meta" style={{ opacity: 0.7 }}>
+              <div className="hero-caption-meta" style={{ color: "#d97706", opacity: 1 }}>
                 En vedette
               </div>
-              <div className="hero-caption-name">
+              <div className="hero-caption-name" style={{ color: "#ffffff" }}>
                 {slide.product_name || slide.title || "Coque cuir signature"}
               </div>
             </div>
             {slide.price && (
-              <div className="hero-caption-price">{slide.price}</div>
+              <div className="hero-caption-price" style={{ color: "#f59e0b" }}>{slide.price}</div>
             )}
           </div>
         </div>
