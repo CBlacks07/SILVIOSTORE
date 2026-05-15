@@ -15,9 +15,9 @@ export function HeaderSearch() {
         <form
           action="/catalogue"
           method="GET"
-          className="flex items-center h-11 rounded-full bg-white ring-2 ring-white focus-within:ring-accent transition-all duration-200"
+          className="flex items-center h-11 rounded-full bg-white ring-2 ring-white focus-within:ring-brand-500 transition-all duration-200"
         >
-          <span className="flex items-center pl-4 pr-2 text-brand-400 group-focus-within:text-accent transition-colors shrink-0">
+          <span className="flex items-center pl-4 pr-2 text-brand-400 group-focus-within:text-brand-600 transition-colors shrink-0">
             <Search className="h-4 w-4" />
           </span>
           <input
@@ -32,7 +32,7 @@ export function HeaderSearch() {
           />
           <button
             type="submit"
-            className="h-full px-5 bg-accent hover:bg-accent-dark text-white text-xs font-black uppercase tracking-wider rounded-r-full transition-colors shrink-0"
+            className="h-full px-5 bg-brand-600 hover:bg-brand-700 text-white text-[10px] font-black uppercase tracking-widest rounded-r-full transition-colors shrink-0"
           >
             Rechercher
           </button>
