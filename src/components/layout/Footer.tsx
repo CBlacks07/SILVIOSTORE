@@ -37,12 +37,12 @@ export async function Footer() {
     <footer className="mt-20 border-t border-brand-100 bg-brand-950 text-brand-200">
       <div className="container-page grid gap-10 py-14 md:grid-cols-4">
         <div>
-          <div className="flex flex-col gap-3 mb-4">
+          <div className="flex flex-col gap-3 mb-5">
             {site.logo_url && (
               <img
                 src={site.logo_url}
                 alt={brandName}
-                className="h-7 md:h-8 w-auto max-w-[180px] object-contain self-start"
+                className="h-10 md:h-14 w-auto max-w-[220px] object-contain self-start"
               />
             )}
             <div className="font-display text-lg font-bold text-white">

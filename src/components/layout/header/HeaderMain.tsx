@@ -40,7 +40,7 @@ export function HeaderMain({
     >
       <div className="container-page">
         {/* Main Row: Logo | Search | Actions */}
-        <div className="flex items-center justify-between gap-4 py-4">
+        <div className="flex items-center justify-between gap-4 py-3 md:py-5">
           {/* Logo */}
           <div className="shrink-0">
             <HeaderLogo siteName={siteName} logoUrl={logoUrl} onMobileMenuOpen={onMobileMenuOpen} />
