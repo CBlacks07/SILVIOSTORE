@@ -25,16 +25,16 @@ export function ProductGallery({ images, alt, discount }: Props) {
   }
 
   return (
-    <div className="space-y-3 w-full max-w-[460px] mx-auto lg:mx-0">
-      <div className="relative aspect-square w-full overflow-hidden rounded-2xl ring-1 ring-brand-100" style={{ background: "rgb(245,247,250)" }}>
+    <div className="space-y-4 w-full max-w-[500px] mx-auto lg:mx-0">
+      <div className="relative aspect-square w-full overflow-hidden rounded-3xl border border-brand-100 bg-white shadow-sm">
         <AnimatePresence mode="wait">
           {current && (
             <motion.div
               key={current}
-              initial={{ opacity: 0, scale: 1.02 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.98 }}
-              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
               className="absolute inset-0"
             >
               <Image
@@ -42,14 +42,14 @@ export function ProductGallery({ images, alt, discount }: Props) {
                 alt={alt}
                 fill
                 priority
-                className="object-contain p-4"
+                className="object-contain p-2"
                 sizes="(min-width:1024px) 50vw, 100vw"
               />
             </motion.div>
           )}
         </AnimatePresence>
         {discount && (
-          <span className="absolute left-4 top-4 badge bg-accent text-white z-10">-{discount}%</span>
+          <span className="absolute left-5 top-5 badge bg-accent text-white z-10 px-3 py-1 font-black shadow-lg">-{discount}%</span>
         )}
         {hasMany && (
           <>
@@ -57,19 +57,19 @@ export function ProductGallery({ images, alt, discount }: Props) {
               type="button"
               onClick={prev}
               aria-label="Image précédente"
-              className="absolute left-2 top-1/2 -translate-y-1/2 z-10 grid h-9 w-9 place-items-center rounded-full bg-white/90 text-brand-900 shadow hover:bg-white hover:scale-105 active:scale-95 transition-transform"
+              className="absolute left-3 top-1/2 -translate-y-1/2 z-10 grid h-10 w-10 place-items-center rounded-full bg-white/95 text-brand-950 shadow-xl border border-brand-100 hover:bg-white hover:scale-105 active:scale-95 transition-all"
             >
-              <ChevronLeft className="h-5 w-5" />
+              <ChevronLeft className="h-6 w-6" />
             </button>
             <button
               type="button"
               onClick={next}
               aria-label="Image suivante"
-              className="absolute right-2 top-1/2 -translate-y-1/2 z-10 grid h-9 w-9 place-items-center rounded-full bg-white/90 text-brand-900 shadow hover:bg-white hover:scale-105 active:scale-95 transition-transform"
+              className="absolute right-3 top-1/2 -translate-y-1/2 z-10 grid h-10 w-10 place-items-center rounded-full bg-white/95 text-brand-950 shadow-xl border border-brand-100 hover:bg-white hover:scale-105 active:scale-95 transition-all"
             >
-              <ChevronRight className="h-5 w-5" />
+              <ChevronRight className="h-6 w-6" />
             </button>
-            <span className="absolute bottom-3 right-3 z-10 rounded-full bg-black/50 px-2 py-0.5 text-xs text-white">
+            <span className="absolute bottom-4 right-4 z-10 rounded-full bg-black/60 backdrop-blur-md px-3 py-1 text-xs font-bold text-white tracking-widest shadow-lg">
               {index + 1} / {safeImages.length}
             </span>
           </>
@@ -77,7 +77,7 @@ export function ProductGallery({ images, alt, discount }: Props) {
       </div>
 
       {hasMany && (
-        <div className="flex gap-2 overflow-x-auto px-1 py-2 -mx-1">
+        <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide px-0.5">
           {safeImages.map((src, i) => (
             <button
               key={src + i}
@@ -85,13 +85,13 @@ export function ProductGallery({ images, alt, discount }: Props) {
               onClick={() => setIndex(i)}
               aria-label={"Voir image " + (i + 1)}
               className={
-                "relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg border-2 transition " +
+                "relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl border-2 transition-all duration-300 " +
                 (i === index
-                  ? "border-accent shadow-[0_2px_8px_rgba(217,119,6,0.25)]"
-                  : "border-brand-100 hover:border-brand-300")
+                  ? "border-accent ring-2 ring-accent/20 scale-105 shadow-md"
+                  : "border-brand-100 hover:border-brand-300 bg-white opacity-70 hover:opacity-100")
               }
             >
-              <Image src={src} alt={alt + " " + (i + 1)} fill className="object-contain p-1" sizes="80px" />
+              <Image src={src} alt={alt + " " + (i + 1)} fill className="object-contain p-1.5" sizes="80px" />
             </button>
           ))}
         </div>

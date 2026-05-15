@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,700&amp;family=Inter:wght@300;400;500;600;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-tint": "#555e79",
+                    "background": "#fbf8fb",
+                    "inverse-surface": "#303032",
+                    "on-surface": "#1b1b1d",
+                    "surface-container-low": "#f6f3f5",
+                    "on-tertiary": "#ffffff",
+                    "primary-fixed": "#dae2ff",
+                    "primary-container": "#111b32",
+                    "outline": "#76777e",
+                    "surface-bright": "#fbf8fb",
+                    "surface-container-highest": "#e4e2e4",
+                    "secondary-fixed": "#e6e2dc",
+                    "on-tertiary-container": "#a27c60",
+                    "on-primary-container": "#7a83a0",
+                    "secondary-fixed-dim": "#c9c6c0",
+                    "outline-variant": "#c6c6ce",
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed-variant": "#3d4660",
+                    "inverse-on-surface": "#f3f0f2",
+                    "tertiary-fixed": "#ffdcc4",
+                    "tertiary-container": "#2d1603",
+                    "on-background": "#1b1b1d",
+                    "error": "#ba1a1a",
+                    "surface-container-high": "#eae7ea",
+                    "error-container": "#ffdad6",
+                    "surface": "#fbf8fb",
+                    "primary": "#000000",
+                    "tertiary": "#000000",
+                    "on-secondary-fixed-variant": "#484743",
+                    "inverse-primary": "#bdc6e5",
+                    "on-tertiary-fixed": "#2d1603",
+                    "on-error": "#ffffff",
+                    "on-secondary-fixed": "#1c1c18",
+                    "tertiary-fixed-dim": "#eabe9e",
+                    "on-surface-variant": "#45464d",
+                    "on-secondary-container": "#666460",
+                    "on-primary": "#ffffff",
+                    "surface-container": "#f0edef",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-variant": "#e4e2e4",
+                    "surface-dim": "#dcd9dc",
+                    "on-error-container": "#93000a",
+                    "primary-fixed-dim": "#bdc6e5",
+                    "secondary": "#605e5a",
+                    "on-primary-fixed": "#111b32",
+                    "secondary-container": "#e6e2dc",
+                    "on-tertiary-fixed-variant": "#5f4028",
+                    "luxury-gold": "#D97A0D",
+                    "warm-cream": "#F5F1EB",
+                    "deep-navy": "#071225",
+                    "deep-navy-alt": "#0E1D35"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px",
+                    "card": "28px",
+                    "summary": "32px"
+            },
+            "spacing": {
+                    "gutter": "32px",
+                    "container-max": "1440px",
+                    "margin-tablet": "40px",
+                    "stack-xl": "120px",
+                    "stack-md": "24px",
+                    "margin-desktop": "80px",
+                    "stack-lg": "64px",
+                    "margin-mobile": "20px",
+                    "stack-sm": "8px"
+            },
+            "fontFamily": {
+                    "display-hero-mobile": ["Playfair Display"],
+                    "body-lg": ["Inter"],
+                    "label-caps": ["Inter"],
+                    "display-hero": ["Playfair Display"],
+                    "headline-lg-mobile": ["Playfair Display"],
+                    "headline-lg": ["Playfair Display"],
+                    "headline-md": ["Playfair Display"],
+                    "body-md": ["Inter"],
+                    "button": ["Inter"]
+            },
+            "fontSize": {
+                    "display-hero-mobile": ["48px", {"lineHeight": "54px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                    "display-hero": ["84px", {"lineHeight": "92px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "headline-lg": ["48px", {"lineHeight": "56px", "fontWeight": "600"}],
+                    "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "button": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>.glass-nav {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1)
+    }
+.glass-card {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.05)
+    }
+.whisper-shadow {
+    box-shadow: 0 0 30px 0 rgba(8, 18, 41, 0.04)
+    }
+.navy-gradient {
+    background: linear-gradient(135deg, #071225 0%, #0E1D35 100%)
+    }
+.gold-glow:hover {
+    box-shadow: 0 0 25px rgba(217, 122, 13, 0.4)
+    }
+.grain-texture::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuB0-5Maahwe-I_Yu0OD4MYush3o-WiXQPYwN3lLe4j0OgxHY586mZqNts14OrO6H7LEApk8jPpBGe9pUjCkRdtVjxE6O0n1ZHYGAWy7MvlVfdt1zoBeProXubX_ohUIJEQP-dLeD6BIzCeKqNsRWFm1IngiqQ1SJL5IZn6gHwUXCaq_gixNAqs08NPQiNdvnj8Lbz-q3MkDm9zU7DVgRoTBkOiQ9cTwhNdGjWUPjFTi7kwwSpHUy9-bk7_V2ep-LuPsKKlWq4dsn7SU);
+    opacity: 0.03;
+    pointer-events: none
+    }
+.product-hover:hover img {
+    transform: scale(1.05);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)
+    }</style>
+</head>
+<body class="bg-warm-cream text-on-surface selection:bg-luxury-gold selection:text-white">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/70 backdrop-blur-xl border-b border-white/10">
+<div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-6 max-w-container-max mx-auto">
+<div class="font-headline-md text-headline-md tracking-tighter text-primary">SILVIO STORE</div>
+<div class="hidden md:flex items-center gap-stack-lg">
+<a class="font-body-md text-body-md text-primary border-b-2 border-primary pb-1" href="#">Collections</a>
+<a class="font-body-md text-body-md text-secondary hover:text-primary transition-opacity duration-300" href="#">New Arrivals</a>
+<a class="font-body-md text-body-md text-secondary hover:text-primary transition-opacity duration-300" href="#">Sustainability</a>
+<a class="font-body-md text-body-md text-secondary hover:text-primary transition-opacity duration-300" href="#">Journal</a>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="material-symbols-outlined text-primary hover:opacity-70 transition-opacity scale-95 active:scale-90" data-icon="favorite">favorite</button>
+<button class="material-symbols-outlined text-primary hover:opacity-70 transition-opacity scale-95 active:scale-90" data-icon="shopping_bag">shopping_bag</button>
+<button class="material-symbols-outlined text-primary hover:opacity-70 transition-opacity scale-95 active:scale-90" data-icon="account_circle">account_circle</button>
+</div>
+</div>
+</nav>
+<main class="pt-24">
+<!-- Hero Header -->
+<header class="navy-gradient relative overflow-hidden py-stack-lg grain-texture">
+<div class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto relative z-10">
+<nav class="flex gap-2 text-white/50 mb-stack-sm font-label-caps text-label-caps">
+<a href="#">Boutique</a>
+<span>/</span>
+<span class="text-white">Panier</span>
+</nav>
+<h1 class="font-headline-lg text-headline-lg text-white">
+                    Votre sélection <span class="italic text-luxury-gold">premium.</span>
+</h1>
+</div>
+<!-- Decorative Light Blur -->
+<div class="absolute -top-24 -right-24 w-96 h-96 bg-luxury-gold/10 rounded-full blur-[120px]"></div>
+</header>
+<!-- Main Content -->
+<section class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto py-stack-lg">
+<div class="flex flex-col lg:flex-row gap-gutter">
+<!-- Left Side: Cart Items (2/3) -->
+<div class="lg:w-2/3 space-y-stack-md">
+<!-- Cart Item 1 -->
+<div class="bg-white rounded-card p-stack-md flex gap-stack-md whisper-shadow glass-card group">
+<div class="w-48 h-64 flex-shrink-0 bg-secondary-container rounded-xl overflow-hidden relative">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A close-up studio shot of a handcrafted luxury leather tote bag in a deep obsidian black, showcasing the fine grain texture and polished silver hardware. The product is bathed in cinematic, high-contrast lighting that creates elegant highlights and deep, velvety shadows against a warm cream architectural background. The mood is sophisticated and evokes an atmosphere of quiet luxury and artisanal craftsmanship." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtrB-m_0MmXLAI6cZB3uwi0cKkaIYL_EO2b7qp3ur8KideS1DpgDF3vmUJvri-A1wcBMDZNm3bcZsl0m2gPUgE-65mvRRwAzybLzIQl6I6vftiH0xfCwnS60R0sXuCaZaRpJo0wwNC2gC-TBnhxPTXDJtzezX5Fpcbz5fEz2W_1X9ngVyTuhMv2ZI7V4g8adjxcxXZHSYFaPC3xnzL1lpLKKRw29TfDWHEdQCE64xdpFacPCrEDHUU2feqwUvtEUJYSr1a-tQB4tsE"/>
+</div>
+<div class="flex-grow flex flex-col justify-between py-2">
+<div>
+<div class="flex justify-between items-start">
+<h3 class="font-headline-md text-[24px] text-on-surface">Sac Cabas en Cuir Nappa</h3>
+<button class="material-symbols-outlined text-outline hover:text-error transition-colors" data-icon="close">close</button>
+</div>
+<p class="font-body-md text-secondary mt-1">Noir Obsidienne | Taille Unique</p>
+</div>
+<div class="flex justify-between items-end">
+<div class="flex items-center gap-4 bg-surface-container rounded-full px-4 py-2">
+<button class="material-symbols-outlined text-body-md" data-icon="remove">remove</button>
+<span class="font-button text-body-md w-4 text-center">1</span>
+<button class="material-symbols-outlined text-body-md" data-icon="add">add</button>
+</div>
+<div class="text-right">
+<p class="font-headline-md text-[20px] text-primary">1 250 €</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Cart Item 2 -->
+<div class="bg-white rounded-card p-stack-md flex gap-stack-md whisper-shadow glass-card group">
+<div class="w-48 h-64 flex-shrink-0 bg-secondary-container rounded-xl overflow-hidden relative">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A macro photography shot of a precision-machined luxury metal watch strap in brushed titanium. The lighting is cold and technical, highlighting the geometric precision of the links and the subtle reflection of the metallic surface. The background is a soft-focus, minimalist grey that emphasizes the industrial elegance and premium quality of the material. The overall aesthetic is clean, modern, and highly architectural." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2EQREkwU8sA0Fjq4AOw6JJMqVQHt6L3hhxtWgWHNF6Ydh7J2Ug-tP4KK2PPIRPYT0D73eqLZtSevvBOkGUXQ0gtX5mxPIKZfS_IlS6KM_CBEU5sb5WHpxjFoyWK1Cum4UM1bIvqXaVBDaO0qCYbiy435gL9qlwkgoLVOcmmobZc1pCFTM_J85sWIJkmxsti23iZbgCxODmEZ1T7ufzEXQh1-q__h8FFbJGGxDpnwlMt7km2gKEOJ3isaGRMWsL6dbfWvG5SNdMRne"/>
+</div>
+<div class="flex-grow flex flex-col justify-between py-2">
+<div>
+<div class="flex justify-between items-start">
+<h3 class="font-headline-md text-[24px] text-on-surface">Bracelet Titanium Édition</h3>
+<button class="material-symbols-outlined text-outline hover:text-error transition-colors" data-icon="close">close</button>
+</div>
+<p class="font-body-md text-secondary mt-1">Titane Brossé | 42mm</p>
+</div>
+<div class="flex justify-between items-end">
+<div class="flex items-center gap-4 bg-surface-container rounded-full px-4 py-2">
+<button class="material-symbols-outlined text-body-md" data-icon="remove">remove</button>
+<span class="font-button text-body-md w-4 text-center">1</span>
+<button class="material-symbols-outlined text-body-md" data-icon="add">add</button>
+</div>
+<div class="text-right">
+<p class="font-headline-md text-[20px] text-primary">450 €</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Side: Order Summary (1/3) -->
+<div class="lg:w-1/3">
+<div class="sticky top-28 navy-gradient rounded-summary p-stack-lg text-white whisper-shadow glass-card grain-texture overflow-hidden">
+<h2 class="font-headline-md text-headline-md mb-stack-lg">Résumé</h2>
+<div class="space-y-stack-md mb-stack-lg font-body-md border-b border-white/10 pb-stack-md">
+<div class="flex justify-between">
+<span class="text-white/60">Sous-total</span>
+<span>1 700 €</span>
+</div>
+<div class="flex justify-between">
+<span class="text-white/60">Livraison (Express)</span>
+<span class="text-luxury-gold">Offert</span>
+</div>
+<div class="flex justify-between">
+<span class="text-white/60">TVA incluse</span>
+<span>283,33 €</span>
+</div>
+</div>
+<div class="flex justify-between items-center mb-stack-lg">
+<span class="font-headline-md text-[24px]">Total</span>
+<span class="font-headline-md text-[32px] text-luxury-gold">1 700 €</span>
+</div>
+<button class="w-full bg-luxury-gold text-white font-button py-6 rounded-full gold-glow transition-all duration-300 transform active:scale-95 flex items-center justify-center gap-2 group">
+                            Passer au paiement
+                            <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+</button>
+<div class="mt-stack-md flex items-center justify-center gap-4 text-white/40 grayscale opacity-50">
+<span class="material-symbols-outlined" data-icon="credit_card">credit_card</span>
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+</div>
+<!-- Light Glow Effect -->
+<div class="absolute -bottom-24 -left-24 w-64 h-64 bg-luxury-gold/20 rounded-full blur-[80px]"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Trust Section -->
+<section class="bg-primary-container py-12 mb-stack-xl">
+<div class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto flex flex-wrap justify-between gap-gutter">
+<div class="flex items-center gap-4 text-on-primary-container">
+<span class="material-symbols-outlined text-[32px] text-luxury-gold" data-icon="local_shipping">local_shipping</span>
+<div>
+<p class="font-button text-sm uppercase tracking-widest">Livraison rapide</p>
+<p class="text-xs opacity-60">Expédié sous 24h</p>
+</div>
+</div>
+<div class="flex items-center gap-4 text-on-primary-container">
+<span class="material-symbols-outlined text-[32px] text-luxury-gold" data-icon="verified_user">verified_user</span>
+<div>
+<p class="font-button text-sm uppercase tracking-widest">Paiement sécurisé</p>
+<p class="text-xs opacity-60">Certifié SSL 256-bit</p>
+</div>
+</div>
+<div class="flex items-center gap-4 text-on-primary-container">
+<span class="material-symbols-outlined text-[32px] text-luxury-gold" data-icon="workspace_premium">workspace_premium</span>
+<div>
+<p class="font-button text-sm uppercase tracking-widest">Garantie premium</p>
+<p class="text-xs opacity-60">À vie sur les cuirs</p>
+</div>
+</div>
+<div class="flex items-center gap-4 text-on-primary-container">
+<span class="material-symbols-outlined text-[32px] text-luxury-gold" data-icon="support_agent">support_agent</span>
+<div>
+<p class="font-button text-sm uppercase tracking-widest">Support VIP</p>
+<p class="text-xs opacity-60">Conciergerie 24/7</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Recommended Section -->
+<section class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto py-stack-xl overflow-hidden">
+<div class="flex justify-between items-end mb-stack-lg">
+<h2 class="font-headline-lg text-headline-lg">Vous aimerez aussi</h2>
+<a class="font-button text-primary border-b border-primary pb-1 hover:opacity-60 transition-opacity" href="#">Tout voir</a>
+</div>
+<div class="flex gap-gutter overflow-x-auto no-scrollbar pb-8">
+<!-- Recommended 1 -->
+<div class="w-80 flex-shrink-0 group cursor-pointer">
+<div class="h-[400px] bg-secondary-container rounded-card overflow-hidden mb-stack-sm relative whisper-shadow">
+<img class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" data-alt="A minimalist, sculptural porcelain vase in off-white, featuring an organic, fluid shape that resembles a gentle wave. The lighting is soft and diffused, coming from the side to create delicate gradients of light and shadow that emphasize its graceful curves. Set against a clean, warm-toned stone surface in a high-end interior design context, conveying a sense of serenity, elegance, and modern artistic luxury." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTQagwGyiJYZvdLtnYoZamNaoQLS5DrcGc6jpM37CP9cX7TMpcS88zzvT4PlWqfBET_rrtkL_9u8722izlSNQ1Wrc9up6iSH9jToz_CfcKF70BWRl3clgah8JSiCnw2JiVnCnrpycbcQbaE2HFkVC_Bors5Dd5K--Kr7GNZqa4n2EWMdnPQ-gxw62DEAjQ8g9_Ua5o0jJ8p6G_zyMlhAeN1GssE9El43kxlsqxpEH4i7kA0D5tgoKQzqQc9itWjeOYqmcSJZe7ZY_i"/>
+<div class="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+</div>
+<p class="font-label-caps text-label-caps text-secondary mb-1">Maison</p>
+<h4 class="font-headline-md text-[18px]">Vase Sculptural Silk</h4>
+<p class="font-body-md text-primary mt-1">320 €</p>
+</div>
+<!-- Recommended 2 -->
+<div class="w-80 flex-shrink-0 group cursor-pointer">
+<div class="h-[400px] bg-secondary-container rounded-card overflow-hidden mb-stack-sm relative whisper-shadow">
+<img class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" data-alt="A luxury pair of minimalist eyewear with thin, 24k gold-plated frames and amber-tinted lenses. The glasses are displayed on a polished dark marble surface, with a single sharp light source creating dramatic, razor-thin reflections and glints on the gold. The mood is opulent, mysterious, and high-fashion, with a focus on precious materials and artisanal detailing. The aesthetic is clean, precise, and evocative of high-end editorial photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwJRnQ7bIq3CUuKKDcY5uww7px5wPsZMRKw59ZlH6XWEaZgPx5-NOnbRQrk6pq1XRwamd9rUTYqctgXt3osNDRY5anc9jOoH_xsMK8f-Wn0obK6vcYCSLFZqU82brJxvnWp2zjw_ASq6TRveqqy0ubxiArGGGi7Iht10oxSWnmS3ACQ2qcedyCZa--JzvZ4otv1zLN8EgtockXJE79Lx5M_jBcxZcxAz8ayjnBYnSzLo0LWGGQvUjXQ2h2ihzHK7nsgbtPZqJy68CG"/>
+<div class="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+</div>
+<p class="font-label-caps text-label-caps text-secondary mb-1">Accessoires</p>
+<h4 class="font-headline-md text-[18px]">Lunettes Or 24k "Horizon"</h4>
+<p class="font-body-md text-primary mt-1">890 €</p>
+</div>
+<!-- Recommended 3 -->
+<div class="w-80 flex-shrink-0 group cursor-pointer">
+<div class="h-[400px] bg-secondary-container rounded-card overflow-hidden mb-stack-sm relative whisper-shadow">
+<img class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" data-alt="A premium silk scarf featuring an intricate, hand-painted geometric pattern in shades of deep navy, ochre, and cream. The fabric is draped over a sculptural wooden chair, showing its soft, fluid drape and natural luster. The lighting is cinematic and warm, casting long shadows that emphasize the texture of the silk. The overall style is reminiscent of a high-fashion editorial spread in a luxury lifestyle magazine." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAztyXPS5P3G7C8yj_wU2NODJFju2fHronDo64xDlxWQEtLB-174xwgVJauhehLzyO7PhlfdhdDHradK6TDZ5dyrmb8gIdqoobUGfQ-N8iBb6BtrK8p-27jxZ1S4ELrMWtrH3Z8g50D_VbC3pep0ENpdSV2b-FPCXwZPluj9TGGao5LPbhI-SKYS_yTXfw6SquoJBy64TR0f0NnkUIhhMtuYTFdYxpxOzJ9KJ4zIjbEzA0uRujM8GFDqTzkTYs93aPAQ8w9z4bs_9lQ"/>
+<div class="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+</div>
+<p class="font-label-caps text-label-caps text-secondary mb-1">Textiles</p>
+<h4 class="font-headline-md text-[18px]">Foulard Soie Sauvage</h4>
+<p class="font-body-md text-primary mt-1">210 €</p>
+</div>
+<!-- Recommended 4 -->
+<div class="w-80 flex-shrink-0 group cursor-pointer">
+<div class="h-[400px] bg-secondary-container rounded-card overflow-hidden mb-stack-sm relative whisper-shadow">
+<img class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" data-alt="A pair of high-end minimalist sneakers made from matte-finish white calfskin leather with subtle grey suede accents. The shoes are set in a brightly lit, minimalist white studio with architectural shadows crossing the floor. The image focuses on the clean lines and superior stitching, highlighting the quality of the premium materials used. The mood is fresh, modern, and understatedly luxurious." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCecuObIKhc6C3HUx-Vf9Cs0qkzVlmlyVQahBDWYlmOnpduxW1EQ3Caf-MMinxVYAprxZ2PJcsPhiUXCG_aWI8qhzXl73VIzC4zRWUzbWREfUn3LfmmB2XLT_exxbNk9sQbA6etbVjSMluKeuAihAi0yQGdLrbX4fkq5d8I_mYOvwx8dXHJ0rc_CqDPc1OT7tykwsgb-lBurNsp1U0Grp2fip9cH4YCIP3R--NI6kyMD9tzwsxmWd9Vm2h7pOEU9f_m3OcsZnVefnTe"/>
+<div class="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+</div>
+<p class="font-label-caps text-label-caps text-secondary mb-1">Chaussures</p>
+<h4 class="font-headline-md text-[18px]">Sneakers 'Pure' Nappa</h4>
+<p class="font-body-md text-primary mt-1">580 €</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-primary-container py-stack-xl w-full">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto text-left">
+<div class="col-span-1 md:col-span-1">
+<div class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-primary-container mb-stack-sm">SILVIO STORE</div>
+<p class="font-body-md text-body-md text-on-primary-container/60 pr-8">
+                    Définir l'élégance moderne à travers une précision technique et une vision éditoriale du luxe.
+                </p>
+</div>
+<div class="flex flex-col gap-4">
+<h5 class="font-button text-on-primary-container uppercase tracking-widest text-xs">Aide &amp; Services</h5>
+<a class="font-body-md text-body-md text-on-primary-container/80 hover:text-on-primary transition-colors duration-200" href="#">Shipping &amp; Returns</a>
+<a class="font-body-md text-body-md text-on-primary-container/80 hover:text-on-primary transition-colors duration-200" href="#">Privacy Policy</a>
+<a class="font-body-md text-body-md text-on-primary-container/80 hover:text-on-primary transition-colors duration-200" href="#">Terms of Service</a>
+<a class="font-body-md text-body-md text-on-primary-container/80 hover:text-on-primary transition-colors duration-200" href="#">Store Locator</a>
+</div>
+<div class="flex flex-col gap-4">
+<h5 class="font-button text-on-primary-container uppercase tracking-widest text-xs">Newsletter</h5>
+<p class="font-body-md text-on-primary-container/60 text-sm">Inscrivez-vous pour recevoir nos dernières collections en avant-première.</p>
+<div class="flex border-b border-on-primary-container/20 pb-2">
+<input class="bg-transparent border-none focus:ring-0 text-white w-full placeholder:text-white/20" placeholder="Votre email" type="email"/>
+<button class="material-symbols-outlined text-luxury-gold" data-icon="arrow_forward">arrow_forward</button>
+</div>
+</div>
+<div class="flex flex-col gap-4 md:items-end">
+<h5 class="font-button text-on-primary-container uppercase tracking-widest text-xs">Suivez-nous</h5>
+<div class="flex gap-stack-md text-on-primary-container/60">
+<a class="hover:text-luxury-gold transition-colors" href="#">Instagram</a>
+<a class="hover:text-luxury-gold transition-colors" href="#">Pinterest</a>
+<a class="hover:text-luxury-gold transition-colors" href="#">LinkedIn</a>
+</div>
+</div>
+</div>
+<div class="mt-stack-lg pt-stack-sm px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto border-t border-white/5">
+<p class="font-body-md text-body-md text-on-primary-container/40 text-center md:text-left">
+                © 2024 SILVIO STORE. ALL RIGHTS RESERVED.
+            </p>
+</div>
+</footer>
+</body></html>

@@ -135,10 +135,10 @@ export default async function ProductPage({ params }: { params: { slug: string }
 
         <div>
           {product.brand && <span className="text-xs uppercase tracking-wide text-brand-500">{product.brand}</span>}
-          <h1 className="mt-1 font-display text-3xl font-bold text-brand-950">{product.name}</h1>
+          <h1 className="mt-1 font-display text-xl sm:text-2xl md:text-3xl font-bold text-brand-950 leading-tight">{product.name}</h1>
 
-          <div className="mt-5 flex items-baseline gap-3">
-            <span className="text-3xl font-bold text-brand-950">{formatPrice(product.price)}</span>
+          <div className="mt-4 flex items-baseline gap-3">
+            <span className="text-2xl sm:text-3xl font-bold text-brand-950">{formatPrice(product.price)}</span>
             {product.compare_at_price && product.compare_at_price > product.price && (
               <span className="text-base text-brand-400 line-through">{formatPrice(product.compare_at_price)}</span>
             )}
@@ -189,10 +189,10 @@ export default async function ProductPage({ params }: { params: { slug: string }
                 { icon: Hash, label: "SKU", value: product.sku || "N/A" },
                 { icon: PackageCheck, label: "État", value: product.stock > 0 ? "Disponible" : "Rupture" },
               ].map(({ icon: Icon, label, value }) => (
-                <div key={label} className="flex flex-col items-center gap-1 px-3 py-2 text-center">
-                  <Icon className="h-4 w-4 text-brand-400" />
-                  <span className="text-[10px] uppercase tracking-wide text-brand-400 font-semibold">{label}</span>
-                  <span className="text-xs font-semibold text-brand-800 truncate max-w-full">{value}</span>
+                <div key={label} className="flex flex-col items-center gap-1 px-1 sm:px-3 py-2 text-center">
+                  <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-brand-400" />
+                  <span className="text-[9px] sm:text-[10px] uppercase tracking-wide text-brand-400 font-semibold">{label}</span>
+                  <span className="text-[10px] sm:text-xs font-semibold text-brand-800 truncate max-w-full">{value}</span>
                 </div>
               ))}
             </div>
@@ -290,8 +290,8 @@ export default async function ProductPage({ params }: { params: { slug: string }
 
       {related.length > 0 && (
         <section className="mt-16">
-          <h2 className="mb-5 font-display text-xl font-bold text-brand-950">Vous pourriez aussi aimer</h2>
-          <div className="grid grid-cols-2 gap-5 md:grid-cols-4">
+          <h2 className="mb-6 font-display text-xl md:text-2xl font-bold text-brand-950 tracking-tight">Vous pourriez aussi aimer</h2>
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4 md:gap-6">
             {related.map((p) => (
               <ProductCard key={p.id} product={p} />
             ))}

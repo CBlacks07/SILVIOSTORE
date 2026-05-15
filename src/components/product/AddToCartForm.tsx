@@ -55,8 +55,8 @@ export function AddToCartForm({ product }: { product: Product }) {
         </div>
       )}
 
-      <div className="flex items-center gap-4">
-        <div className="inline-flex items-center rounded-md border border-brand-200">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+        <div className="inline-flex items-center rounded-md border border-brand-200 self-start sm:self-auto">
           <button
             type="button"
             onClick={() => setQty(Math.max(1, qty - 1))}
@@ -81,7 +81,7 @@ export function AddToCartForm({ product }: { product: Product }) {
           type="button"
           disabled={outOfStock}
           onClick={handleAdd}
-          className="btn-accent"
+          className="btn-accent flex-1"
         >
           {added ? (
             <>

@@ -1,0 +1,86 @@
+/* Thème luxe doux - Styles personnalisés SILVIO STORE */
+
+/* Shadow Effects */
+.whisper-shadow {
+  box-shadow: 0px 0px 30px 0px rgba(8, 18, 41, 0.04);
+}
+
+/* Glass Morphism Card */
+.glass-card {
+  background: rgba(244, 240, 234, 0.7);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-nav {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Editorial Gradient */
+.editorial-gradient {
+  background: linear-gradient(to right, #081229 0%, transparent 100%);
+}
+
+.navy-gradient {
+  background: linear-gradient(135deg, #071225 0%, #0E1D35 100%);
+}
+
+/* Gold Glow */
+.gold-glow:hover {
+  box-shadow: 0 0 25px rgba(217, 122, 13, 0.4);
+}
+
+/* Grain Texture */
+.grain-texture {
+  position: relative;
+}
+
+.grain-texture::before {
+  content: "";
+  position: absolute;
+  inset: -100%;
+  width: 300%;
+  height: 300%;
+  background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB0-5Maahwe-I_Yu0OD4MYush3o-WiXQPYwN3lLe4j0OgxHY586mZqNts14OrO6H7LEApk8jPpBGe9pUjCkRdtVjxE6O0n1ZHYGAWy7MvlVfdt1zoBeProXubX_ohUIJEQP-dLeD6BIzCeKqNsRWFm1IngiqQ1SJL5IZn6gHwUXCaq_gixNAqs08NPQiNdvnj8Lbz-q3MkDm9zU7DVgRoTBkOiQ9cTwhNdGjWUPjFTi7kwwSpHUy9-bk7_V2ep-LuPsKKlWq4dsn7SU");
+  opacity: 0.03;
+  pointer-events: none;
+  animation: grain 8s steps(10) infinite;
+  z-index: 1;
+}
+
+/* Smooth Button Transitions */
+.btn-smooth {
+  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Smooth Border */
+.border-soft {
+  border: 1px solid #c6c6ce;
+}
+
+/* Selection Styling */
+::selection {
+  background-color: #D97706;
+  color: #ffffff;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(244, 240, 234, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(8, 18, 41, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(8, 18, 41, 0.5);
+}
