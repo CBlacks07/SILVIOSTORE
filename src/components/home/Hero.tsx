@@ -100,7 +100,7 @@ export function Hero({ hero, extraImages = [] }: any) {
       <style dangerouslySetInnerHTML={{ __html: `
         .hero-section {
           position: relative;
-          background: linear-gradient(135deg, #faf8f5 0%, #f5f2ed 100%);
+          background: linear-gradient(135deg, #1a1008 0%, #2c1c06 50%, #1a1008 100%);
           overflow: hidden;
         }
         .hero-grid {
@@ -174,7 +174,7 @@ export function Hero({ hero, extraImages = [] }: any) {
           font-size: clamp(36px, 7vw, 92px);
           line-height: 1.05;
           letter-spacing: -0.025em;
-          color: #0f1419;
+          color: #ffffff;
           margin: 0;
         }
         .hero-title .accent {
@@ -188,7 +188,7 @@ export function Hero({ hero, extraImages = [] }: any) {
           font-family: var(--font-inter), Inter, system-ui, sans-serif;
           font-size: clamp(15px, 1.8vw, 17px);
           line-height: 1.7;
-          color: #4a5568;
+          color: rgba(253,230,138,0.88);
           margin: 0;
           font-weight: 400;
         }
@@ -203,7 +203,7 @@ export function Hero({ hero, extraImages = [] }: any) {
           align-items: center;
           gap: 12px;
           padding: clamp(14px, 1.8vh, 18px) clamp(24px, 3vw, 32px);
-          background: #0f1419;
+          background: #d97706;
           color: #fff;
           font-family: var(--font-inter), Inter, system-ui, sans-serif;
           font-size: clamp(13px, 1.6vw, 15px);
@@ -249,20 +249,20 @@ export function Hero({ hero, extraImages = [] }: any) {
           gap: 10px;
           padding: clamp(14px, 1.8vh, 18px) clamp(20px, 2.5vw, 28px);
           background: transparent;
-          color: #0f1419;
+          color: rgba(253,230,138,0.90);
           font-family: var(--font-inter), Inter, system-ui, sans-serif;
           font-size: clamp(13px, 1.6vw, 15px);
           font-weight: 600;
           letter-spacing: 0.02em;
           text-decoration: none;
-          border: 2px solid rgba(15,20,25,0.18);
+          border: 1.5px solid rgba(217,119,6,0.50);
           border-radius: 6px;
           transition: all 0.3s ease;
         }
         .hero-cta-secondary:hover {
-          background: #0f1419;
+          background: rgba(217,119,6,0.15);
           color: #fff;
-          border-color: #0f1419;
+          border-color: #d97706;
           transform: translateY(-1px);
         }
 
@@ -305,7 +305,7 @@ export function Hero({ hero, extraImages = [] }: any) {
           font-family: var(--font-inter), Inter, system-ui, sans-serif;
           font-weight: 800;
           font-size: clamp(14px, 1.6vw, 16px);
-          color: #0f1419;
+          color: #ffffff;
           line-height: 1.2;
           letter-spacing: -0.01em;
           font-variant-numeric: tabular-nums;
