@@ -26,7 +26,7 @@ export function ProductGallery({ images, alt, discount }: Props) {
 
   return (
     <div className="space-y-4 w-full max-w-[500px] mx-auto lg:mx-0">
-      <div className="relative aspect-square w-full overflow-hidden rounded-3xl border border-brand-100 bg-white shadow-sm">
+      <div className="relative w-full overflow-hidden rounded-3xl border border-brand-100 bg-white shadow-sm" style={{ aspectRatio: "1/1", maxHeight: "clamp(280px, 80vw, 520px)", background: "rgb(248,248,250)" }}>
         <AnimatePresence mode="wait">
           {current && (
             <motion.div
@@ -42,7 +42,7 @@ export function ProductGallery({ images, alt, discount }: Props) {
                 alt={alt}
                 fill
                 priority
-                className="object-contain p-2"
+                className="object-contain p-4"
                 sizes="(min-width:1024px) 50vw, 100vw"
               />
             </motion.div>
@@ -78,7 +78,7 @@ export function ProductGallery({ images, alt, discount }: Props) {
 
       {hasMany && (
         <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide px-0.5">
-          {safeImages.map((src, i) => (
+          {safeImages.slice(0, 12).map((src, i) => (
             <button
               key={src + i}
               type="button"
