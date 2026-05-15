@@ -188,13 +188,22 @@ export default async function HomePage() {
 
       {cta.enabled && (
         <section className="container-page py-16">
-          <div className="rounded-2xl bg-brand-950 text-white p-10 md:p-14 grid md:grid-cols-2 gap-8 items-center shadow-xl shadow-brand-900/10">
-            <div>
-              <h3 className="font-display text-2xl md:text-3xl font-bold">{cta.title}</h3>
-              <p className="mt-3 text-brand-200">{cta.text}</p>
+          <div
+            className="relative rounded-2xl text-white p-10 md:p-14 grid md:grid-cols-2 gap-8 items-center overflow-hidden"
+            style={{
+              background: "linear-gradient(135deg, #1a1008 0%, #2c1c06 50%, #1a1008 100%)",
+              boxShadow: "0 20px 60px rgba(26,16,8,0.35)",
+            }}
+          >
+            {/* Gold glow */}
+            <div className="absolute inset-0 rounded-2xl pointer-events-none" style={{ background: "radial-gradient(ellipse at 0% 50%, rgba(217,119,6,0.15) 0%, transparent 60%)" }} />
+            <div className="relative">
+              <p className="text-xs font-black uppercase tracking-[0.28em] mb-3" style={{ color: "#d97706" }}>Notre engagement</p>
+              <h3 className="font-display text-2xl md:text-3xl font-bold text-white">{cta.title}</h3>
+              <p className="mt-3 text-sm leading-relaxed" style={{ color: "rgba(253,230,138,0.85)" }}>{cta.text}</p>
             </div>
             {cta.cta_label && cta.cta_link && (
-              <div className="flex md:justify-end">
+              <div className="flex md:justify-end relative">
                 <Link href={cta.cta_link} className="btn-accent">{cta.cta_label}</Link>
               </div>
             )}

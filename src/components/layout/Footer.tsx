@@ -34,7 +34,7 @@ export async function Footer() {
   ].filter(s => !!s.url);
 
   return (
-    <footer className="mt-20 border-t border-brand-100 bg-brand-950 text-brand-200">
+    <footer className="mt-20 text-brand-200" style={{ background: "linear-gradient(180deg, #1a1008 0%, #120c04 100%)", borderTop: "1px solid rgba(217,119,6,0.15)" }}>
       <div className="container-page grid gap-10 py-14 md:grid-cols-4">
         <div>
           <div className="flex items-center gap-3 mb-5">
@@ -110,7 +110,7 @@ export async function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-brand-900">
+      <div style={{ borderTop: "1px solid rgba(217,119,6,0.12)" }}>
         <div className="container-page py-8">
           <p className="text-xs font-semibold uppercase tracking-widest text-brand-500 mb-3">Nous trouver</p>
           <div className="overflow-hidden rounded-xl" style={{ height: "220px" }}>
@@ -127,7 +127,7 @@ export async function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-brand-900">
+      <div style={{ borderTop: "1px solid rgba(217,119,6,0.12)" }}>
         <div className="container-page flex flex-col items-center justify-between gap-3 py-5 text-xs text-brand-400 sm:flex-row">
           <span>&copy; {new Date().getFullYear()} {brandName}. Tous droits réservés.</span>
           <span>Paiement sécurisé via FedaPay</span>
