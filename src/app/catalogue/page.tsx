@@ -71,36 +71,42 @@ export default async function CataloguePage({ searchParams }: { searchParams: Se
   return (
     <div className="min-h-screen bg-gradient-to-b from-brand-50/30 to-white">
       {/* Category hero */}
-      <div className="bg-gradient-to-br from-brand-950 via-brand-900 to-brand-950 text-white relative overflow-hidden">
-        <div className="absolute inset-0 opacity-5 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnoiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+PC9nPjwvc3ZnPg==')]"></div>
-        <div className="container-page py-12 md:py-16 relative z-10">
-          <nav className="mb-6 flex items-center gap-2 text-xs text-white/60">
-            <Link href="/" className="hover:text-white transition-colors font-medium">Accueil</Link>
-            <ChevronRight className="h-3.5 w-3.5" />
-            <Link href="/catalogue" className="hover:text-white transition-colors font-medium">Catalogue</Link>
+      <div
+        className="text-white relative overflow-hidden"
+        style={{ background: "linear-gradient(135deg, #1a1008 0%, #2c1c06 50%, #1a1008 100%)" }}
+      >
+        {/* Warm gold glows */}
+        <div className="absolute inset-0 pointer-events-none" style={{
+          background: "radial-gradient(ellipse 80% 100% at 5% 50%, rgba(217,119,6,0.20) 0%, transparent 65%), radial-gradient(ellipse 60% 80% at 95% 50%, rgba(217,119,6,0.10) 0%, transparent 65%)"
+        }} />
+        <div className="container-page py-10 md:py-14 relative z-10">
+          <nav className="mb-5 flex items-center gap-1.5 text-xs font-medium" style={{ color: "rgba(253,230,138,0.80)" }}>
+            <Link href="/" className="hover:text-white transition-colors">Accueil</Link>
+            <ChevronRight className="h-3 w-3" style={{ color: "#d97706" }} />
+            <Link href="/catalogue" className="hover:text-white transition-colors">Catalogue</Link>
             {activeCat && (
               <>
-                <ChevronRight className="h-3.5 w-3.5" />
+                <ChevronRight className="h-3 w-3" style={{ color: "#d97706" }} />
                 <span className="text-white font-semibold">{activeCat.name}</span>
               </>
             )}
           </nav>
 
-          <div className="flex items-end justify-between gap-8">
+          <div className="flex items-end justify-between gap-6">
             <div className="flex-1">
-              <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-none">
+              <h1 className="font-display text-3xl md:text-4xl lg:text-5xl font-black tracking-tight leading-tight text-white">
                 {activeCat ? activeCat.name : "Tous les accessoires"}
               </h1>
               {activeCat?.description && (
-                <p className="mt-4 text-white/80 text-base md:text-lg max-w-2xl leading-relaxed">{activeCat.description}</p>
+                <p className="mt-3 text-sm md:text-base max-w-2xl leading-relaxed" style={{ color: "rgba(253,230,138,0.90)" }}>{activeCat.description}</p>
               )}
               {!activeCat && (
-                <p className="mt-4 text-white/80 text-base md:text-lg">Luxe, tendance et protection réunis.</p>
+                <p className="mt-3 text-sm md:text-base" style={{ color: "rgba(253,230,138,0.90)" }}>Luxe, tendance et protection réunis.</p>
               )}
             </div>
-            <div className="shrink-0 text-right bg-white/10 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/20">
-              <span className="text-3xl md:text-4xl font-black tabular-nums block">{products.length}</span>
-              <p className="text-xs text-white/70 mt-1 uppercase tracking-wider font-semibold">produit{products.length > 1 ? "s" : ""}</p>
+            <div className="shrink-0 text-right rounded-xl px-5 py-3" style={{ background: "rgba(217,119,6,0.15)", border: "1px solid rgba(217,119,6,0.40)" }}>
+              <span className="text-2xl md:text-3xl font-black tabular-nums block text-white">{products.length}</span>
+              <p className="text-[10px] mt-0.5 uppercase tracking-widest font-bold" style={{ color: "#f59e0b" }}>produit{products.length > 1 ? "s" : ""}</p>
             </div>
           </div>
 
