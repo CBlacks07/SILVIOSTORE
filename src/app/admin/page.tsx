@@ -279,8 +279,7 @@ export default async function AdminDashboardPage() {
                           transition: "opacity 0.15s"
                         }}
                         title={`${d.day}: ${formatPrice(d.total)}`}
-                        onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.opacity = "1")}
-                        onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.opacity = "0.8")}
+                        className="analytics-bar"
                       />
                       <span style={{ fontSize: "8px", color: "#9ca3af", whiteSpace: "nowrap" }}>{d.day}</span>
                     </div>

@@ -2941,3 +2941,6 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(22,163,74,0.40);
 }
+
+.analytics-bar { opacity: 0.8; transition: opacity 0.15s ease; }
+.analytics-bar:hover { opacity: 1; }
