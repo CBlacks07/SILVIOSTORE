@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { createPortal } from "react-dom";
 import {
   X,
@@ -19,6 +20,7 @@ type Props = {
   isOpen: boolean;
   onClose: () => void;
   siteName: string;
+  logoUrl?: string;
   phone: string;
   mounted: boolean;
   categories: Pick<Category, "slug" | "name">[];
@@ -28,6 +30,7 @@ export function HeaderMobileMenu({
   isOpen,
   onClose,
   siteName,
+  logoUrl,
   phone,
   mounted,
   categories,
@@ -39,7 +42,7 @@ export function HeaderMobileMenu({
   return createPortal(
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 lg:hidden mobile-menu-overlay">
+        <div className="fixed inset-0 lg:hidden mobile-menu-overlay" style={{ zIndex: 1000 }}>
           {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -59,9 +62,21 @@ export function HeaderMobileMenu({
           >
             {/* Header */}
             <div className="flex items-center justify-between px-6 h-16 border-b border-brand-100 shrink-0">
-              <span className="font-display font-black text-lg tracking-tighter text-brand-950">
-                {siteName.toUpperCase()}
-              </span>
+              {logoUrl ? (
+                <div className="relative h-7 w-28">
+                  <Image
+                    src={logoUrl}
+                    alt={siteName}
+                    fill
+                    className="object-contain object-left"
+                    sizes="112px"
+                  />
+                </div>
+              ) : (
+                <span className="font-display font-black text-lg tracking-tighter text-brand-950">
+                  {siteName.toUpperCase()}
+                </span>
+              )}
               <button
                 onClick={onClose}
                 className="p-2 -mr-2 text-brand-400 hover:text-brand-950 transition-colors"

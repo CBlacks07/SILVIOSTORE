@@ -10,6 +10,7 @@ import type { Category } from "@/lib/types";
 
 type Props = {
   siteName: string;
+  logoUrl?: string;
   phone: string;
   headerStrip: { enabled: boolean; text: string };
   categories: Pick<Category, "slug" | "name">[];
@@ -17,6 +18,7 @@ type Props = {
 
 export function HeaderClient({
   siteName,
+  logoUrl,
   phone,
   headerStrip,
   categories,
@@ -59,6 +61,7 @@ export function HeaderClient({
       {/* Main Header */}
       <HeaderMain
         siteName={siteName}
+        logoUrl={logoUrl}
         totalItems={totalItems}
         hydrated={hydrated}
         categories={categories}
@@ -71,6 +74,7 @@ export function HeaderClient({
         isOpen={mobileMenuOpen}
         onClose={() => setMobileMenuOpen(false)}
         siteName={siteName}
+        logoUrl={logoUrl}
         phone={phone}
         mounted={mounted}
         categories={categories}

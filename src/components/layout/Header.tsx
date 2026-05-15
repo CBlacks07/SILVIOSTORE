@@ -26,6 +26,7 @@ export async function Header() {
   return (
     <HeaderClient
       siteName={brandName}
+      logoUrl={site.logo_url}
       phone={site.phone}
       headerStrip={headerStrip}
       categories={categories}

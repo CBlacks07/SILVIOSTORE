@@ -1,4 +1,5 @@
-﻿import Link from "next/link";
+import Link from "next/link";
+import Image from "next/image";
 import { Mail, MapPin, Phone, Instagram, Facebook, Twitter, MessageCircle } from "lucide-react";
 import { sql } from "@/lib/db";
 import { getSetting } from "@/lib/settings";
@@ -36,8 +37,20 @@ export async function Footer() {
     <footer className="mt-20 border-t border-brand-100 bg-brand-950 text-brand-200">
       <div className="container-page grid gap-10 py-14 md:grid-cols-4">
         <div>
-          <div className="font-display text-lg font-bold text-white">{brandName}</div>
-          <p className="mt-3 text-sm text-brand-300">{site.description}</p>
+          {site.logo_url ? (
+            <div className="relative h-10 w-40 mb-3">
+              <Image
+                src={site.logo_url}
+                alt={brandName}
+                fill
+                className="object-contain object-left"
+                sizes="160px"
+              />
+            </div>
+          ) : (
+            <div className="font-display text-lg font-bold text-white mb-3">{brandName}</div>
+          )}
+          <p className="text-sm text-brand-300">{site.description}</p>
           
           {socialLinks.length > 0 && (
             <div className="mt-6 flex gap-4">

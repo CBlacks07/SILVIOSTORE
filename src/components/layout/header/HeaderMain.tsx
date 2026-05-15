@@ -8,6 +8,7 @@ import type { Category } from "@/lib/types";
 
 type Props = {
   siteName: string;
+  logoUrl?: string;
   totalItems: number;
   hydrated: boolean;
   categories: Pick<Category, "slug" | "name">[];
@@ -17,6 +18,7 @@ type Props = {
 
 export function HeaderMain({
   siteName,
+  logoUrl,
   totalItems,
   hydrated,
   categories,
@@ -41,7 +43,7 @@ export function HeaderMain({
         <div className="flex items-center justify-between gap-4 py-4">
           {/* Logo */}
           <div className="shrink-0">
-            <HeaderLogo siteName={siteName} onMobileMenuOpen={onMobileMenuOpen} />
+            <HeaderLogo siteName={siteName} logoUrl={logoUrl} onMobileMenuOpen={onMobileMenuOpen} />
           </div>
 
           {/* Search - centred, max width - HIDDEN ON MOBILE/TABLET via custom CSS class */}
