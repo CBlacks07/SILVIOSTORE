@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { ProductCard } from "@/components/product/ProductCard";
 import { ProductGallery } from "@/components/product/ProductGallery";
 import { AddToCartForm } from "@/components/product/AddToCartForm";
+import { StockUrgency } from "@/components/marketing/StockUrgency";
 import { ProductTabs } from "@/components/product/ProductTabs";
 import { ProductStickyBar } from "@/components/product/ProductStickyBar";
 import { QuickAddButton } from "@/components/product/QuickAddButton";
@@ -211,6 +212,11 @@ export default async function ProductPage({ params }: { params: { slug: string }
               <div className="bg-white p-6 rounded-2xl border border-brand-100 shadow-sm">
                 <p className="text-base leading-relaxed text-brand-700">{product.description}</p>
               </div>
+            )}
+
+            {/* Stock urgency */}
+            {product.stock > 0 && product.stock <= 5 && (
+              <StockUrgency stock={product.stock} />
             )}
 
             {/* Add to Cart */}
