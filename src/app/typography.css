@@ -1,23 +1,32 @@
 /* Global typography system
-   - Titles: Inter SemiBold
+   - H1/H2 display: Playfair Display (serif élégant)
+   - H3/H4/H5/H6: Inter SemiBold
    - Subtitles: Inter Regular
-   - Buttons: Georgia
-   - Descriptions/long text: Roboto
+   - Buttons: Inter SemiBold
+   - Body/descriptions: Roboto
 */
 
 h1,
 h2,
+.font-display {
+  font-family: var(--font-playfair), "Playfair Display", Georgia, serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
 h3,
 h4,
 h5,
-h6,
-.font-display {
+h6 {
   font-family: var(--font-inter), Inter, system-ui, sans-serif;
   font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
-.font-display.font-bold {
-  font-weight: 600 !important;
+.font-display.font-bold,
+.font-display.font-black {
+  font-weight: 800 !important;
 }
 
 /* Common subtitle pattern right below section/page titles. */
@@ -28,6 +37,8 @@ h3 + p,
 .font-subtitle {
   font-family: var(--font-inter), Inter, system-ui, sans-serif;
   font-weight: 400;
+  line-height: 1.6;
+  color: #6f87aa;
 }
 
 /* Long text/content defaults. */
@@ -40,6 +51,7 @@ input,
 select,
 textarea {
   font-family: var(--font-roboto), Roboto, system-ui, sans-serif;
+  line-height: 1.6;
 }
 
 /* Button text style. */
@@ -48,7 +60,9 @@ textarea {
 .btn-accent,
 .btn-outline,
 button[class*="btn-"] {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-inter), Inter, system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.01em;
 }
 
 /* ═══════════════════════════════════════

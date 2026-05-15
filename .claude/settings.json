@@ -29,10 +29,12 @@
       "Bash(git commit *)",
       "Bash(git remote *)",
       "Bash(git branch *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(cd \"c:\\\\Users\\\\CCL\\\\Desktop\\\\SILVIO STORE\" && sed -i 's/className=\"grid gap-10 lg:grid-cols-\\\\[460px,1fr\\\\] xl:grid-cols-\\\\[500px,1fr\\\\]\"/className=\"product-layout\"/' src/app/produit/\\\\[slug\\\\]/page.tsx && grep -n \"product-layout\" src/app/produit/\\\\[slug\\\\]/page.tsx)"
     ],
     "additionalDirectories": [
-      "c:\\Users\\CCL\\.claude\\projects\\c--Users-CCL-Desktop-SILVIO-STORE\\memory"
+      "c:\\Users\\CCL\\.claude\\projects\\c--Users-CCL-Desktop-SILVIO-STORE\\memory",
+      "C:\\Users\\CCL\\Desktop\\SILVIO STORE\\src\\app\\produit\\[slug]"
     ]
   }
 }

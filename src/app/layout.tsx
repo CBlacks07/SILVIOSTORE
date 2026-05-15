@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Roboto } from "next/font/google";
+import { Inter, Roboto, Playfair_Display } from "next/font/google";
 import { getSetting } from "@/lib/settings";
 import { sanitizeSiteName } from "@/lib/siteBrand";
 import { Header } from "@/components/layout/Header";
@@ -8,7 +8,8 @@ import { AuthSync } from "@/components/auth/AuthSync";
 import "./globals.css";
 import "./typography.css";
 
-const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-inter" });
+const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800", "900"], variable: "--font-inter" });
+const playfair = Playfair_Display({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800", "900"], style: ["normal", "italic"], variable: "--font-playfair" });
 const roboto = Roboto({ subsets: ["latin"], weight: ["300", "400", "500", "700"], variable: "--font-roboto" });
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -23,7 +24,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={`${inter.variable} ${roboto.variable}`}>
+    <html lang="fr" className={`${inter.variable} ${roboto.variable} ${playfair.variable}`}>
       <body className="min-h-screen flex flex-col font-sans">
         <AuthSync />
         <Header />

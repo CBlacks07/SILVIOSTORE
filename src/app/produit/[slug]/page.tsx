@@ -1,4 +1,4 @@
-﻿import { notFound } from "next/navigation";
+import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ChevronRight, Truck, ShieldCheck, MessageCircle, CheckCircle2, Tag, Hash, PackageCheck } from "lucide-react";
 import type { Metadata } from "next";
@@ -119,188 +119,254 @@ export default async function ProductPage({ params }: { params: { slug: string }
   };
 
   return (
-    <div className="container-page py-8 pb-24 lg:pb-8">
+    <div className="min-h-screen bg-gradient-to-b from-brand-50/30 to-white">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <nav className="mb-6 flex items-center gap-1 text-xs text-brand-500">
-        <Link href="/" className="hover:text-brand-900">Accueil</Link>
-        <ChevronRight className="h-3 w-3" />
-        <Link href="/catalogue" className="hover:text-brand-900">Catalogue</Link>
-        <ChevronRight className="h-3 w-3" />
-        <span className="text-brand-700">{product.name}</span>
-      </nav>
+      <div className="container-page py-6 md:py-10 pb-32 lg:pb-12">
+        {/* Breadcrumb */}
+        <nav className="mb-8 flex items-center gap-2 text-sm text-brand-500">
+          <Link href="/" className="hover:text-brand-900 transition-colors font-medium">Accueil</Link>
+          <ChevronRight className="h-4 w-4" />
+          <Link href="/catalogue" className="hover:text-brand-900 transition-colors font-medium">Catalogue</Link>
+          <ChevronRight className="h-4 w-4" />
+          <span className="text-brand-800 font-semibold truncate">{product.name}</span>
+        </nav>
 
-      <div className="grid gap-10 lg:grid-cols-[460px,1fr] xl:grid-cols-[500px,1fr]">
-        <ProductGallery images={product.images ?? []} alt={product.name} discount={discount} />
-
-        <div>
-          {product.brand && <span className="text-xs uppercase tracking-wide text-brand-500">{product.brand}</span>}
-          <h1 className="mt-1 font-display text-xl sm:text-2xl md:text-3xl font-bold text-brand-950 leading-tight">{product.name}</h1>
-
-          <div className="mt-4 flex items-baseline gap-3">
-            <span className="text-2xl sm:text-3xl font-bold text-brand-950">{formatPrice(product.price)}</span>
-            {product.compare_at_price && product.compare_at_price > product.price && (
-              <span className="text-base text-brand-400 line-through">{formatPrice(product.compare_at_price)}</span>
-            )}
+        {/* Main Product Grid */}
+        <div className="product-layout">
+          {/* Gallery */}
+          <div className="order-2 lg:order-1">
+            <ProductGallery images={product.images ?? []} alt={product.name} discount={discount} />
           </div>
 
-          <p className="mt-2 text-sm">
-            {product.stock > 0 ? (
-              <span className="text-green-700">En stock - disponible</span>
-            ) : (
-              <span className="text-red-700">Rupture de stock</span>
+          {/* Product Info */}
+          <div className="order-1 lg:order-2 space-y-6">
+            {/* Brand */}
+            {product.brand && (
+              <span className="inline-block text-xs uppercase tracking-widest text-brand-500 font-black bg-brand-50 px-4 py-2 rounded-full border border-brand-200">
+                {product.brand}
+              </span>
             )}
-          </p>
 
-          <p className="subtitle mt-1 text-sm text-brand-600">
-            {socialProof.avgRating ? (
-              <span>★ {socialProof.avgRating.toFixed(1)} ({socialProof.reviewCount} avis)</span>
-            ) : (
-              <span>Aucun avis pour le moment</span>
-            )}
-            {socialProof.soldCount > 0 && <span className="ml-2">• {socialProof.soldCount} ventes</span>}
-          </p>
+            {/* Title */}
+            <h1 className="font-display text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-black text-brand-950 leading-tight tracking-tight">
+              {product.name}
+            </h1>
 
-          {product.description && <p className="mt-6 leading-relaxed text-brand-700">{product.description}</p>}
+            {/* Rating & Sales */}
+            <div className="flex flex-wrap items-center gap-4">
+              {socialProof.avgRating ? (
+                <div className="inline-flex items-center gap-2 bg-amber-50 px-4 py-2 rounded-full border border-amber-200">
+                  <span className="text-amber-500 text-lg font-bold">★ {socialProof.avgRating.toFixed(1)}</span>
+                  <span className="text-sm text-brand-600">({socialProof.reviewCount} avis)</span>
+                </div>
+              ) : (
+                <span className="text-sm text-brand-500 bg-brand-50 px-4 py-2 rounded-full">Aucun avis</span>
+              )}
+              {socialProof.soldCount > 0 && (
+                <span className="text-sm text-brand-600 bg-brand-100 px-4 py-2 rounded-full font-semibold">
+                  {socialProof.soldCount} ventes
+                </span>
+              )}
+            </div>
 
-          <div className="mt-8">
-            <AddToCartForm product={product} />
-          </div>
-
-          <div className="mt-5 grid grid-cols-3 gap-2">
-            {[
-              { icon: Truck, label: "Livraison", sub: "sous-région" },
-              { icon: ShieldCheck, label: "Paiement", sub: "sécurisé FedaPay" },
-              { icon: MessageCircle, label: "Support", sub: "WhatsApp réactif" },
-            ].map(({ icon: Icon, label, sub }) => (
-              <div key={label} className="flex flex-col items-center gap-1.5 rounded-xl border border-brand-100 bg-brand-50/60 px-2 py-3 text-center">
-                <Icon className="h-5 w-5 text-accent" />
-                <span className="text-[11px] font-semibold text-brand-800 leading-tight">{label}</span>
-                <span className="text-[10px] text-brand-500 leading-tight">{sub}</span>
+            {/* Price */}
+            <div className="bg-gradient-to-br from-white to-brand-50/50 p-6 rounded-2xl border-2 border-brand-100 shadow-sm">
+              <div className="flex flex-wrap items-baseline gap-4">
+                <span className="text-4xl sm:text-5xl lg:text-6xl font-black text-brand-950 tracking-tight">
+                  {formatPrice(product.price)}
+                </span>
+                {product.compare_at_price && product.compare_at_price > product.price && (
+                  <div className="flex flex-col gap-1">
+                    <span className="text-xl text-brand-400 line-through font-medium">
+                      {formatPrice(product.compare_at_price)}
+                    </span>
+                    {discount && (
+                      <span className="inline-block bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                        -{discount}%
+                      </span>
+                    )}
+                  </div>
+                )}
               </div>
-            ))}
-          </div>
 
-          <div className="mt-5 rounded-xl border border-brand-100 bg-white p-4">
-            <h2 className="text-sm font-semibold text-brand-950 mb-3">Infos clés</h2>
-            <div className="grid grid-cols-3 divide-x divide-brand-100">
+              {/* Stock Status */}
+              <div className="mt-4 pt-4 border-t border-brand-200">
+                {product.stock > 0 ? (
+                  <div className="inline-flex items-center gap-2 text-sm font-bold text-green-700 bg-green-50 px-4 py-2 rounded-full border border-green-200">
+                    <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                    En stock - disponible
+                  </div>
+                ) : (
+                  <div className="inline-flex items-center gap-2 text-sm font-bold text-red-700 bg-red-50 px-4 py-2 rounded-full border border-red-200">
+                    <span className="w-2 h-2 rounded-full bg-red-500"></span>
+                    Rupture de stock
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Description */}
+            {product.description && (
+              <div className="bg-white p-6 rounded-2xl border border-brand-100 shadow-sm">
+                <p className="text-base leading-relaxed text-brand-700">{product.description}</p>
+              </div>
+            )}
+
+            {/* Add to Cart */}
+            <div className="bg-gradient-to-br from-white to-brand-50/30 p-6 rounded-2xl border-2 border-brand-200 shadow-md">
+              <AddToCartForm product={product} />
+            </div>
+
+            {/* Trust Badges */}
+            <div className="grid grid-cols-3 gap-3">
               {[
-                { icon: Tag, label: "Marque", value: product.brand || "SILVIO STORE" },
-                { icon: Hash, label: "SKU", value: product.sku || "N/A" },
-                { icon: PackageCheck, label: "État", value: product.stock > 0 ? "Disponible" : "Rupture" },
-              ].map(({ icon: Icon, label, value }) => (
-                <div key={label} className="flex flex-col items-center gap-1 px-1 sm:px-3 py-2 text-center">
-                  <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-brand-400" />
-                  <span className="text-[9px] sm:text-[10px] uppercase tracking-wide text-brand-400 font-semibold">{label}</span>
-                  <span className="text-[10px] sm:text-xs font-semibold text-brand-800 truncate max-w-full">{value}</span>
+                { icon: Truck, label: "Livraison", sub: "Sous-région" },
+                { icon: ShieldCheck, label: "Paiement", sub: "Sécurisé" },
+                { icon: MessageCircle, label: "Support", sub: "WhatsApp" },
+              ].map(({ icon: Icon, label, sub }) => (
+                <div
+                  key={label}
+                  className="flex flex-col items-center gap-2 rounded-xl border-2 border-brand-100 bg-white px-3 py-4 text-center hover:border-accent/40 hover:shadow-lg transition-all"
+                >
+                  <Icon className="h-6 w-6 md:h-7 md:w-7 text-accent" />
+                  <span className="text-xs md:text-sm font-bold text-brand-900 leading-tight">{label}</span>
+                  <span className="text-[10px] md:text-xs text-brand-500 leading-tight">{sub}</span>
                 </div>
               ))}
             </div>
-          </div>
 
-          <div className="mt-5 rounded-xl border border-green-100 bg-green-50/40 p-4">
-            <h2 className="text-sm font-semibold text-brand-950 mb-3">Pourquoi cet accessoire ?</h2>
-            <ul className="space-y-2.5">
-              {keyBenefits.map((item) => (
-                <li key={item} className="flex items-start gap-2.5">
-                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-green-600" />
-                  <span className="text-sm text-brand-700">{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+            {/* Product Info Cards */}
+            <div className="rounded-2xl border-2 border-brand-100 bg-white p-5 md:p-6 shadow-sm">
+              <h2 className="text-base md:text-lg font-black text-brand-950 mb-5 flex items-center gap-2">
+                <PackageCheck className="h-5 w-5 md:h-6 md:w-6 text-accent" />
+                Informations produit
+              </h2>
+              <div className="grid grid-cols-3 gap-4">
+                {[
+                  { icon: Tag, label: "Marque", value: product.brand || "SILVIO STORE" },
+                  { icon: Hash, label: "SKU", value: product.sku || "N/A" },
+                  { icon: PackageCheck, label: "État", value: product.stock > 0 ? "Disponible" : "Rupture" },
+                ].map(({ icon: Icon, label, value }) => (
+                  <div key={label} className="flex flex-col items-center gap-2 p-3 rounded-xl bg-brand-50/50 border border-brand-100">
+                    <Icon className="h-5 w-5 text-brand-400" />
+                    <span className="text-[10px] uppercase tracking-wider text-brand-400 font-bold">{label}</span>
+                    <span className="text-xs md:text-sm font-bold text-brand-900 truncate max-w-full">{value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
 
-          {waUrl && (
-            <a
-              href={waUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-whatsapp"
-            >
-              <svg aria-hidden viewBox="0 0 24 24" className="h-5 w-5 fill-current shrink-0">
-                <path d="M20.52 3.48A11.77 11.77 0 0 0 12.05 0C5.5 0 .18 5.32.18 11.87c0 2.09.55 4.13 1.59 5.93L0 24l6.38-1.67a11.8 11.8 0 0 0 5.67 1.45h.01c6.55 0 11.87-5.32 11.87-11.87 0-3.17-1.24-6.15-3.41-8.43zM12.06 21.6h-.01a9.72 9.72 0 0 1-4.96-1.36l-.36-.21-3.79.99 1.01-3.69-.23-.38a9.7 9.7 0 0 1-1.48-5.14c0-5.36 4.36-9.73 9.73-9.73a9.67 9.67 0 0 1 6.88 2.85 9.65 9.65 0 0 1 2.85 6.88c0 5.37-4.36 9.73-9.72 9.73zm5.34-7.29c-.29-.15-1.74-.86-2.01-.96-.27-.1-.47-.15-.66.15-.2.29-.76.96-.93 1.15-.17.2-.34.22-.64.07-.29-.15-1.24-.46-2.37-1.46-.87-.78-1.46-1.74-1.63-2.03-.17-.29-.02-.45.13-.6.13-.13.29-.34.44-.51.15-.17.2-.29.29-.49.1-.2.05-.37-.03-.51-.07-.15-.66-1.58-.9-2.17-.24-.58-.49-.5-.66-.5l-.56-.01c-.2 0-.51.07-.78.37-.27.29-1.02 1-1.02 2.43 0 1.43 1.05 2.82 1.2 3.01.15.2 2.07 3.17 5.01 4.44.7.3 1.25.49 1.67.62.7.22 1.34.19 1.85.12.56-.08 1.74-.71 1.98-1.4.24-.69.24-1.27.17-1.4-.07-.12-.27-.2-.56-.34z" />
-              </svg>
-              Discuter sur WhatsApp
-            </a>
-          )}
-        </div>
-      </div>
+            {/* Benefits */}
+            <div className="rounded-2xl border-2 border-green-200 bg-gradient-to-br from-green-50 to-white p-6 md:p-7 shadow-sm">
+              <h2 className="text-base md:text-lg font-black text-brand-950 mb-5 flex items-center gap-2">
+                <CheckCircle2 className="h-5 w-5 md:h-6 md:w-6 text-green-600" />
+                Pourquoi cet accessoire ?
+              </h2>
+              <ul className="space-y-3">
+                {keyBenefits.map((item) => (
+                  <li key={item} className="flex items-start gap-3">
+                    <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-green-600" />
+                    <span className="text-sm md:text-base text-brand-700 leading-relaxed">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-      <ProductTabs product={product} faqItems={quickFaq} />
-
-      <section className="mt-10 grid gap-6 lg:grid-cols-2">
-        <div className="rounded-xl border border-brand-100 bg-white p-5">
-          <h2 className="font-display text-lg font-bold text-brand-950">Avis clients</h2>
-          <p className="mt-1 text-sm text-brand-600">
-            {socialProof.avgRating
-              ? `Note moyenne: ${socialProof.avgRating.toFixed(1)} / 5`
-              : "Soyez le premier à noter cet accessoire."}
-          </p>
-          <div className="mt-4 space-y-3">
-            {reviews.length === 0 ? (
-              <p className="text-sm text-brand-600">Aucun avis publié pour le moment.</p>
-            ) : (
-              reviews.map((r) => (
-                <article key={r.id} className="rounded-lg border border-brand-100 p-3">
-                  <p className="text-sm font-medium text-brand-900">
-                    {"★".repeat(r.rating)}{"☆".repeat(5 - r.rating)}
-                    <span className="ml-2 text-brand-600">{r.author_name}</span>
-                  </p>
-                  {r.comment && <p className="mt-1 text-sm text-brand-700">{r.comment}</p>}
-                  <p className="mt-1 text-xs text-brand-500">
-                    {new Date(r.created_at).toLocaleDateString("fr-FR")}
-                    {r.is_verified_purchase ? " • achat vérifié" : ""}
-                  </p>
-                </article>
-              ))
+            {/* WhatsApp */}
+            {waUrl && (
+              <a
+                href={waUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-3 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-6 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-[1.02]"
+              >
+                <svg aria-hidden viewBox="0 0 24 24" className="h-6 w-6 fill-current shrink-0">
+                  <path d="M20.52 3.48A11.77 11.77 0 0 0 12.05 0C5.5 0 .18 5.32.18 11.87c0 2.09.55 4.13 1.59 5.93L0 24l6.38-1.67a11.8 11.8 0 0 0 5.67 1.45h.01c6.55 0 11.87-5.32 11.87-11.87 0-3.17-1.24-6.15-3.41-8.43zM12.06 21.6h-.01a9.72 9.72 0 0 1-4.96-1.36l-.36-.21-3.79.99 1.01-3.69-.23-.38a9.7 9.7 0 0 1-1.48-5.14c0-5.36 4.36-9.73 9.73-9.73a9.67 9.67 0 0 1 6.88 2.85 9.65 9.65 0 0 1 2.85 6.88c0 5.37-4.36 9.73-9.72 9.73zm5.34-7.29c-.29-.15-1.74-.86-2.01-.96-.27-.1-.47-.15-.66.15-.2.29-.76.96-.93 1.15-.17.2-.34.22-.64.07-.29-.15-1.24-.46-2.37-1.46-.87-.78-1.46-1.74-1.63-2.03-.17-.29-.02-.45.13-.6.13-.13.29-.34.44-.51.15-.17.2-.29.29-.49.1-.2.05-.37-.03-.51-.07-.15-.66-1.58-.9-2.17-.24-.58-.49-.5-.66-.5l-.56-.01c-.2 0-.51.07-.78.37-.27.29-1.02 1-1.02 2.43 0 1.43 1.05 2.82 1.2 3.01.15.2 2.07 3.17 5.01 4.44.7.3 1.25.49 1.67.62.7.22 1.34.19 1.85.12.56-.08 1.74-.71 1.98-1.4.24-.69.24-1.27.17-1.4-.07-.12-.27-.2-.56-.34z" />
+                </svg>
+                <span className="text-base">Discuter sur WhatsApp</span>
+              </a>
             )}
           </div>
         </div>
+      </div>
 
-        <div className="rounded-xl border border-brand-100 bg-white p-5">
-          <h2 className="font-display text-lg font-bold text-brand-950">Donner votre avis</h2>
-          <p className="mt-1 text-sm text-brand-600">Votre retour aide les autres clients à mieux choisir.</p>
-          <div className="mt-4">
-            <ReviewForm productId={product.id} canReview={canReview} isLoggedIn={!!user} />
-          </div>
-        </div>
-      </section>
+      <div className="container-page">
+        <ProductTabs product={product} faqItems={quickFaq} />
 
-      {frequentlyBought.length > 0 && (
-        <section className="mt-12">
-          <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-            <h2 className="font-display text-xl font-bold text-brand-950">Souvent achetés ensemble</h2>
-            <AddBundleButton products={frequentlyBought} />
+        <section className="mt-12 grid gap-8 lg:grid-cols-2">
+          <div className="rounded-2xl border-2 border-brand-100 bg-white p-6 md:p-8 shadow-sm">
+            <h2 className="font-display text-xl md:text-2xl font-black text-brand-950 mb-2">Avis clients</h2>
+            <p className="text-sm text-brand-600 mb-6">
+              {socialProof.avgRating
+                ? `Note moyenne: ${socialProof.avgRating.toFixed(1)} / 5`
+                : "Soyez le premier à noter cet accessoire."}
+            </p>
+            <div className="space-y-4">
+              {reviews.length === 0 ? (
+                <p className="text-sm text-brand-600 bg-brand-50 p-6 rounded-xl text-center">Aucun avis publié pour le moment.</p>
+              ) : (
+                reviews.map((r) => (
+                  <article key={r.id} className="rounded-xl border border-brand-100 p-4 bg-gradient-to-br from-white to-brand-50/30 hover:shadow-md transition-shadow">
+                    <p className="text-sm font-semibold text-brand-900 flex items-center gap-2">
+                      <span className="text-amber-500">{"★".repeat(r.rating)}{"☆".repeat(5 - r.rating)}</span>
+                      <span className="text-brand-700">{r.author_name}</span>
+                    </p>
+                    {r.comment && <p className="mt-2 text-sm text-brand-700 leading-relaxed">{r.comment}</p>}
+                    <p className="mt-2 text-xs text-brand-500">
+                      {new Date(r.created_at).toLocaleDateString("fr-FR")}
+                      {r.is_verified_purchase && <span className="ml-2 text-green-600 font-medium">• achat vérifié</span>}
+                    </p>
+                  </article>
+                ))
+              )}
+            </div>
           </div>
-          <div className="grid gap-4 md:grid-cols-3">
-            {frequentlyBought.map((p) => (
-              <div key={p.id} className="rounded-xl border border-brand-100 bg-white p-4">
-                <Link href={"/produit/" + p.slug} className="text-sm font-medium text-brand-900 hover:text-accent">
-                  {p.name}
-                </Link>
-                <p className="mt-1 text-sm text-brand-600">{formatPrice(p.price)}</p>
-                <div className="mt-3">
-                  <QuickAddButton product={p} className="btn-outline h-10 px-4 text-sm" />
+
+          <div className="rounded-2xl border-2 border-brand-100 bg-white p-6 md:p-8 shadow-sm">
+            <h2 className="font-display text-xl md:text-2xl font-black text-brand-950 mb-2">Donner votre avis</h2>
+            <p className="text-sm text-brand-600 mb-6">Votre retour aide les autres clients à mieux choisir.</p>
+            <div>
+              <ReviewForm productId={product.id} canReview={canReview} isLoggedIn={!!user} />
+            </div>
+          </div>
+        </section>
+
+        {frequentlyBought.length > 0 && (
+          <section className="mt-16">
+            <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
+              <h2 className="font-display text-2xl md:text-3xl font-black text-brand-950">Souvent achetés ensemble</h2>
+              <AddBundleButton products={frequentlyBought} />
+            </div>
+            <div className="grid gap-5 md:grid-cols-3">
+              {frequentlyBought.map((p) => (
+                <div key={p.id} className="rounded-2xl border-2 border-brand-100 bg-white p-5 hover:shadow-lg hover:border-accent/30 transition-all">
+                  <Link href={"/produit/" + p.slug} className="text-base font-bold text-brand-900 hover:text-accent transition-colors">
+                    {p.name}
+                  </Link>
+                  <p className="mt-2 text-base text-brand-600 font-semibold">{formatPrice(p.price)}</p>
+                  <div className="mt-4">
+                    <QuickAddButton product={p} className="btn-outline h-11 px-5 text-sm w-full" />
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
+              ))}
+            </div>
+          </section>
+        )}
 
-      {related.length > 0 && (
-        <section className="mt-16">
-          <h2 className="mb-6 font-display text-xl md:text-2xl font-bold text-brand-950 tracking-tight">Vous pourriez aussi aimer</h2>
-          <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4 md:gap-6">
-            {related.map((p) => (
-              <ProductCard key={p.id} product={p} />
-            ))}
-          </div>
-        </section>
-      )}
+        {related.length > 0 && (
+          <section className="mt-20 pb-12">
+            <h2 className="mb-8 font-display text-2xl md:text-3xl font-black text-brand-950 tracking-tight">Vous pourriez aussi aimer</h2>
+            <div className="grid grid-cols-2 gap-4 sm:gap-5 md:grid-cols-4 md:gap-7">
+              {related.map((p) => (
+                <ProductCard key={p.id} product={p} />
+              ))}
+            </div>
+          </section>
+        )}
+      </div>
 
       <ProductStickyBar product={product} />
     </div>
   );
 }
-

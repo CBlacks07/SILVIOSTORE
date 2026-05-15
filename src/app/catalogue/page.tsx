@@ -69,56 +69,57 @@ export default async function CataloguePage({ searchParams }: { searchParams: Se
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gradient-to-b from-brand-50/30 to-white">
       {/* Category hero */}
-      <div className="bg-brand-950 text-white">
-        <div className="container-page py-10 md:py-12">
-          <nav className="mb-4 flex items-center gap-1.5 text-xs text-brand-400">
-            <Link href="/" className="hover:text-white transition-colors">Accueil</Link>
-            <ChevronRight className="h-3 w-3" />
-            <Link href="/catalogue" className="hover:text-white transition-colors">Catalogue</Link>
+      <div className="bg-gradient-to-br from-brand-950 via-brand-900 to-brand-950 text-white relative overflow-hidden">
+        <div className="absolute inset-0 opacity-5 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnoiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+PC9nPjwvc3ZnPg==')]"></div>
+        <div className="container-page py-12 md:py-16 relative z-10">
+          <nav className="mb-6 flex items-center gap-2 text-xs text-white/60">
+            <Link href="/" className="hover:text-white transition-colors font-medium">Accueil</Link>
+            <ChevronRight className="h-3.5 w-3.5" />
+            <Link href="/catalogue" className="hover:text-white transition-colors font-medium">Catalogue</Link>
             {activeCat && (
               <>
-                <ChevronRight className="h-3 w-3" />
-                <span className="text-brand-200 font-medium">{activeCat.name}</span>
+                <ChevronRight className="h-3.5 w-3.5" />
+                <span className="text-white font-semibold">{activeCat.name}</span>
               </>
             )}
           </nav>
 
-          <div className="flex items-end justify-between gap-6">
-            <div>
-              <h1 className="font-display text-3xl md:text-4xl font-black tracking-tight">
+          <div className="flex items-end justify-between gap-8">
+            <div className="flex-1">
+              <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-none">
                 {activeCat ? activeCat.name : "Tous les accessoires"}
               </h1>
               {activeCat?.description && (
-                <p className="mt-2 text-brand-300 text-sm max-w-lg">{activeCat.description}</p>
+                <p className="mt-4 text-white/80 text-base md:text-lg max-w-2xl leading-relaxed">{activeCat.description}</p>
               )}
               {!activeCat && (
-                <p className="mt-2 text-brand-300 text-sm">Luxe, tendance et protection réunis.</p>
+                <p className="mt-4 text-white/80 text-base md:text-lg">Luxe, tendance et protection réunis.</p>
               )}
             </div>
-            <div className="shrink-0 text-right">
-              <span className="text-2xl font-bold tabular-nums">{products.length}</span>
-              <p className="text-xs text-brand-400 mt-0.5">produit{products.length > 1 ? "s" : ""}</p>
+            <div className="shrink-0 text-right bg-white/10 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/20">
+              <span className="text-3xl md:text-4xl font-black tabular-nums block">{products.length}</span>
+              <p className="text-xs text-white/70 mt-1 uppercase tracking-wider font-semibold">produit{products.length > 1 ? "s" : ""}</p>
             </div>
           </div>
 
           {/* Top banners inside hero */}
           {topBanners.length > 0 && (
-            <div className="mt-8 grid md:grid-cols-2 gap-4">
+            <div className="mt-10 grid md:grid-cols-2 gap-5">
               {topBanners.map((b) => {
                 const content = (
-                  <div className="relative overflow-hidden rounded-xl border border-white/10 bg-white/5 group hover:bg-white/10 transition-colors">
+                  <div className="relative overflow-hidden rounded-2xl border border-white/20 bg-white/5 backdrop-blur-md group hover:bg-white/10 hover:border-white/30 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl">
                     {b.image_url && (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img src={b.image_url} alt={b.title} className="w-full h-auto block" loading="lazy" />
                     )}
-                    <div className="p-4">
-                      <h3 className="font-semibold text-white">{b.title}</h3>
-                      {b.subtitle && <p className="mt-1 text-sm text-brand-300">{b.subtitle}</p>}
+                    <div className="p-5">
+                      <h3 className="font-bold text-white text-lg">{b.title}</h3>
+                      {b.subtitle && <p className="mt-2 text-sm text-white/70 leading-relaxed">{b.subtitle}</p>}
                       {b.cta_label && (
-                        <span className="mt-2 inline-flex items-center gap-1 text-accent text-sm font-medium">
-                          {b.cta_label} <ArrowRight className="h-3.5 w-3.5" />
+                        <span className="mt-3 inline-flex items-center gap-2 text-accent text-sm font-semibold group-hover:gap-3 transition-all">
+                          {b.cta_label} <ArrowRight className="h-4 w-4" />
                         </span>
                       )}
                     </div>
@@ -133,23 +134,23 @@ export default async function CataloguePage({ searchParams }: { searchParams: Se
 
       {/* Active filters bar */}
       {activeFilters.length > 0 && (
-        <div className="border-b border-brand-100 bg-brand-50">
-          <div className="container-page py-3 flex flex-wrap items-center gap-2">
-            <span className="flex items-center gap-1.5 text-xs font-semibold text-brand-500 shrink-0">
-              <SlidersHorizontal className="h-3.5 w-3.5" />
-              Filtres :
+        <div className="border-b border-brand-100 bg-gradient-to-r from-brand-50 to-white shadow-sm">
+          <div className="container-page py-4 flex flex-wrap items-center gap-3">
+            <span className="flex items-center gap-2 text-sm font-bold text-brand-700 shrink-0">
+              <SlidersHorizontal className="h-4 w-4" />
+              Filtres actifs :
             </span>
             {activeFilters.map((f) => (
               <Link
                 key={f.key}
                 href={f.removeHref}
-                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-brand-200 text-brand-800 text-xs font-medium hover:border-brand-400 hover:bg-brand-50 transition-all"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border-2 border-brand-200 text-brand-800 text-sm font-semibold hover:border-accent hover:bg-accent/5 transition-all shadow-sm hover:shadow-md"
               >
                 {f.label}
-                <X className="h-3 w-3 text-brand-400" />
+                <X className="h-4 w-4 text-brand-500" />
               </Link>
             ))}
-            <Link href="/catalogue" className="text-xs font-semibold text-accent hover:text-accent-dark transition-colors ml-1">
+            <Link href="/catalogue" className="text-sm font-bold text-accent hover:text-accent-dark transition-colors ml-2 underline underline-offset-4">
               Tout effacer
             </Link>
           </div>
@@ -157,8 +158,8 @@ export default async function CataloguePage({ searchParams }: { searchParams: Se
       )}
 
       {/* Main content */}
-      <div className="container-page py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8 items-start">
+      <div className="container-page py-10 md:py-12">
+        <div className="catalogue-layout">
           {/* Sidebar */}
           <aside className="hidden lg:block">
             <CatalogueSidebar
@@ -175,10 +176,10 @@ export default async function CataloguePage({ searchParams }: { searchParams: Se
           {/* Right column */}
           <div>
             {/* Toolbar */}
-            <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-5 bg-white rounded-2xl p-5 border border-brand-100 shadow-sm">
               <div className="flex items-center justify-between w-full sm:w-auto">
-                <p className="text-sm text-brand-600">
-                  <span className="font-semibold text-brand-950">{products.length}</span>{" "}
+                <p className="text-base text-brand-700 font-medium">
+                  <span className="font-black text-brand-950 text-lg">{products.length}</span>{" "}
                   résultat{products.length > 1 ? "s" : ""}
                 </p>
                 {/* Mobile Filter Trigger */}
@@ -199,20 +200,20 @@ export default async function CataloguePage({ searchParams }: { searchParams: Se
             </div>
 
             {products.length === 0 ? (
-              <div className="rounded-2xl border border-brand-100 bg-brand-50/50 p-10 md:p-16 text-center">
-                <div className="h-16 w-16 rounded-full bg-brand-100 grid place-items-center mx-auto mb-4">
-                  <SlidersHorizontal className="h-7 w-7 text-brand-400" />
+              <div className="rounded-3xl border-2 border-brand-200 bg-gradient-to-br from-brand-50 to-white p-12 md:p-20 text-center shadow-lg">
+                <div className="h-20 w-20 rounded-2xl bg-gradient-to-br from-brand-100 to-brand-50 grid place-items-center mx-auto mb-6 shadow-md">
+                  <SlidersHorizontal className="h-9 w-9 text-brand-500" />
                 </div>
-                <h3 className="font-display text-lg font-semibold text-brand-950 mb-2">Aucun produit trouvé</h3>
-                <p className="text-sm text-brand-600 mb-5">
+                <h3 className="font-display text-xl md:text-2xl font-bold text-brand-950 mb-3">Aucun produit trouvé</h3>
+                <p className="text-base text-brand-600 mb-6 max-w-md mx-auto leading-relaxed">
                   Essayez d'ajuster vos filtres ou parcourez tout le catalogue.
                 </p>
-                <Link href="/catalogue" className="btn-accent inline-flex">
+                <Link href="/catalogue" className="btn-accent inline-flex text-base px-8 py-3">
                   Voir tout le catalogue
                 </Link>
               </div>
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-7">
                 {products.map((p) => (
                   <ProductCard key={p.id} product={p} />
                 ))}
