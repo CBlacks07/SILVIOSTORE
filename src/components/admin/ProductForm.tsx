@@ -41,6 +41,7 @@ export function ProductForm({ product, categories }: Props) {
   const [showPicker, setShowPicker] = useState(false);
   const [urlInput, setUrlInput] = useState("");
   const [showUrlInput, setShowUrlInput] = useState(false);
+  const [hoveredImg, setHoveredImg] = useState<number | null>(null);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -311,46 +312,43 @@ export function ProductForm({ product, categories }: Props) {
         {images.length > 0 ? (
           <div className="grid grid-cols-3 sm:grid-cols-5 gap-3">
             {images.map((src, i) => (
-              <div key={src + i} className="relative aspect-square rounded-lg overflow-hidden border border-brand-100 group bg-brand-50">
+              <div
+                key={src + i}
+                className="relative aspect-square rounded-lg overflow-hidden bg-brand-50"
+                style={{ border: hoveredImg === i ? "2px solid #d97706" : "1px solid #e4e9f0" }}
+                onMouseEnter={() => setHoveredImg(i)}
+                onMouseLeave={() => setHoveredImg(null)}
+              >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={src} alt="" className="h-full w-full object-cover" />
+
                 {i === 0 && (
-                  <span className="absolute bottom-1 left-1 text-[9px] font-bold bg-accent text-white px-1.5 py-0.5 rounded">
+                  <span style={{ position: "absolute", bottom: "4px", left: "4px", fontSize: "9px", fontWeight: 700, background: "#d97706", color: "#fff", padding: "2px 6px", borderRadius: "4px" }}>
                     Principale
                   </span>
                 )}
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center gap-1 opacity-0 group-hover:opacity-100">
+
+                {/* Overlay controls — visible on hover */}
+                <div style={{
+                  position: "absolute", inset: 0,
+                  background: "rgba(0,0,0,0.45)",
+                  display: "flex", alignItems: "center", justifyContent: "center", gap: "6px",
+                  opacity: hoveredImg === i ? 1 : 0,
+                  transition: "opacity 0.15s ease",
+                }}>
                   {i > 0 && (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const arr = [...images];
-                        [arr[i - 1], arr[i]] = [arr[i], arr[i - 1]];
-                        setImages(arr);
-                      }}
-                      className="grid h-6 w-6 place-items-center rounded-full bg-white text-brand-700 text-xs font-bold"
-                      title="Déplacer à gauche"
-                    >←</button>
+                    <button type="button" onClick={() => { const a = [...images]; [a[i-1],a[i]]=[a[i],a[i-1]]; setImages(a); }}
+                      style={{ width: "28px", height: "28px", borderRadius: "999px", background: "#fff", border: "none", cursor: "pointer", display: "grid", placeItems: "center", fontSize: "14px", fontWeight: 700, color: "#1a1008" }}
+                      title="Déplacer à gauche">←</button>
                   )}
-                  <button
-                    type="button"
-                    onClick={() => removeImage(src)}
-                    className="grid h-6 w-6 place-items-center rounded-full bg-white text-red-600"
-                    aria-label="Retirer"
-                  >
-                    <X className="h-3.5 w-3.5" />
+                  <button type="button" onClick={() => removeImage(src)}
+                    style={{ width: "28px", height: "28px", borderRadius: "999px", background: "#fff", border: "none", cursor: "pointer", display: "grid", placeItems: "center", color: "#dc2626" }}>
+                    <X style={{ width: "14px", height: "14px" }} />
                   </button>
                   {i < images.length - 1 && (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const arr = [...images];
-                        [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
-                        setImages(arr);
-                      }}
-                      className="grid h-6 w-6 place-items-center rounded-full bg-white text-brand-700 text-xs font-bold"
-                      title="Déplacer à droite"
-                    >→</button>
+                    <button type="button" onClick={() => { const a = [...images]; [a[i],a[i+1]]=[a[i+1],a[i]]; setImages(a); }}
+                      style={{ width: "28px", height: "28px", borderRadius: "999px", background: "#fff", border: "none", cursor: "pointer", display: "grid", placeItems: "center", fontSize: "14px", fontWeight: 700, color: "#1a1008" }}
+                      title="Déplacer à droite">→</button>
                   )}
                 </div>
               </div>
