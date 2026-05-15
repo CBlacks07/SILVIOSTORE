@@ -113,6 +113,13 @@ const DEFAULTS = {
     social_proof: {
       enabled: true,
       interval_seconds: 18,
+      fallback_items: [
+        { buyer: 'Kofi A.', city: 'Lomé', product: 'Coque MagSafe iPhone 15 Pro' },
+        { buyer: 'Ama S.', city: 'Cotonou', product: 'Bracelet Apple Watch cuir' },
+        { buyer: 'Yves M.', city: 'Accra', product: 'Chargeur rapide USB-C 20W' },
+        { buyer: 'Ibrahim K.', city: 'Abidjan', product: 'Verre trempé iPhone' },
+        { buyer: 'Fatou D.', city: 'Dakar', product: 'Coque silicone Samsung' },
+      ],
     },
     stock_urgency: {
       enabled: true,

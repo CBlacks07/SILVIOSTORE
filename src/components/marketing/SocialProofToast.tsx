@@ -7,13 +7,6 @@ import type { MarketingSettings } from "@/lib/types";
 type Proof = { buyer: string; city: string; product: string; created_at: string };
 type Props = { config: MarketingSettings["social_proof"] };
 
-const FALLBACK: Proof[] = [
-  { buyer: "Kofi A.", city: "Lomé", product: "Coque MagSafe iPhone 15 Pro", created_at: "" },
-  { buyer: "Ama S.", city: "Cotonou", product: "Bracelet Apple Watch cuir", created_at: "" },
-  { buyer: "Yves M.", city: "Accra", product: "Chargeur rapide USB-C 20W", created_at: "" },
-  { buyer: "Ibrahim K.", city: "Abidjan", product: "Verre trempé iPhone", created_at: "" },
-  { buyer: "Fatou D.", city: "Dakar", product: "Coque silicone Samsung", created_at: "" },
-];
 
 function timeAgo(dateStr: string) {
   if (!dateStr) return "à l'instant";
@@ -35,11 +28,12 @@ export function SocialProofToast({ config }: Props) {
   useEffect(() => { intervalRef.current = config.interval_seconds ?? 18; }, [config.interval_seconds]);
 
   useEffect(() => {
+    const fallback: Proof[] = (config.fallback_items ?? []).map((f) => ({ ...f, created_at: "" }));
     fetch("/api/social-proof")
       .then((r) => r.json())
-      .then((data) => setItems(Array.isArray(data) && data.length > 0 ? data : FALLBACK))
-      .catch(() => setItems(FALLBACK));
-  }, []);
+      .then((data) => setItems(Array.isArray(data) && data.length > 0 ? data : fallback))
+      .catch(() => setItems(fallback));
+  }, [config.fallback_items]);
 
   useEffect(() => {
     if (items.length === 0) return;

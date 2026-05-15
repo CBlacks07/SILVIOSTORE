@@ -96,9 +96,47 @@ export function MarketingForm({ initial }: { initial: MarketingSettings }) {
           <Toggle label="" value={sp.enabled} onChange={(b) => setV({ ...v, social_proof: { ...sp, enabled: b } })} />
         </div>
         {sp.enabled && (
-          <Field label="Intervalle entre notifications (secondes)">
-            <input type="number" min={5} max={120} className="input w-32" value={sp.interval_seconds} onChange={(e) => setV({ ...v, social_proof: { ...sp, interval_seconds: Number(e.target.value) } })} />
-          </Field>
+          <div className="space-y-4">
+            <Field label="Intervalle entre notifications (secondes)">
+              <input type="number" min={5} max={120} className="input w-32" value={sp.interval_seconds} onChange={(e) => setV({ ...v, social_proof: { ...sp, interval_seconds: Number(e.target.value) } })} />
+            </Field>
+
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <label className="text-xs font-semibold uppercase tracking-wide text-brand-500">Notifications de substitution (si pas de commandes)</label>
+                <button
+                  type="button"
+                  onClick={() => setV({ ...v, social_proof: { ...sp, fallback_items: [...(sp.fallback_items ?? []), { buyer: "", city: "", product: "" }] } })}
+                  className="text-xs text-accent font-semibold hover:underline"
+                >+ Ajouter</button>
+              </div>
+              <div className="space-y-2">
+                {(sp.fallback_items ?? []).map((item, i) => (
+                  <div key={i} className="grid grid-cols-[1fr,1fr,1fr,auto] gap-2 items-center">
+                    <input className="input text-sm" placeholder="Prénom (ex: Kofi A.)" value={item.buyer} onChange={(e) => {
+                      const items = [...(sp.fallback_items ?? [])];
+                      items[i] = { ...items[i], buyer: e.target.value };
+                      setV({ ...v, social_proof: { ...sp, fallback_items: items } });
+                    }} />
+                    <input className="input text-sm" placeholder="Ville (ex: Lomé)" value={item.city} onChange={(e) => {
+                      const items = [...(sp.fallback_items ?? [])];
+                      items[i] = { ...items[i], city: e.target.value };
+                      setV({ ...v, social_proof: { ...sp, fallback_items: items } });
+                    }} />
+                    <input className="input text-sm" placeholder="Produit acheté" value={item.product} onChange={(e) => {
+                      const items = [...(sp.fallback_items ?? [])];
+                      items[i] = { ...items[i], product: e.target.value };
+                      setV({ ...v, social_proof: { ...sp, fallback_items: items } });
+                    }} />
+                    <button type="button" className="text-red-500 hover:text-red-700 text-lg leading-none px-1" onClick={() => {
+                      const items = (sp.fallback_items ?? []).filter((_, j) => j !== i);
+                      setV({ ...v, social_proof: { ...sp, fallback_items: items } });
+                    }}>×</button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         )}
       </div>
 

@@ -183,6 +183,7 @@ export type MarketingSettings = {
   social_proof: {
     enabled: boolean;
     interval_seconds: number;
+    fallback_items: { buyer: string; city: string; product: string }[];
   };
   stock_urgency: {
     enabled: boolean;
