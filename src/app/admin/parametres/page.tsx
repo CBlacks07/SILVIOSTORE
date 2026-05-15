@@ -10,11 +10,12 @@ import {
   FooterLinksForm,
   TestimonialsForm
 } from "@/components/admin/SettingsForms";
+import { MarketingForm } from "@/components/admin/MarketingForm";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminSettingsPage() {
-  const [site, headerStrip, homeHero, homeCta, shipping, features, social, footerLinks, testimonials] = await Promise.all([
+  const [site, headerStrip, homeHero, homeCta, shipping, features, social, footerLinks, testimonials, marketing] = await Promise.all([
     getSetting("site"),
     getSetting("header_strip"),
     getSetting("home_hero"),
@@ -23,7 +24,8 @@ export default async function AdminSettingsPage() {
     getSetting("features"),
     getSetting("social"),
     getSetting("footer_links"),
-    getSetting("testimonials")
+    getSetting("testimonials"),
+    getSetting("marketing")
   ]);
 
   return (
@@ -48,6 +50,7 @@ export default async function AdminSettingsPage() {
             <div id="s-footer"><FooterLinksForm initial={footerLinks} /></div>
             <div id="s-cta"><HomeCtaForm initial={homeCta} /></div>
             <div id="s-testi"><TestimonialsForm initial={testimonials} /></div>
+            <div id="s-marketing"><h2 className="font-display text-lg font-bold text-brand-950 mb-4 mt-2">Marketing &amp; Popups</h2><MarketingForm initial={marketing} /></div>
             <div id="s-ship"><ShippingForm initial={shipping} /></div>
           </div>
 

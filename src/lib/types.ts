@@ -172,6 +172,34 @@ export type SiteSettings = {
 
 export type HeaderStripSettings = { enabled: boolean; text: string };
 
+export type MarketingSettings = {
+  welcome_popup: {
+    enabled: boolean;
+    promo_code: string;
+    title: string;
+    description: string;
+    delay_seconds: number;
+  };
+  social_proof: {
+    enabled: boolean;
+    interval_seconds: number;
+  };
+  stock_urgency: {
+    enabled: boolean;
+    threshold: number;
+  };
+  exit_intent: {
+    enabled: boolean;
+    title: string;
+    description: string;
+    arm_delay_seconds: number;
+  };
+  cart_reminder: {
+    enabled: boolean;
+    delay_seconds: number;
+  };
+};
+
 export type HomeHeroSlide = {
   image_url: string;
   badge_text: string;

@@ -7,10 +7,7 @@ import { Footer } from "@/components/layout/Footer";
 import { AuthSync } from "@/components/auth/AuthSync";
 import { PageAnimations } from "@/components/layout/PageAnimations";
 import { WhatsAppFloat } from "@/components/layout/WhatsAppFloat";
-import { WelcomePopup } from "@/components/marketing/WelcomePopup";
-import { SocialProofToast } from "@/components/marketing/SocialProofToast";
-import { ExitIntentPopup } from "@/components/marketing/ExitIntentPopup";
-import { CartReminderPopup } from "@/components/marketing/CartReminderPopup";
+import { MarketingProvider } from "@/components/marketing/MarketingProvider";
 import "./globals.css";
 import "./typography.css";
 
@@ -38,10 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main className="flex-1">{children}</main>
         <Footer />
         <WhatsAppFloat />
-        <WelcomePopup />
-        <SocialProofToast />
-        <ExitIntentPopup />
-        <CartReminderPopup />
+        <MarketingProvider />
       </body>
     </html>
   );

@@ -7,6 +7,7 @@ import type {
   ShippingSettings,
   FeatureSettings,
   TestimonialsSettings,
+  MarketingSettings,
   Brand,
   Banner,
   BannerPosition
@@ -100,7 +101,34 @@ const DEFAULTS = {
       "Guinée": 8000,
       Nigeria: 8000
     } as Record<string, number>
-  } satisfies ShippingSettings
+  } satisfies ShippingSettings,
+  marketing: {
+    welcome_popup: {
+      enabled: true,
+      promo_code: "BIENVENUE10",
+      title: "Bienvenue chez SILVIO STORE",
+      description: "Inscrivez-vous et bénéficiez de -10% sur votre première commande.",
+      delay_seconds: 4,
+    },
+    social_proof: {
+      enabled: true,
+      interval_seconds: 18,
+    },
+    stock_urgency: {
+      enabled: true,
+      threshold: 5,
+    },
+    exit_intent: {
+      enabled: true,
+      title: "Vous partez sans votre accessoire ?",
+      description: "Découvrez notre sélection premium livrée partout dans la sous région. Paiement Mobile Money accepté.",
+      arm_delay_seconds: 15,
+    },
+    cart_reminder: {
+      enabled: true,
+      delay_seconds: 5,
+    },
+  } satisfies MarketingSettings,
 };
 
 export type SettingsKey = keyof typeof DEFAULTS;

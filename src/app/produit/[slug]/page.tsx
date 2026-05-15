@@ -48,13 +48,14 @@ export default async function ProductPage({ params }: { params: { slug: string }
   const product = await getProductBySlug(params.slug);
   if (!product) notFound();
 
-  const [related, frequentlyBought, site, socialProof, reviews, user] = await Promise.all([
+  const [related, frequentlyBought, site, socialProof, reviews, user, marketing] = await Promise.all([
     getRelatedProducts(product, 4),
     getFrequentlyBoughtTogether(product.id, 3),
     getSetting("site"),
     getProductSocialProof(product.id),
     getProductReviews(product.id, 6),
-    getCurrentUser()
+    getCurrentUser(),
+    getSetting("marketing"),
   ]);
 
   const canReview = user
@@ -215,8 +216,8 @@ export default async function ProductPage({ params }: { params: { slug: string }
             )}
 
             {/* Stock urgency */}
-            {product.stock > 0 && product.stock <= 5 && (
-              <StockUrgency stock={product.stock} />
+            {marketing.stock_urgency.enabled && product.stock > 0 && product.stock <= marketing.stock_urgency.threshold && (
+              <StockUrgency stock={product.stock} threshold={marketing.stock_urgency.threshold} />
             )}
 
             {/* Add to Cart */}
