@@ -13,8 +13,8 @@ export async function GET(req: Request) {
   const starts = `${q}%`;
 
   const [products, categories, brands] = await Promise.all([
-    sql<{ slug: string; name: string; brand: string | null }[]>`
-      select slug, name, brand
+    sql<{ slug: string; name: string; brand: string | null; price: number; images: string[] }[]>`
+      select slug, name, brand, price, images
       from products
       where is_active = true
         and (name ilike ${like} or coalesce(brand, '') ilike ${like})

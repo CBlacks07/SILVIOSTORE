@@ -22,7 +22,7 @@ type Form = {
 type PromoState =
   | { status: "idle" }
   | { status: "checking" }
-  | { status: "valid"; code: string; discount: number }
+  | { status: "valid"; id: string; code: string; discount: number }
   | { status: "invalid"; error: string };
 
 type InitialUser = {
@@ -130,7 +130,12 @@ export function CheckoutForm({
     };
   });
 
-  const [promoInput, setPromoInput] = useState("");
+  const [promoInput, setPromoInput] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("silvio_promo_code") || "";
+    }
+    return "";
+  });
   const [promo, setPromo] = useState<PromoState>({ status: "idle" });
 
   const shippingCost = shipping.fees[form.country] ?? shipping.default_fee;
@@ -171,7 +176,7 @@ export function CheckoutForm({
         setPromo({ status: "invalid", error: data.error || "Code invalide" });
         return;
       }
-      setPromo({ status: "valid", code: data.code, discount: data.discount });
+      setPromo({ status: "valid", id: data.id, code: data.code, discount: data.discount });
     } catch {
       setPromo({ status: "invalid", error: "Erreur réseau" });
     }
@@ -203,7 +208,8 @@ export function CheckoutForm({
         body: JSON.stringify({
           form,
           items,
-          promoCode: promo.status === "valid" ? promo.code : undefined
+          promoCode: promo.status === "valid" ? promo.code : undefined,
+          promotionId: promo.status === "valid" ? promo.id : undefined
         })
       });
       const data = await res.json();

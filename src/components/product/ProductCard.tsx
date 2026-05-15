@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { formatPrice } from "@/lib/utils";
 import type { Product } from "@/lib/types";
+import { WishlistButton } from "./WishlistButton";
 
 export function ProductCard({ product }: { product: Product }) {
   const discount =
@@ -34,9 +35,12 @@ export function ProductCard({ product }: { product: Product }) {
           </div>
         )}
         
+        {/* Wishlist */}
+        <WishlistButton productId={product.id} />
+
         {/* Badges */}
         {discount && discount > 0 && discount <= 95 && (
-          <div className="absolute left-2 top-2 z-10">
+          <div className="absolute left-2 top-10 z-10">
             <span
               className="text-[10px] font-black"
               style={{ background: "#d97706", color: "#fff", padding: "2px 8px", borderRadius: "999px", display: "inline-block" }}

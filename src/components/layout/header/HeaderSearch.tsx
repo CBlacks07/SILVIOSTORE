@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Search } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSearch } from "./hooks/useSearch";
+import { formatPrice } from "@/lib/utils";
 
 export function HeaderSearch() {
   const { q, setQ, suggestions, searchFocused, setSearchFocused } = useSearch();
@@ -27,6 +29,7 @@ export function HeaderSearch() {
             onChange={(e) => setQ(e.target.value)}
             onFocus={() => setSearchFocused(true)}
             onBlur={() => setTimeout(() => setSearchFocused(false), 200)}
+            onKeyDown={(e) => { if (e.key === "Escape") { setSearchFocused(false); setQ(""); } }}
             placeholder="Rechercher un produit..."
             className="flex-1 min-w-0 bg-transparent border-0 h-full py-0 text-sm text-brand-950 placeholder-brand-400 focus:outline-none"
           />
@@ -77,28 +80,42 @@ export function HeaderSearch() {
                     <p className="text-[9px] font-bold text-brand-400 uppercase tracking-widest px-2 mb-3">
                       Produits
                     </p>
-                    <div className="space-y-2">
-                      {suggestions.products.slice(0, 5).map((p) => (
-                        <Link
-                          key={p.slug}
-                          href={`/produit/${p.slug}`}
-                          className="flex items-center gap-3 p-2 hover:bg-brand-50 rounded-lg transition-colors duration-150"
-                        >
-                          <div className="h-10 w-10 bg-brand-100 rounded-lg flex items-center justify-center shrink-0">
-                            <Search className="h-4 w-4 text-brand-400" />
-                          </div>
-                          <div className="min-w-0">
-                            <p className="text-sm font-semibold text-brand-900 truncate">
-                              {p.name}
-                            </p>
-                            {p.brand && (
-                              <p className="text-[10px] text-brand-500">
-                                {p.brand}
+                    <div className="space-y-1">
+                      {suggestions.products.slice(0, 5).map((p) => {
+                        const cover = p.images?.[0];
+                        return (
+                          <Link
+                            key={p.slug}
+                            href={`/produit/${p.slug}`}
+                            className="flex items-center gap-3 p-2 hover:bg-brand-50 rounded-lg transition-colors duration-150"
+                          >
+                            <div className="h-11 w-11 bg-brand-100 rounded-lg shrink-0 overflow-hidden relative">
+                              {cover ? (
+                                <Image src={cover} alt={p.name} fill sizes="44px" style={{ objectFit: "cover" }} />
+                              ) : (
+                                <div className="h-full w-full flex items-center justify-center">
+                                  <Search className="h-4 w-4 text-brand-400" />
+                                </div>
+                              )}
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <p className="text-sm font-semibold text-brand-900 truncate">
+                                {p.name}
                               </p>
+                              {p.brand && (
+                                <p className="text-[10px] text-brand-500">
+                                  {p.brand}
+                                </p>
+                              )}
+                            </div>
+                            {p.price != null && (
+                              <span className="text-xs font-bold text-brand-950 tabular-nums shrink-0">
+                                {formatPrice(p.price)}
+                              </span>
                             )}
-                          </div>
-                        </Link>
-                      ))}
+                          </Link>
+                        );
+                      })}
                     </div>
                   </div>
                 )}

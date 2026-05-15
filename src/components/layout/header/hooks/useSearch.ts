@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 type SearchSuggestions = {
-  products: { slug: string; name: string; brand: string | null }[];
+  products: { slug: string; name: string; brand: string | null; price?: number; images?: string[] }[];
   categories: { slug: string; name: string }[];
 };
 

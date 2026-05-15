@@ -29,7 +29,18 @@ export function WelcomePopup({ config }: Props) {
     e.preventDefault();
     if (!email) return;
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 800));
+    try {
+      await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim(), source: "welcome_popup" })
+      });
+    } catch {
+      // silent — newsletter storage is best-effort
+    }
+    if (config.promo_code) {
+      localStorage.setItem("silvio_promo_code", config.promo_code);
+    }
     setLoading(false);
     setSubmitted(true);
     localStorage.setItem(STORAGE_KEY, "1");

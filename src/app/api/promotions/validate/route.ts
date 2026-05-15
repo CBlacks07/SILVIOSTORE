@@ -11,6 +11,7 @@ export async function POST(req: Request) {
     if (!result.ok) return NextResponse.json(result, { status: 400 });
     return NextResponse.json({
       ok: true,
+      id: result.promotion.id,
       code: result.promotion.code,
       discount: result.discount,
       type: result.promotion.discount_type,

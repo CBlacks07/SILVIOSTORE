@@ -29,6 +29,13 @@ export default async function AdminOrdersPage() {
             </div>
             <h1 className="font-display text-lg md:text-[22px] font-bold text-brand-950">Commandes</h1>
           </div>
+          <a
+            href="/api/admin/orders/export"
+            download
+            style={{ background: "#1a1008", color: "#fff", padding: "8px 16px", borderRadius: "8px", fontSize: "13px", fontWeight: 600, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "6px" }}
+          >
+            Exporter CSV
+          </a>
         </div>
       </header>
 

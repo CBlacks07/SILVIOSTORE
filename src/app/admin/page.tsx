@@ -63,15 +63,31 @@ export default async function AdminDashboardPage() {
 
   const dailyRevenue = await sql<{ day: string; total: number }[]>`
     select
-      to_char(date_trunc('day', created_at), 'DD') as day,
+      to_char(date_trunc('day', created_at), 'DD/MM') as day,
       coalesce(sum(total), 0)::int                 as total
     from orders
-    where created_at >= now() - interval '14 days'
+    where status != 'cancelled'
+      and created_at >= now() - interval '30 days'
     group by date_trunc('day', created_at)
     order by date_trunc('day', created_at)
   `;
 
+  const topProducts = await sql<{ product_name: string; total_qty: number; total_revenue: number }[]>`
+    select
+      oi.product_name,
+      sum(oi.quantity)::int                   as total_qty,
+      sum(oi.quantity * oi.unit_price)::int   as total_revenue
+    from order_items oi
+    join orders o on o.id = oi.order_id
+    where o.status != 'cancelled'
+      and o.created_at >= now() - interval '30 days'
+    group by oi.product_name
+    order by total_qty desc
+    limit 5
+  `;
+
   const revMax = Math.max(...dailyRevenue.map((d) => d.total), 1);
+  const topMax = Math.max(...topProducts.map((p) => p.total_qty), 1);
 
   const revPct = (kpiPrev.revenue > 0)
     ? ((kpi.revenue - kpiPrev.revenue) / kpiPrev.revenue) * 100
@@ -239,30 +255,72 @@ export default async function AdminDashboardPage() {
 
           {/* Right column */}
           <div className="space-y-4 md:space-y-5">
-            {/* Revenue mini bar chart */}
+            {/* Revenue bar chart — 30 jours */}
             <div className="card p-4 md:p-5">
               <div className="flex items-baseline justify-between mb-4">
                 <div>
                   <h2 className="font-display font-semibold text-brand-950">Chiffre d'affaires</h2>
-                  <p className="text-xs text-brand-500 mt-0.5">14 derniers jours · en FCFA</p>
+                  <p className="text-xs text-brand-500 mt-0.5">30 derniers jours · en FCFA</p>
                 </div>
               </div>
-              <div className="flex items-end gap-1 h-28">
+              <div className="flex items-end gap-px h-32" style={{ overflowX: "auto" }}>
                 {dailyRevenue.length === 0 ? (
                   <p className="text-xs text-brand-400 self-center mx-auto">Pas de données</p>
                 ) : (
                   dailyRevenue.map((d, i) => (
-                    <div key={i} className="flex flex-col items-center gap-1 flex-1 group">
+                    <div key={i} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "3px", flex: 1, minWidth: "10px" }} className="group">
                       <div
-                        className="w-full rounded-sm bg-accent/80 group-hover:bg-accent transition-colors"
-                        style={{ height: `${Math.max(4, (d.total / revMax) * 100)}%` }}
+                        style={{
+                          width: "100%",
+                          borderRadius: "2px 2px 0 0",
+                          background: "#d97706",
+                          height: `${Math.max(4, (d.total / revMax) * 100)}%`,
+                          opacity: 0.8,
+                          transition: "opacity 0.15s"
+                        }}
                         title={`${d.day}: ${formatPrice(d.total)}`}
+                        onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.opacity = "1")}
+                        onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.opacity = "0.8")}
                       />
-                      <span className="text-[9px] text-brand-400">{d.day}</span>
+                      <span style={{ fontSize: "8px", color: "#9ca3af", whiteSpace: "nowrap" }}>{d.day}</span>
                     </div>
                   ))
                 )}
               </div>
+            </div>
+
+            {/* Top 5 produits */}
+            <div className="card p-4 md:p-5">
+              <div className="mb-4">
+                <h2 className="font-display font-semibold text-brand-950">Top produits vendus</h2>
+                <p className="text-xs text-brand-500 mt-0.5">30 derniers jours</p>
+              </div>
+              {topProducts.length === 0 ? (
+                <p className="text-xs text-brand-400 text-center py-4">Pas de données</p>
+              ) : (
+                <div className="space-y-3">
+                  {topProducts.map((p, i) => (
+                    <div key={i}>
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-xs text-brand-800 font-medium truncate flex-1 mr-2 leading-tight">{p.product_name}</span>
+                        <span className="text-xs font-bold text-brand-950 tabular-nums shrink-0">{p.total_qty} vendus</span>
+                      </div>
+                      <div style={{ height: "6px", background: "#f3f0eb", borderRadius: "999px", overflow: "hidden" }}>
+                        <div
+                          style={{
+                            height: "100%",
+                            borderRadius: "999px",
+                            background: "linear-gradient(90deg,#d97706,#f59e0b)",
+                            width: `${Math.round((p.total_qty / topMax) * 100)}%`,
+                            transition: "width 0.4s"
+                          }}
+                        />
+                      </div>
+                      <p className="text-[10px] text-brand-400 mt-0.5 text-right">{formatPrice(p.total_revenue)}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Low stock */}

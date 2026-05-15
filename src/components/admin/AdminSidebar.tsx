@@ -5,7 +5,8 @@ import { usePathname } from "next/navigation";
 import {
   LayoutDashboard, Package, FolderTree, ShoppingCart, Users,
   Settings, Tags, Megaphone, BadgePercent, Star, Search,
-  ChevronRight, ChevronsUpDown, ExternalLink, ImageIcon
+  ChevronRight, ChevronsUpDown, ExternalLink, ImageIcon,
+  Mail, RotateCcw
 } from "lucide-react";
 
 const NAV_GROUPS = [
@@ -29,14 +30,16 @@ const NAV_GROUPS = [
       { href: '/admin/commandes',  label: 'Commandes',    icon: ShoppingCart, badgeTone: 'amber' },
       { href: '/admin/promotions', label: 'Codes promo',  icon: BadgePercent },
       { href: '/admin/avis',       label: 'Avis clients', icon: Star, badgeTone: 'rose' },
+      { href: '/admin/retours',    label: 'Retours',      icon: RotateCcw },
     ],
   },
   {
     label: 'Marketing',
     items: [
       { href: '/admin/bibliotheque', label: 'Bibliothèque', icon: ImageIcon },
-      { href: '/admin/bannieres',   label: 'Bannières',    icon: Megaphone },
-      { href: '/admin/parametres',  label: 'Paramètres',   icon: Settings },
+      { href: '/admin/bannieres',    label: 'Bannières',    icon: Megaphone },
+      { href: '/admin/newsletter',   label: 'Newsletter',   icon: Mail },
+      { href: '/admin/parametres',   label: 'Paramètres',   icon: Settings },
     ],
   },
   {
