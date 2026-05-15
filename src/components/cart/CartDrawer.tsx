@@ -12,14 +12,11 @@ export function CartDrawer() {
   const { items, isOpen, close, updateQuantity, removeItem, subtotal } = useCart();
   const [mounted, setMounted] = useState(false);
 
+  useEffect(() => { setMounted(true); }, []);
+
   useEffect(() => {
-    setMounted(true);
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-      return () => {
-        document.body.style.overflow = "";
-      };
-    }
+    document.body.style.overflow = isOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
   }, [isOpen]);
 
   if (!mounted) return null;
@@ -28,16 +25,36 @@ export function CartDrawer() {
 
 
   return createPortal(
-    <div className={`fixed inset-0 z-[100000] ${isOpen ? "pointer-events-auto" : "pointer-events-none"}`}>
+    <div
+      style={{
+        position: "fixed", inset: 0, zIndex: 99999,
+        pointerEvents: isOpen ? "auto" : "none",
+      }}
+    >
       {/* Backdrop */}
       <div
-        className={`absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300 ${isOpen ? "opacity-100" : "opacity-0"}`}
         onClick={close}
+        style={{
+          position: "absolute", inset: 0,
+          background: "rgba(0,0,0,0.60)",
+          backdropFilter: "blur(4px)",
+          opacity: isOpen ? 1 : 0,
+          transition: "opacity 0.3s ease",
+          cursor: "pointer",
+        }}
       />
-      
+
       {/* Drawer */}
       <aside
-        className={`absolute right-0 top-0 flex h-full w-full max-w-md flex-col bg-white shadow-2xl transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "translate-x-full"}`}
+        style={{
+          position: "absolute", right: 0, top: 0,
+          height: "100%", width: "100%", maxWidth: "448px",
+          display: "flex", flexDirection: "column",
+          background: "#fff",
+          boxShadow: "-8px 0 40px rgba(0,0,0,0.18)",
+          transform: isOpen ? "translateX(0)" : "translateX(100%)",
+          transition: "transform 0.3s cubic-bezier(0.22,1,0.36,1)",
+        }}
       >
         <div className="flex h-16 items-center justify-between border-b border-brand-100 px-5">
           <div className="flex items-center gap-2">
