@@ -63,15 +63,11 @@ export function HeaderMobileMenu({
             {/* Header */}
             <div className="flex items-center justify-between px-6 h-16 border-b border-brand-100 shrink-0">
               {logoUrl ? (
-                <div className="relative h-7 w-28">
-                  <Image
-                    src={logoUrl}
-                    alt={siteName}
-                    fill
-                    className="object-contain object-left"
-                    sizes="112px"
-                  />
-                </div>
+                <img
+                  src={logoUrl}
+                  alt={siteName}
+                  className="h-7 w-auto object-contain"
+                />
               ) : (
                 <span className="font-display font-black text-lg tracking-tighter text-brand-950">
                   {siteName.toUpperCase()}

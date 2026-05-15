@@ -25,16 +25,11 @@ export function HeaderLogo({ siteName, logoUrl, onMobileMenuOpen }: Props) {
       {/* Logo */}
       <Link href="/" className="flex items-center">
         {logoUrl ? (
-          <div className="relative h-8 md:h-9 w-32 md:w-40">
-            <Image
-              src={logoUrl}
-              alt={siteName}
-              fill
-              priority
-              className="object-contain object-left"
-              sizes="(max-width: 768px) 128px, 160px"
-            />
-          </div>
+          <img
+            src={logoUrl}
+            alt={siteName}
+            className="h-8 md:h-10 w-auto object-contain"
+          />
         ) : (
           <span className="font-display text-lg lg:text-xl font-black text-white tracking-tight hover:text-accent transition-colors duration-200 whitespace-nowrap">
             {siteName.toUpperCase()}
