@@ -17,10 +17,7 @@ export function ProductCard({ product }: { product: Product }) {
   return (
     <Link 
       href={"/produit/" + product.slug} 
-      className="group flex flex-col bg-white transition-all duration-300 h-full border rounded-2xl overflow-hidden hover:shadow-lg"
-      style={{ borderColor: "rgb(228,233,240)" }}
-      onMouseOver={(e) => (e.currentTarget.style.borderColor = "rgba(217,119,6,0.45)")}
-      onMouseOut={(e) => (e.currentTarget.style.borderColor = "rgb(228,233,240)")}
+      className="product-card group flex flex-col bg-white h-full rounded-2xl overflow-hidden"
     >
       <div className="relative aspect-square w-full bg-brand-50 overflow-hidden">
         {cover ? (

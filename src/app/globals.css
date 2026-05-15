@@ -2912,6 +2912,15 @@ body {
   }
 }
 
+.product-card {
+  border: 1px solid rgb(228,233,240);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+.product-card:hover {
+  border-color: rgba(217,119,6,0.45);
+  box-shadow: 0 8px 24px rgba(217,119,6,0.12);
+  transform: translateY(-2px);
+}
 .btn-wa-pill {
   display: inline-flex;
   align-items: center;
