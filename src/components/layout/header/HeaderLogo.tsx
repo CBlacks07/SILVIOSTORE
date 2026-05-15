@@ -28,7 +28,7 @@ export function HeaderLogo({ siteName, logoUrl, onMobileMenuOpen }: Props) {
           <img
             src={logoUrl}
             alt={siteName}
-            className="h-10 md:h-14 w-auto max-w-[170px] md:max-w-[240px] object-contain"
+            className="h-14 md:h-16 w-auto max-w-[200px] md:max-w-[280px] object-contain"
           />
         ) : (
           <span className="font-display text-lg lg:text-xl font-black text-white tracking-tight hover:text-accent transition-colors duration-200 whitespace-nowrap">

@@ -42,7 +42,7 @@ export async function Footer() {
               <img
                 src={site.logo_footer_url || site.logo_url}
                 alt={brandName}
-                style={{ width: "56px", height: "56px", borderRadius: "999px", objectFit: "cover", flexShrink: 0 }}
+                style={{ width: "72px", height: "72px", borderRadius: "999px", objectFit: "cover", flexShrink: 0 }}
               />
             )}
             <div className="font-display text-lg font-bold text-white leading-tight">
