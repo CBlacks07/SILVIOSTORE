@@ -15,7 +15,8 @@ import type {
 const DEFAULTS = {
   site: {
     name: "SILVIO STORE",
-    logo_url: "",
+    logo_url: "/logo-03.png",
+    logo_footer_url: "/logo-04.png",
     tagline: "Luxe, tendance et protection réunis.",
     description:
       "La référence des accessoires premium dans la sous région. Pochettes, bracelets Apple, coques et chargeurs de qualité.",

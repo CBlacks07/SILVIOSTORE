@@ -160,6 +160,7 @@ export type Promotion = {
 export type SiteSettings = {
   name: string;
   logo_url?: string;
+  logo_footer_url?: string;
   tagline: string;
   description: string;
   phone: string;

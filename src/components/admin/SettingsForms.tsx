@@ -97,26 +97,46 @@ export function SiteInfoForm({ initial }: { initial: SiteSettings }) {
   return (
     <Section title="Informations de la boutique" busy={busy} msg={msg} onSave={() => save(v)}>
       <div className="grid gap-4 md:grid-cols-2">
-        <Field label="Logo de la boutique (Header/Footer)" full>
+        <Field label="Logo Header (rectangle)" full>
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 bg-brand-50/50 p-4 rounded-xl border border-brand-100">
             <div className="w-32 h-16 relative bg-brand-900 rounded-lg overflow-hidden flex items-center justify-center border border-brand-200 shrink-0">
               {v.logo_url ? (
                 /* eslint-disable-next-line @next/next/no-img-element */
-                <img src={v.logo_url} alt="Logo preview" className="max-w-full max-h-full object-contain p-2" />
+                <img src={v.logo_url} alt="Logo header" className="max-w-full max-h-full object-contain p-2" />
               ) : (
                 <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">Aucun logo</span>
               )}
             </div>
             <div className="flex-1 w-full">
-              <ImageUploader 
-                value={v.logo_url || ""} 
-                onChange={(url) => setV({ ...v, logo_url: url })} 
+              <ImageUploader
+                value={v.logo_url || ""}
+                onChange={(url) => setV({ ...v, logo_url: url })}
                 folder="site"
                 emptyMinHeight="sm"
               />
-              <p className="mt-1.5 text-[11px] text-brand-500 leading-relaxed">
-                Recommandé : PNG transparent ou SVG. Apparaîtra dans le menu et en bas de page.
-              </p>
+              <p className="mt-1.5 text-[11px] text-brand-500">Affiché dans la barre de navigation (header).</p>
+            </div>
+          </div>
+        </Field>
+
+        <Field label="Logo Footer (rondelle)" full>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 bg-brand-50/50 p-4 rounded-xl border border-brand-100">
+            <div className="w-16 h-16 relative bg-brand-900 rounded-full overflow-hidden flex items-center justify-center border border-brand-200 shrink-0">
+              {v.logo_footer_url ? (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img src={v.logo_footer_url} alt="Logo footer" className="max-w-full max-h-full object-cover" />
+              ) : (
+                <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">Aucun</span>
+              )}
+            </div>
+            <div className="flex-1 w-full">
+              <ImageUploader
+                value={v.logo_footer_url || ""}
+                onChange={(url) => setV({ ...v, logo_footer_url: url })}
+                folder="site"
+                emptyMinHeight="sm"
+              />
+              <p className="mt-1.5 text-[11px] text-brand-500">Affiché dans le footer (format carré ou rond recommandé).</p>
             </div>
           </div>
         </Field>
