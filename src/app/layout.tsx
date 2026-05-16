@@ -8,6 +8,7 @@ import { AuthSync } from "@/components/auth/AuthSync";
 import { PageAnimations } from "@/components/layout/PageAnimations";
 import { WhatsAppFloat } from "@/components/layout/WhatsAppFloat";
 import { MarketingProvider } from "@/components/marketing/MarketingProvider";
+import { CompareBar } from "@/components/product/CompareBar";
 import "./globals.css";
 import "./typography.css";
 
@@ -21,7 +22,19 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: { default: `${brandName} | Accessoires mobiles`, template: `%s | ${brandName}` },
     description: site.description,
-    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000")
+    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
+    manifest: "/manifest.json",
+    themeColor: "#d97706",
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: "black-translucent",
+      title: brandName,
+    },
+    viewport: {
+      width: "device-width",
+      initialScale: 1,
+      maximumScale: 5,
+    }
   };
 }
 
@@ -35,6 +48,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main className="flex-1">{children}</main>
         <Footer />
         <WhatsAppFloat />
+        <CompareBar />
         <MarketingProvider />
       </body>
     </html>

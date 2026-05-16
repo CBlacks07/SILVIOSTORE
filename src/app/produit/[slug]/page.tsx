@@ -7,6 +7,7 @@ import { ProductGallery } from "@/components/product/ProductGallery";
 import { AddToCartForm } from "@/components/product/AddToCartForm";
 import { StockUrgency } from "@/components/marketing/StockUrgency";
 import { RecentlyViewedTracker, RecentlyViewedSection } from "@/components/product/RecentlyViewed";
+import { CompareButton } from "@/components/product/CompareButton";
 import { ProductTabs } from "@/components/product/ProductTabs";
 import { ProductStickyBar } from "@/components/product/ProductStickyBar";
 import { QuickAddButton } from "@/components/product/QuickAddButton";
@@ -175,6 +176,16 @@ export default async function ProductPage({ params }: { params: { slug: string }
                 {product.brand}
               </span>
             )}
+
+            {/* Compare */}
+            <div className="flex items-center gap-2 flex-wrap">
+              {product.brand && (
+                <span className="text-xs uppercase tracking-widest text-brand-500 font-black bg-brand-50 px-4 py-2 rounded-full border border-brand-200">
+                  {product.brand}
+                </span>
+              )}
+              <CompareButton productId={product.id} />
+            </div>
 
             {/* Title */}
             <h1 className="font-display text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-black text-brand-950 leading-tight tracking-tight">

@@ -7,10 +7,11 @@ export async function POST(req: Request) {
   if (!user) return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
 
   try {
-    const { productId, rating, comment } = (await req.json()) as {
+    const { productId, rating, comment, photos } = (await req.json()) as {
       productId?: string;
       rating?: number;
       comment?: string;
+      photos?: string[];
     };
 
     if (!productId) return NextResponse.json({ error: "Produit manquant" }, { status: 400 });
@@ -60,9 +61,10 @@ export async function POST(req: Request) {
     } else {
       await sql`
         insert into product_reviews (
-          product_id, user_id, author_name, rating, comment, is_verified_purchase, is_approved
+          product_id, user_id, author_name, rating, comment, is_verified_purchase, is_approved, photos
         ) values (
-          ${productId}, ${user.id}, ${authorName}, ${rating}, ${cleanComment}, true, true
+          ${productId}, ${user.id}, ${authorName}, ${rating}, ${cleanComment}, true, true,
+          ${sql.array(photos && photos.length > 0 ? photos.slice(0, 3) : [])}
         )
       `;
     }
