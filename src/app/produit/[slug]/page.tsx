@@ -173,46 +173,33 @@ export default async function ProductPage({ params }: { params: { slug: string }
             </div>
 
             {/* Price */}
-            <div className="bg-gradient-to-br from-white to-brand-50/50 p-6 rounded-2xl border-2 border-brand-100 shadow-sm">
-              <div className="flex flex-wrap items-baseline gap-4">
-                <span className="text-4xl sm:text-5xl lg:text-6xl font-black text-brand-950 tracking-tight">
+            <div>
+              <div className="flex flex-wrap items-baseline gap-4 mb-3">
+                <span className="font-display text-3xl sm:text-4xl font-black tracking-tight" style={{ color: "#1a1008" }}>
                   {formatPrice(product.price)}
                 </span>
                 {product.compare_at_price && product.compare_at_price > product.price && (
-                  <div className="flex flex-col gap-1">
-                    <span className="text-xl text-brand-400 line-through font-medium">
-                      {formatPrice(product.compare_at_price)}
-                    </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg text-brand-400 line-through">{formatPrice(product.compare_at_price)}</span>
                     {discount && (
-                      <span className="inline-block bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">
-                        -{discount}%
-                      </span>
+                      <span style={{ background: "#d97706", color: "#fff", fontSize: "11px", fontWeight: 700, padding: "2px 8px", borderRadius: "999px" }}>-{discount}%</span>
                     )}
                   </div>
                 )}
               </div>
-
-              {/* Stock Status */}
-              <div className="mt-4 pt-4 border-t border-brand-200">
-                {product.stock > 0 ? (
-                  <div className="inline-flex items-center gap-2 text-sm font-bold text-green-700 bg-green-50 px-4 py-2 rounded-full border border-green-200">
-                    <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                    En stock - disponible
-                  </div>
-                ) : (
-                  <div className="inline-flex items-center gap-2 text-sm font-bold text-red-700 bg-red-50 px-4 py-2 rounded-full border border-red-200">
-                    <span className="w-2 h-2 rounded-full bg-red-500"></span>
-                    Rupture de stock
-                  </div>
-                )}
-              </div>
+              {product.stock > 0 ? (
+                <div className="inline-flex items-center gap-2 text-sm font-semibold text-green-700">
+                  <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                  En stock
+                </div>
+              ) : (
+                <span className="text-sm font-semibold text-red-600">Rupture de stock</span>
+              )}
             </div>
 
             {/* Description */}
             {product.description && (
-              <div className="bg-white p-6 rounded-2xl border border-brand-100 shadow-sm">
-                <p className="text-base leading-relaxed text-brand-700">{product.description}</p>
-              </div>
+              <p className="text-sm leading-relaxed text-brand-700 border-l-2 pl-4" style={{ borderColor: "rgba(217,119,6,0.40)" }}>{product.description}</p>
             )}
 
             {/* Stock urgency */}
@@ -221,7 +208,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
             )}
 
             {/* Add to Cart */}
-            <div className="bg-gradient-to-br from-white to-brand-50/30 p-6 rounded-2xl border-2 border-brand-200 shadow-md">
+            <div className="py-2">
               <AddToCartForm product={product} />
             </div>
 
@@ -234,7 +221,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
               ].map(({ icon: Icon, label, sub }) => (
                 <div
                   key={label}
-                  className="flex flex-col items-center gap-2 rounded-xl border-2 border-brand-100 bg-white px-3 py-4 text-center hover:border-accent/40 hover:shadow-lg transition-all"
+                  className="flex flex-col items-center gap-2 rounded-xl bg-brand-50/60 px-3 py-3 text-center"
                 >
                   <Icon className="h-6 w-6 md:h-7 md:w-7 text-accent" />
                   <span className="text-xs md:text-sm font-bold text-brand-900 leading-tight">{label}</span>
@@ -244,7 +231,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
             </div>
 
             {/* Product Info Cards */}
-            <div className="rounded-2xl border-2 border-brand-100 bg-white p-5 md:p-6 shadow-sm">
+            <div className="rounded-xl border border-brand-100 bg-white p-4">
               <h2 className="text-base md:text-lg font-black text-brand-950 mb-5 flex items-center gap-2">
                 <PackageCheck className="h-5 w-5 md:h-6 md:w-6 text-accent" />
                 Informations produit
@@ -265,7 +252,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
             </div>
 
             {/* Benefits */}
-            <div className="rounded-2xl border-2 border-green-200 bg-gradient-to-br from-green-50 to-white p-6 md:p-7 shadow-sm">
+            <div className="rounded-xl border border-green-100 bg-green-50/40 p-4">
               <h2 className="text-base md:text-lg font-black text-brand-950 mb-5 flex items-center gap-2">
                 <CheckCircle2 className="h-5 w-5 md:h-6 md:w-6 text-green-600" />
                 Pourquoi cet accessoire ?
@@ -304,7 +291,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
         <ProductTabs product={product} faqItems={quickFaq} />
 
         <section className="mt-12 grid gap-8 lg:grid-cols-2">
-          <div className="rounded-2xl border-2 border-brand-100 bg-white p-6 md:p-8 shadow-sm">
+          <div className="rounded-xl border border-brand-100 bg-white p-5">
             <h2 className="font-display text-xl md:text-2xl font-black text-brand-950 mb-2">Avis clients</h2>
             <p className="text-sm text-brand-600 mb-6">
               {socialProof.avgRating
@@ -332,7 +319,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
             </div>
           </div>
 
-          <div className="rounded-2xl border-2 border-brand-100 bg-white p-6 md:p-8 shadow-sm">
+          <div className="rounded-xl border border-brand-100 bg-white p-5">
             <h2 className="font-display text-xl md:text-2xl font-black text-brand-950 mb-2">Donner votre avis</h2>
             <p className="text-sm text-brand-600 mb-6">Votre retour aide les autres clients à mieux choisir.</p>
             <div>
@@ -349,7 +336,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
             </div>
             <div className="grid gap-5 md:grid-cols-3">
               {frequentlyBought.map((p) => (
-                <div key={p.id} className="rounded-2xl border-2 border-brand-100 bg-white p-5 hover:shadow-lg hover:border-accent/30 transition-all">
+                <div key={p.id} className="rounded-xl border border-brand-100 bg-white p-4">
                   <Link href={"/produit/" + p.slug} className="text-base font-bold text-brand-900 hover:text-accent transition-colors">
                     {p.name}
                   </Link>
