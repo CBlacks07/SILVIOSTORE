@@ -6,6 +6,7 @@ import { ProductCard } from "@/components/product/ProductCard";
 import { ProductGallery } from "@/components/product/ProductGallery";
 import { AddToCartForm } from "@/components/product/AddToCartForm";
 import { StockUrgency } from "@/components/marketing/StockUrgency";
+import { RecentlyViewedTracker, RecentlyViewedSection } from "@/components/product/RecentlyViewed";
 import { ProductTabs } from "@/components/product/ProductTabs";
 import { ProductStickyBar } from "@/components/product/ProductStickyBar";
 import { QuickAddButton } from "@/components/product/QuickAddButton";
@@ -29,12 +30,37 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const product = await getProductBySlug(params.slug);
   if (!product) return {};
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://silviostore.vercel.app";
+  const image = product.images?.[0];
+  const imageUrl = image
+    ? image.startsWith("http") ? image : `${siteUrl}${image}`
+    : undefined;
+
+  const description = product.description
+    || `Acheter ${product.name} sur SILVIO STORE. Accessoires premium livrés dans la sous région. Paiement Mobile Money.`;
+
   return {
-    title: product.name,
-    description: product.description || `Acheter ${product.name} sur SILVIO STORE. Qualité premium et livraison rapide.`,
+    title: `${product.name} | SILVIO STORE`,
+    description,
     openGraph: {
-      images: product.images?.[0] ? [{ url: product.images[0] }] : []
-    }
+      title: product.name,
+      description,
+      type: "website",
+      url: `${siteUrl}/produit/${product.slug}`,
+      siteName: "SILVIO STORE",
+      images: imageUrl ? [{
+        url: imageUrl,
+        width: 1200,
+        height: 630,
+        alt: product.name,
+      }] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: product.name,
+      description,
+      images: imageUrl ? [imageUrl] : [],
+    },
   };
 }
 
@@ -362,6 +388,10 @@ export default async function ProductPage({ params }: { params: { slug: string }
         )}
       </div>
 
+      <RecentlyViewedTracker product={{ id: product.id, slug: product.slug, name: product.name, price: product.price, image: product.images?.[0] ?? null }} />
+      <div className="container-page">
+        <RecentlyViewedSection currentId={product.id} />
+      </div>
       <ProductStickyBar product={product} />
     </div>
   );
