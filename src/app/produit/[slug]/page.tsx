@@ -175,7 +175,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
             {/* Price */}
             <div>
               <div className="flex flex-wrap items-baseline gap-4 mb-3">
-                <span className="font-display text-4xl sm:text-5xl font-black tracking-tight" style={{ color: "#1a1008" }}>
+                <span className="font-display font-black tracking-tight" style={{ fontSize: "clamp(2.8rem, 7vw, 4.5rem)", color: "#1a1008", lineHeight: 1 }}>
                   {formatPrice(product.price)}
                 </span>
                 {product.compare_at_price && product.compare_at_price > product.price && (
