@@ -8,24 +8,18 @@ export async function POST(req: Request) {
       return NextResponse.json({ products: [] });
     }
 
-    const safeIds = ids.filter((id) => typeof id === "string").slice(0, 100);
+    const safeIds = ids.filter((id) => typeof id === "string").slice(0, 20);
 
-    const products = await sql<{
-      id: string;
-      slug: string;
-      name: string;
-      brand: string | null;
-      price: number;
-      compare_at_price: number | null;
-      images: string[];
-      stock: number;
-    }[]>`
-      SELECT id, slug, name, brand, price, compare_at_price, images, stock
-      FROM products
-      WHERE id = ANY(${safeIds})
-        AND is_active = true
-    `;
+    const results = await Promise.all(
+      safeIds.map((id: string) =>
+        sql<{ id: string; slug: string; name: string; brand: string | null; price: number; compare_at_price: number | null; images: string[]; stock: number }[]>`
+          SELECT id, slug, name, brand, price, compare_at_price, images, stock
+          FROM products WHERE id = ${id} AND is_active = true LIMIT 1
+        `
+      )
+    );
 
+    const products = results.flat().filter(Boolean);
     return NextResponse.json({ products });
   } catch (e: any) {
     return NextResponse.json({ products: [] });

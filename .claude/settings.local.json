@@ -8,7 +8,9 @@
       "Bash(sed -i 's/<AddToCartForm product={p} \\\\/>/<QuickAddButton product={p} className=\"btn-accent w-full text-sm\" \\\\/>/' src/app/comparer/page.tsx)",
       "Bash(head -5 src/lib/db.ts)",
       "Bash(head -5 src/lib/db.js)",
-      "Bash(cd \"c:\\\\Users\\\\CCL\\\\Desktop\\\\SILVIO STORE\" && sed -i 's/<CompareButton productId={product.id} \\\\/>/<CompareButton productId={product.id} productName={product.name} \\\\/>/' src/app/produit/\\\\[slug\\\\]/page.tsx && grep -n \"CompareButton\" src/app/produit/\\\\[slug\\\\]/page.tsx)"
+      "Bash(cd \"c:\\\\Users\\\\CCL\\\\Desktop\\\\SILVIO STORE\" && sed -i 's/<CompareButton productId={product.id} \\\\/>/<CompareButton productId={product.id} productName={product.name} \\\\/>/' src/app/produit/\\\\[slug\\\\]/page.tsx && grep -n \"CompareButton\" src/app/produit/\\\\[slug\\\\]/page.tsx)",
+      "Bash(sed -n '85,95p' src/app/api/checkout/route.ts)",
+      "Bash(sed -n '100,110p' src/lib/queries.ts)"
     ],
     "additionalDirectories": [
       "C:\\Users\\CCL\\Desktop\\SILVIO STORE\\src\\app\\produit\\[slug]",
