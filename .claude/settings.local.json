@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd \"c:\\\\Users\\\\CCL\\\\Desktop\\\\SILVIO STORE\" && sed -i 's/className=\"font-display text-3xl sm:text-4xl font-black tracking-tight\"/className=\"font-display text-4xl sm:text-5xl font-black tracking-tight\"/' src/app/produit/\\\\[slug\\\\]/page.tsx && grep -n \"text-4xl sm:text-5xl\" src/app/produit/\\\\[slug\\\\]/page.tsx)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\CCL\\Desktop\\SILVIO STORE\\src\\app\\produit\\[slug]"
+    ]
+  }
+}
