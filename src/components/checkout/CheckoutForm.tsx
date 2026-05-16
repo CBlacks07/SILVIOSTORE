@@ -244,7 +244,7 @@ export function CheckoutForm({
         ))}
       </div>
 
-      <form onSubmit={handleSubmit} className="mt-8 grid gap-8 lg:grid-cols-[1fr,360px] items-start">
+      <form onSubmit={handleSubmit} className="checkout-grid mt-8">
         <div className="space-y-5">
           <section className="card p-6">
             <h2 className="mb-5 font-semibold text-brand-950 flex items-center gap-2 text-sm">
