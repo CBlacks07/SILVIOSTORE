@@ -414,19 +414,22 @@ export function CheckoutForm({
               </button>
             </div>
 
-            <div className="mt-4 flex flex-wrap justify-center gap-2 text-[11px]">
-              <div className="inline-flex items-center gap-1 rounded-full border border-brand-200 bg-brand-50 px-2.5 py-1 text-brand-700">
-                <ShieldCheck className="h-3.5 w-3.5" />
-                Paiement sécurisé
-              </div>
-              <div className="inline-flex items-center gap-1 rounded-full border border-brand-200 bg-brand-50 px-2.5 py-1 text-brand-700">
-                <Truck className="h-3.5 w-3.5" />
-                Livraison {eta}
-              </div>
-              <div className="inline-flex items-center gap-1 rounded-full border border-brand-200 bg-brand-50 px-2.5 py-1 text-brand-700">
-                <MessageCircle className="h-3.5 w-3.5" />
-                Support WhatsApp
-              </div>
+            <div className="mt-5 pt-4 border-t border-brand-100 space-y-3">
+              {[
+                { icon: ShieldCheck, label: "Paiement sécurisé", sub: "Via FedaPay" },
+                { icon: Truck, label: `Livraison ${eta}`, sub: `${formatPrice(shippingCost)}` },
+                { icon: MessageCircle, label: "Support WhatsApp", sub: "Réponse rapide" },
+              ].map(({ icon: Icon, label, sub }) => (
+                <div key={label} className="flex items-center gap-3">
+                  <div style={{ width: "34px", height: "34px", borderRadius: "10px", background: "rgba(217,119,6,0.08)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <Icon className="h-4 w-4 text-accent" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold text-brand-900">{label}</p>
+                    <p className="text-[10px] text-brand-500">{sub}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </aside>
