@@ -26,9 +26,13 @@ export default async function ComparePage({
   let products: Product[] = [];
   try {
     if (ids.length > 0) {
-      products = await sql<Product[]>`
-        SELECT * FROM products WHERE id = ANY(${sql.array(ids)}) AND is_active = true
-      `;
+      // Fetch each product individually to avoid sql.array() issues
+      const results = await Promise.all(
+        ids.map((id) =>
+          sql<Product[]>`SELECT * FROM products WHERE id = ${id} AND is_active = true LIMIT 1`
+        )
+      );
+      products = results.flat().filter(Boolean);
     }
   } catch (e) {
     console.error("comparer query error:", e);
