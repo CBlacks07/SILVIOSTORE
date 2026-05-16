@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { Search, X, Loader2 } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
@@ -15,15 +16,16 @@ export function HeaderSearch() {
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [mounted, setMounted] = useState(false);
+  const [rect, setRect] = useState<DOMRect | null>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => { setMounted(true); }, []);
 
   // Debounced fetch
   useEffect(() => {
     if (q.trim().length < 2) {
-      setProducts([]);
-      setCategories([]);
-      setLoading(false);
-      return;
+      setProducts([]); setCategories([]); setLoading(false); return;
     }
     setLoading(true);
     const t = setTimeout(async () => {
@@ -32,7 +34,10 @@ export function HeaderSearch() {
         const data = await res.json();
         setProducts(data.products || []);
         setCategories(data.categories || []);
-        setOpen(true);
+        if ((data.products?.length || data.categories?.length)) {
+          setOpen(true);
+          if (wrapRef.current) setRect(wrapRef.current.getBoundingClientRect());
+        }
       } catch {}
       setLoading(false);
     }, 250);
@@ -43,6 +48,8 @@ export function HeaderSearch() {
   useEffect(() => {
     function handler(e: MouseEvent) {
       if (wrapRef.current && !wrapRef.current.contains(e.target as Node)) {
+        const drop = document.getElementById("search-drop");
+        if (drop && drop.contains(e.target as Node)) return;
         setOpen(false);
       }
     }
@@ -50,66 +57,69 @@ export function HeaderSearch() {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
+  function close() { setOpen(false); setQ(""); setProducts([]); setCategories([]); }
+
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (q.trim()) {
-      router.push("/catalogue?q=" + encodeURIComponent(q.trim()));
-      setOpen(false);
-    }
+    if (q.trim()) { router.push("/catalogue?q=" + encodeURIComponent(q.trim())); close(); }
   }
 
   const hasResults = products.length > 0 || categories.length > 0;
 
   return (
-    <div ref={wrapRef} style={{ position: "relative", width: "100%" }}>
-      <form onSubmit={handleSubmit} style={{ display: "flex", alignItems: "center", height: "42px", borderRadius: "999px", background: "#fff", border: "2px solid rgba(255,255,255,0.15)", overflow: "hidden" }}>
-        <span style={{ display: "flex", alignItems: "center", padding: "0 10px 0 14px", color: "#9ca3af", flexShrink: 0 }}>
-          {loading ? <Loader2 size={15} style={{ animation: "spin 0.8s linear infinite", color: "#d97706" }} /> : <Search size={15} />}
-        </span>
-        <input
-          type="text"
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-          onFocus={() => { if (hasResults) setOpen(true); }}
-          onKeyDown={(e) => { if (e.key === "Escape") { setOpen(false); setQ(""); } }}
-          placeholder="Rechercher un produit..."
-          autoComplete="off"
-          style={{ flex: 1, minWidth: 0, background: "transparent", border: "none", outline: "none", fontSize: "14px", color: "#1a1008", padding: "0 4px" }}
-        />
-        {q && (
-          <button type="button" onClick={() => { setQ(""); setProducts([]); setCategories([]); setOpen(false); }}
-            style={{ background: "none", border: "none", cursor: "pointer", padding: "0 6px", color: "#9ca3af", display: "flex", alignItems: "center" }}>
-            <X size={13} />
+    <>
+      <div ref={wrapRef} style={{ width: "100%", position: "relative" }}>
+        <form onSubmit={handleSubmit} style={{ display: "flex", alignItems: "center", height: "42px", borderRadius: "999px", background: "#fff", overflow: "hidden", border: "2px solid transparent" }}>
+          <span style={{ display: "flex", alignItems: "center", padding: "0 10px 0 14px", color: "#9ca3af", flexShrink: 0 }}>
+            {loading ? <Loader2 size={15} style={{ color: "#d97706", animation: "spin 0.8s linear infinite" }} /> : <Search size={15} />}
+          </span>
+          <input
+            type="text"
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            onFocus={() => { if (hasResults && wrapRef.current) { setRect(wrapRef.current.getBoundingClientRect()); setOpen(true); }}}
+            onKeyDown={(e) => { if (e.key === "Escape") close(); }}
+            placeholder="Rechercher un produit..."
+            autoComplete="off"
+            style={{ flex: 1, minWidth: 0, background: "transparent", border: "none", outline: "none", fontSize: "14px", color: "#1a1008", padding: "0 4px" }}
+          />
+          {q && (
+            <button type="button" onClick={close} style={{ background: "none", border: "none", cursor: "pointer", padding: "0 6px", color: "#9ca3af", display: "flex", alignItems: "center" }}>
+              <X size={13} />
+            </button>
+          )}
+          <button type="submit" style={{ background: "#d97706", color: "#fff", border: "none", height: "100%", padding: "0 18px", fontSize: "11px", fontWeight: 800, letterSpacing: "0.08em", textTransform: "uppercase", cursor: "pointer", flexShrink: 0 }}>
+            Chercher
           </button>
-        )}
-        <button type="submit" style={{ background: "#d97706", color: "#fff", border: "none", height: "100%", padding: "0 18px", fontSize: "11px", fontWeight: 800, letterSpacing: "0.08em", textTransform: "uppercase", cursor: "pointer", flexShrink: 0 }}>
-          Chercher
-        </button>
-      </form>
+        </form>
+      </div>
 
-      {/* Dropdown */}
-      {open && hasResults && (
-        <div style={{
-          position: "absolute",
-          top: "calc(100% + 8px)",
-          left: 0,
-          right: 0,
-          zIndex: 9999,
-          background: "#fff",
-          borderRadius: "14px",
-          boxShadow: "0 12px 40px rgba(0,0,0,0.18)",
-          border: "1px solid rgba(217,119,6,0.15)",
-          overflow: "hidden",
-          maxHeight: "70vh",
-          overflowY: "auto",
-        }}>
+      {/* Portal dropdown — outside any overflow:hidden container */}
+      {mounted && open && hasResults && rect && createPortal(
+        <div
+          id="search-drop"
+          style={{
+            position: "fixed",
+            top: rect.bottom + 8,
+            left: rect.left,
+            width: rect.width,
+            zIndex: 999999,
+            background: "#fff",
+            borderRadius: "14px",
+            boxShadow: "0 12px 48px rgba(0,0,0,0.22)",
+            border: "1px solid rgba(217,119,6,0.18)",
+            overflow: "hidden",
+            maxHeight: "70vh",
+            overflowY: "auto",
+          }}
+        >
           {/* Categories */}
           {categories.length > 0 && (
             <div style={{ padding: "12px 16px 10px" }}>
               <p style={{ fontSize: "9px", fontWeight: 800, letterSpacing: "0.2em", textTransform: "uppercase", color: "#9ca3af", margin: "0 0 8px" }}>Catégories</p>
               <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
                 {categories.map((c) => (
-                  <a key={c.slug} href={"/catalogue?categorie=" + c.slug} onClick={() => setOpen(false)}
+                  <a key={c.slug} href={"/catalogue?categorie=" + c.slug} onClick={close}
                     style={{ padding: "4px 12px", background: "rgba(217,119,6,0.08)", border: "1px solid rgba(217,119,6,0.20)", borderRadius: "999px", fontSize: "12px", color: "#92400e", fontWeight: 600, textDecoration: "none" }}>
                     {c.name}
                   </a>
@@ -124,9 +134,8 @@ export function HeaderSearch() {
               {categories.length > 0 && <div style={{ height: "1px", background: "#f3f4f6", margin: "0 16px" }} />}
               <p style={{ fontSize: "9px", fontWeight: 800, letterSpacing: "0.2em", textTransform: "uppercase", color: "#9ca3af", padding: "10px 16px 4px", margin: 0 }}>Produits</p>
               {products.map((p) => (
-                <a key={p.slug} href={"/produit/" + p.slug}
-                  onClick={() => { setOpen(false); setQ(""); }}
-                  style={{ display: "flex", alignItems: "center", gap: "12px", padding: "8px 16px", textDecoration: "none", background: "transparent" }}
+                <a key={p.slug} href={"/produit/" + p.slug} onClick={close}
+                  style={{ display: "flex", alignItems: "center", gap: "12px", padding: "8px 16px", textDecoration: "none", background: "transparent", transition: "background 0.1s" }}
                   onMouseOver={(e) => (e.currentTarget.style.background = "rgba(217,119,6,0.05)")}
                   onMouseOut={(e) => (e.currentTarget.style.background = "transparent")}
                 >
@@ -147,13 +156,14 @@ export function HeaderSearch() {
           )}
 
           <div style={{ borderTop: "1px solid #f3f4f6", padding: "10px 16px" }}>
-            <a href={"/catalogue?q=" + encodeURIComponent(q)} onClick={() => setOpen(false)}
+            <a href={"/catalogue?q=" + encodeURIComponent(q)} onClick={close}
               style={{ fontSize: "12px", color: "#d97706", fontWeight: 600, textDecoration: "none", display: "flex", alignItems: "center", gap: "6px" }}>
               <Search size={12} /> Voir tous les résultats pour « {q} »
             </a>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
-    </div>
+    </>
   );
 }
