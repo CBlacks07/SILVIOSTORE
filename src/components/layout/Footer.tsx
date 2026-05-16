@@ -99,19 +99,34 @@ export async function Footer() {
           <h4 className="text-sm font-semibold text-white">Contact</h4>
           <ul className="mt-4 space-y-3 text-sm">
             <li className="flex items-start gap-2">
-              <MapPin className="mt-0.5 h-4 w-4 text-brand-400" />
-              {site.address}
+              <MapPin className="mt-0.5 h-4 w-4 text-brand-400 shrink-0" />
+              <a
+                href="https://maps.google.com/?q=SILVIO+STORE+Lomé+Nukafu"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-brand-300 hover:text-white transition-colors"
+              >
+                {site.address}
+              </a>
             </li>
             <li className="flex items-start gap-2">
               <Phone className="mt-0.5 h-4 w-4 text-brand-400 shrink-0" />
               <span>
-                {site.phone}
-                {site.phone2 && <><br />{site.phone2}</>}
+                <a href={"tel:" + site.phone.replace(/\s/g, "")} className="text-brand-300 hover:text-white transition-colors block">
+                  {site.phone}
+                </a>
+                {site.phone2 && (
+                  <a href={"tel:" + site.phone2.replace(/\s/g, "")} className="text-brand-300 hover:text-white transition-colors block">
+                    {site.phone2}
+                  </a>
+                )}
               </span>
             </li>
             <li className="flex items-start gap-2">
-              <Mail className="mt-0.5 h-4 w-4 text-brand-400" />
-              {site.email}
+              <Mail className="mt-0.5 h-4 w-4 text-brand-400 shrink-0" />
+              <a href={"mailto:" + site.email} className="text-brand-300 hover:text-white transition-colors">
+                {site.email}
+              </a>
             </li>
           </ul>
         </div>
