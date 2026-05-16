@@ -6,14 +6,12 @@ import { useWishlist } from "@/store/wishlist";
 
 export function WishlistButton({ productId }: { productId: string }) {
   const toggle = useWishlist((s) => s.toggle);
-  const has = useWishlist((s) => s.has);
+  const active = useWishlist((s) => s.items.includes(productId));
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
 
   if (!mounted) return null;
-
-  const active = has(productId);
 
   return (
     <button
