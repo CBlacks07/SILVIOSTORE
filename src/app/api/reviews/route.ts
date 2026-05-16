@@ -64,7 +64,7 @@ export async function POST(req: Request) {
           product_id, user_id, author_name, rating, comment, is_verified_purchase, is_approved, photos
         ) values (
           ${productId}, ${user.id}, ${authorName}, ${rating}, ${cleanComment}, true, true,
-          ${sql.array(photos && photos.length > 0 ? photos.slice(0, 3) : [])}
+          ${(photos && photos.length > 0 ? photos.slice(0, 3) : []) as string[]}
         )
       `;
     }

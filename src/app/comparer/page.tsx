@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import { sql } from "@/lib/db";
 import Link from "next/link";
 import { formatPrice } from "@/lib/utils";
-import { CheckCircle2, XCircle, ShoppingCart } from "lucide-react";
+import { CheckCircle2, XCircle } from "lucide-react";
 import { QuickAddButton } from "@/components/product/QuickAddButton";
 import type { Product } from "@/lib/types";
 
@@ -23,9 +23,16 @@ export default async function ComparePage({
     );
   }
 
-  const products = await sql<Product[]>`
-    SELECT * FROM products WHERE id = ANY(${sql.array(ids)}) AND is_active = true
-  `;
+  let products: Product[] = [];
+  try {
+    if (ids.length > 0) {
+      products = await sql<Product[]>`
+        SELECT * FROM products WHERE id = ANY(${sql.array(ids)}) AND is_active = true
+      `;
+    }
+  } catch (e) {
+    console.error("comparer query error:", e);
+  }
 
   const fields = [
     { key: "price", label: "Prix", render: (p: Product) => <strong style={{ color: "#d97706", fontSize: "18px", fontWeight: 800 }}>{formatPrice(p.price)}</strong> },

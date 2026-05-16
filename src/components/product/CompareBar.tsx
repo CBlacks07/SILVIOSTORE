@@ -1,14 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { X, GitCompareArrows } from "lucide-react";
 import { useCompare } from "@/store/compare";
 
 export function CompareBar() {
   const { ids, remove, clear } = useCompare();
   const [mounted, setMounted] = useState(false);
-  const router = useRouter();
   useEffect(() => setMounted(true), []);
   if (!mounted || ids.length === 0) return null;
 
@@ -41,13 +39,12 @@ export function CompareBar() {
         ))}
       </div>
       {ids.length >= 2 && (
-        <button
-          type="button"
-          onClick={() => router.push("/comparer?ids=" + ids.join(","))}
-          style={{ background: "linear-gradient(135deg,#d97706,#f59e0b)", color: "#fff", border: "none", borderRadius: "8px", padding: "8px 16px", fontSize: "12px", fontWeight: 700, cursor: "pointer", flexShrink: 0, whiteSpace: "nowrap" }}
+        <a
+          href={"/comparer?ids=" + ids.join(",")}
+          style={{ background: "linear-gradient(135deg,#d97706,#f59e0b)", color: "#fff", borderRadius: "8px", padding: "8px 16px", fontSize: "12px", fontWeight: 700, flexShrink: 0, whiteSpace: "nowrap", textDecoration: "none", display: "inline-flex", alignItems: "center" }}
         >
           Comparer
-        </button>
+        </a>
       )}
       <button type="button" onClick={clear} style={{ background: "none", border: "none", cursor: "pointer", color: "#9ca3af" }}>
         <X size={16} />
