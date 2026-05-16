@@ -86,10 +86,14 @@ export async function POST(req: Request) {
     }
 
     const ids = items.map((i) => i.productId);
-    const idArray = sql.array(ids, 2950);
-    const products = await sql<{ id: string; name: string; price: number; stock: number; is_active: boolean }[]>`
-      select id, name, price, stock, is_active from products where id = any(${idArray})
-    `;
+    const productResults = await Promise.all(
+      ids.map((id) =>
+        sql<{ id: string; name: string; price: number; stock: number; is_active: boolean }[]>`
+          select id, name, price, stock, is_active from products where id = ${id} limit 1
+        `
+      )
+    );
+    const products = productResults.flat().filter(Boolean);
 
     let subtotal = 0;
     for (const item of items) {

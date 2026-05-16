@@ -101,31 +101,45 @@ export async function getFrequentlyBoughtTogether(productId: string, limit = 4):
 
 export async function getCartRecommendations(productIds: string[], limit = 4): Promise<Product[]> {
   if (productIds.length === 0) return [];
-  const idArray = sql.array(productIds, 2950);
 
-  const byCategory = await sql<Product[]>`
-    select distinct on (p.id) p.*
-    from products source
-    join products p
-      on p.category_id = source.category_id
-     and p.is_active = true
-     and p.id <> source.id
-    where source.id = any(${idArray})
-      and p.id <> all(${idArray})
-    order by p.id, p.is_featured desc, p.created_at desc
-    limit ${limit}
-  `;
-  if (byCategory.length >= limit) return byCategory;
+  // Get categories of the cart products
+  const cartProducts = await Promise.all(
+    productIds.slice(0, 5).map((id) =>
+      sql<{ category_id: string }[]>`SELECT category_id FROM products WHERE id = ${id} LIMIT 1`
+    )
+  );
+  const categoryIds = [...new Set(cartProducts.flat().map((r) => r.category_id).filter(Boolean))];
 
-  const fallback = await sql<Product[]>`
-    select *
-    from products
-    where is_active = true
-      and id <> all(${idArray})
-    order by is_featured desc, created_at desc
-    limit ${limit - byCategory.length}
-  `;
-  return [...byCategory, ...fallback];
+  if (categoryIds.length === 0) {
+    return sql<Product[]>`SELECT * FROM products WHERE is_active = true ORDER BY is_featured DESC, created_at DESC LIMIT ${limit}`;
+  }
+
+  const recommended: Product[] = [];
+  for (const catId of categoryIds) {
+    const rows = await sql<Product[]>`
+      SELECT * FROM products
+      WHERE is_active = true AND category_id = ${catId}
+      ORDER BY is_featured DESC, created_at DESC
+      LIMIT ${limit}
+    `;
+    recommended.push(...rows.filter((r) => !productIds.includes(r.id)));
+    if (recommended.length >= limit) break;
+  }
+
+  if (recommended.length < limit) {
+    const fallback = await sql<Product[]>`
+      SELECT * FROM products WHERE is_active = true
+      ORDER BY is_featured DESC, created_at DESC LIMIT ${limit}
+    `;
+    for (const p of fallback) {
+      if (!productIds.includes(p.id) && !recommended.find((r) => r.id === p.id)) {
+        recommended.push(p);
+        if (recommended.length >= limit) break;
+      }
+    }
+  }
+
+  return recommended.slice(0, limit);
 }
 
 export async function getProductSocialProof(productId: string): Promise<{
