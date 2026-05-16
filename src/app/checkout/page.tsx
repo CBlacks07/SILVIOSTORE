@@ -8,7 +8,6 @@ export const dynamic = "force-dynamic";
 export default async function CheckoutPage() {
   const shipping = await getSetting("shipping");
   const user = await getCurrentUser();
-  const isFedaPaySandbox = (process.env.FEDAPAY_ENVIRONMENT || "sandbox") !== "live";
 
   const defaultAddress = user
     ? (
@@ -34,7 +33,6 @@ export default async function CheckoutPage() {
   return (
     <CheckoutForm
       shipping={shipping}
-      isFedaPaySandbox={isFedaPaySandbox}
       initialUser={
         user
           ? {

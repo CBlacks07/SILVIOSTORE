@@ -57,21 +57,15 @@ const COUNTRY_PHONE_EXAMPLE: Record<string, string> = {
   Nigeria: "+234 801 234 5678"
 };
 
-const FEDAPAY_SANDBOX_SUCCESS_NUMBERS = new Set(["64000001", "66000001"]);
-
-function isPhoneLikelyValid(value: string, isFedaPaySandbox: boolean): boolean {
+function isPhoneLikelyValid(value: string): boolean {
   const compact = value.trim().replace(/[^\d+]/g, "");
   if (!compact) return false;
-
   const digits = compact.replace(/\D/g, "");
-  if (isFedaPaySandbox && FEDAPAY_SANDBOX_SUCCESS_NUMBERS.has(digits)) return true;
-
   if (compact.startsWith("+")) return /^\+\d{8,15}$/.test(compact);
   return /^\d{8,12}$/.test(digits);
 }
 
-function phonePlaceholder(country: string, isFedaPaySandbox: boolean): string {
-  if (isFedaPaySandbox) return "64000001 ou 66000001";
+function phonePlaceholder(country: string): string {
   return COUNTRY_PHONE_EXAMPLE[country] || "+228 90 00 00 00";
 }
 
@@ -85,12 +79,10 @@ export function CheckoutForm({
   shipping,
   initialUser,
   initialAddress,
-  isFedaPaySandbox
 }: {
   shipping: ShippingSettings;
   initialUser: InitialUser;
   initialAddress: InitialAddress;
-  isFedaPaySandbox: boolean;
 }) {
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
@@ -191,11 +183,9 @@ export function CheckoutForm({
     e.preventDefault();
     setError(null);
 
-    if (!isPhoneLikelyValid(form.phone, isFedaPaySandbox)) {
+    if (!isPhoneLikelyValid(form.phone)) {
       setPhoneError(
-        isFedaPaySandbox
-          ? "Mode test FedaPay: utilisez 64000001 ou 66000001 avec Momo Test."
-          : "Numéro invalide. Utilisez un format local (8-12 chiffres) ou international (+228...)."
+"Numéro invalide. Utilisez un format local (8-12 chiffres) ou international (+228...)."
       );
       return;
     }
@@ -231,17 +221,36 @@ export function CheckoutForm({
       </Link>
 
       <h1 className="font-display text-3xl font-bold text-brand-950">Paiement</h1>
-      <p className="subtitle mt-1 text-sm text-brand-600">Finalisez vos informations de livraison avant la validation FedaPay.</p>
-      <div className="mt-4 flex flex-wrap items-center gap-2 text-xs">
-        <div className="inline-flex rounded-lg border border-brand-200 bg-white px-3 py-2 text-brand-700">1. Panier validé</div>
-        <div className="inline-flex rounded-lg border border-accent/30 bg-accent/10 px-3 py-2 font-medium text-accent-dark">2. Livraison et contact</div>
-        <div className="inline-flex rounded-lg border border-brand-200 bg-white px-3 py-2 text-brand-700">3. Paiement FedaPay</div>
+      {/* Steps */}
+      <div className="mt-5 flex items-center gap-0">
+        {[
+          { n: 1, label: "Panier", done: true },
+          { n: 2, label: "Livraison", active: true },
+          { n: 3, label: "Paiement", done: false },
+        ].map((s, i) => (
+          <div key={s.n} className="flex items-center">
+            <div className="flex items-center gap-2">
+              <div style={{
+                width: "28px", height: "28px", borderRadius: "999px",
+                background: s.active ? "#d97706" : s.done ? "rgba(217,119,6,0.15)" : "#f3f4f6",
+                color: s.active ? "#fff" : s.done ? "#d97706" : "#9ca3af",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: "12px", fontWeight: 800, flexShrink: 0,
+              }}>{s.n}</div>
+              <span style={{ fontSize: "12px", fontWeight: s.active ? 700 : 500, color: s.active ? "#1a1008" : "#9ca3af" }}>{s.label}</span>
+            </div>
+            {i < 2 && <div style={{ width: "32px", height: "1px", background: "#e5e7eb", margin: "0 8px" }} />}
+          </div>
+        ))}
       </div>
 
-      <form onSubmit={handleSubmit} className="mt-8 grid gap-10 lg:grid-cols-[1fr,400px]">
-        <div className="space-y-8">
-          <section className="card p-6">
-            <h2 className="mb-4 font-semibold text-brand-950">Vos informations</h2>
+      <form onSubmit={handleSubmit} className="mt-8 grid gap-8 lg:grid-cols-[1fr,380px]">
+        <div className="space-y-6">
+          <section style={{ background: "#fff", borderRadius: "16px", border: "1px solid rgba(217,119,6,0.15)", padding: "24px", boxShadow: "0 2px 12px rgba(0,0,0,0.04)" }}>
+            <h2 style={{ fontSize: "15px", fontWeight: 700, color: "#1a1008", margin: "0 0 20px", display: "flex", alignItems: "center", gap: "8px" }}>
+              <span style={{ width: "24px", height: "24px", borderRadius: "999px", background: "rgba(217,119,6,0.12)", color: "#d97706", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "11px", fontWeight: 800 }}>1</span>
+              Vos informations
+            </h2>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="sm:col-span-2">
                 <label className="mb-1 block text-sm font-medium text-brand-800">Nom complet</label>
@@ -253,16 +262,12 @@ export function CheckoutForm({
                   required
                   type="tel"
                   className={"input " + (phoneError ? "border-red-300 focus:border-red-500 focus:ring-red-500" : "")}
-                  placeholder={phonePlaceholder(form.country, isFedaPaySandbox)}
+                  placeholder={phonePlaceholder(form.country)}
                   value={form.phone}
                   onChange={(e) => update("phone", e.target.value)}
                   onBlur={() => {
-                    if (form.phone && !isPhoneLikelyValid(form.phone, isFedaPaySandbox)) {
-                      setPhoneError(
-                        isFedaPaySandbox
-                          ? "Mode test FedaPay: utilisez 64000001 ou 66000001 avec Momo Test."
-                          : "Numéro invalide. Utilisez un format local (8-12 chiffres) ou international (+228...)."
-                      );
+                    if (form.phone && !isPhoneLikelyValid(form.phone)) {
+                      setPhoneError("Numéro invalide. Utilisez un format local (8-12 chiffres) ou international (+228...).");
                     }
                   }}
                 />
@@ -270,21 +275,10 @@ export function CheckoutForm({
                   <p className="mt-1 text-xs text-red-700">{phoneError}</p>
                 ) : (
                   <p className="mt-1 text-xs text-brand-500">
-                    {isFedaPaySandbox
-                      ? "Sandbox: choisissez Momo Test dans la popup puis utilisez 64000001 ou 66000001."
-                      : "Entrez le numéro qui recevra la demande Mobile Money."}
+  "Entrez le numéro qui recevra la demande Mobile Money."
                   </p>
                 )}
-                {isFedaPaySandbox && (
-                  <div className="mt-2 flex flex-wrap items-center gap-2">
-                    <button type="button" className="btn-outline" onClick={() => update("phone", "64000001")}>
-                      Utiliser 64000001
-                    </button>
-                    <button type="button" className="btn-outline" onClick={() => update("phone", "66000001")}>
-                      Utiliser 66000001
-                    </button>
-                  </div>
-                )}
+
               </div>
               <div>
                 <label className="mb-1 block text-sm font-medium text-brand-800">E-mail (optionnel)</label>
@@ -293,8 +287,11 @@ export function CheckoutForm({
             </div>
           </section>
 
-          <section className="card p-6">
-            <h2 className="mb-4 font-semibold text-brand-950">Adresse de livraison</h2>
+          <section style={{ background: "#fff", borderRadius: "16px", border: "1px solid rgba(217,119,6,0.15)", padding: "24px", boxShadow: "0 2px 12px rgba(0,0,0,0.04)" }}>
+            <h2 style={{ fontSize: "15px", fontWeight: 700, color: "#1a1008", margin: "0 0 20px", display: "flex", alignItems: "center", gap: "8px" }}>
+              <span style={{ width: "24px", height: "24px", borderRadius: "999px", background: "rgba(217,119,6,0.12)", color: "#d97706", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "11px", fontWeight: 800 }}>2</span>
+              Adresse de livraison
+            </h2>
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
                 <label className="mb-1 block text-sm font-medium text-brand-800">Pays</label>
@@ -320,17 +317,22 @@ export function CheckoutForm({
             <p className="mt-3 text-xs text-brand-500">Livraison estimée: {eta} ({formatPrice(shippingCost)}).</p>
           </section>
 
-          <section className="card p-6">
-            <h2 className="mb-1 font-semibold text-brand-950">Mode de paiement</h2>
-            <p className="text-sm text-brand-600">Paiement sécurisé via FedaPay: Mobile Money et cartes bancaires.</p>
+          <section style={{ background: "linear-gradient(135deg, #1a1008, #2c1c06)", borderRadius: "16px", padding: "20px 24px", display: "flex", alignItems: "center", gap: "16px" }}>
+            <div style={{ width: "44px", height: "44px", borderRadius: "12px", background: "rgba(217,119,6,0.20)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <ShieldCheck size={22} color="#d97706" />
+            </div>
+            <div>
+              <p style={{ fontSize: "14px", fontWeight: 700, color: "#fff", margin: 0 }}>Paiement sécurisé via FedaPay</p>
+              <p style={{ fontSize: "12px", color: "rgba(253,230,138,0.80)", margin: "3px 0 0" }}>Mobile Money (MTN, Moov, Orange…) et cartes bancaires acceptés</p>
+            </div>
           </section>
 
           {error && <p className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
         </div>
 
         <aside className="self-start space-y-4 lg:sticky lg:top-24">
-          <div className="card p-6">
-            <h2 className="mb-4 font-semibold text-brand-950">Récapitulatif</h2>
+          <div style={{ background: "#fff", borderRadius: "16px", border: "1px solid rgba(217,119,6,0.15)", padding: "24px", boxShadow: "0 4px 20px rgba(0,0,0,0.06)" }}>
+            <h2 style={{ fontSize: "15px", fontWeight: 700, color: "#1a1008", margin: "0 0 16px" }}>Récapitulatif</h2>
             <div className="max-h-72 space-y-3 overflow-y-auto pr-1">
               {items.map((i) => (
                 <div key={i.productId + (i.variantLabel || "")} className="flex gap-3 text-sm">
@@ -393,9 +395,23 @@ export function CheckoutForm({
               )}
             </div>
 
-            <div className="mt-5 flex justify-center">
-              <button type="submit" disabled={submitting} className="btn-accent">
-                {submitting ? <><Loader2 className="h-4 w-4 animate-spin" /> Redirection...</> : "Payer " + formatPrice(total)}
+            <div className="mt-5">
+              <button
+                type="submit"
+                disabled={submitting}
+                style={{
+                  width: "100%", padding: "16px", border: "none", borderRadius: "12px",
+                  background: submitting ? "#9ca3af" : "linear-gradient(135deg, #d97706, #f59e0b)",
+                  color: "#fff", fontSize: "15px", fontWeight: 800, cursor: submitting ? "not-allowed" : "pointer",
+                  display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
+                  boxShadow: submitting ? "none" : "0 4px 20px rgba(217,119,6,0.35)",
+                  letterSpacing: "0.02em",
+                }}
+              >
+                {submitting
+                  ? <><Loader2 className="h-5 w-5 animate-spin" /> Redirection vers FedaPay...</>
+                  : <>Payer {formatPrice(total)} →</>
+                }
               </button>
             </div>
 
