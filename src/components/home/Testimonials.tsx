@@ -84,12 +84,11 @@ export function Testimonials({ data }: { data: TestimonialsSettings }) {
               className="shrink-0 flex flex-col"
               style={{
                 width: "min(400px, 80vw)",
-                minHeight: "240px",
                 background: "#ffffff",
                 border: "1px solid rgba(217,119,6,0.18)",
                 borderLeft: "3px solid #d97706",
                 borderRadius: "4px",
-                padding: "32px 28px 24px",
+                padding: "24px 24px 20px",
                 boxShadow: "0 1px 2px rgba(15,23,42,0.03), 0 4px 20px rgba(217,119,6,0.06)",
               }}
               aria-hidden={i >= testimonials.length ? "true" : undefined}
