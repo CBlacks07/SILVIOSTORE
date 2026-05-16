@@ -4,7 +4,7 @@ import { sql } from "@/lib/db";
 import Link from "next/link";
 import { formatPrice } from "@/lib/utils";
 import { CheckCircle2, XCircle, ShoppingCart } from "lucide-react";
-import { AddToCartForm } from "@/components/product/AddToCartForm";
+import { QuickAddButton } from "@/components/product/QuickAddButton";
 import type { Product } from "@/lib/types";
 
 export default async function ComparePage({
@@ -90,7 +90,7 @@ export default async function ComparePage({
               <td style={{ padding: "16px" }}></td>
               {products.map((p) => (
                 <td key={p.id} style={{ padding: "12px" }}>
-                  <AddToCartForm product={p} />
+                  <QuickAddButton product={p} className="btn-accent w-full text-sm" />
                 </td>
               ))}
             </tr>

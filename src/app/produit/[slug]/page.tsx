@@ -170,14 +170,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
 
           {/* Product Info */}
           <div className="order-1 lg:order-2 space-y-6">
-            {/* Brand */}
-            {product.brand && (
-              <span className="inline-block text-xs uppercase tracking-widest text-brand-500 font-black bg-brand-50 px-4 py-2 rounded-full border border-brand-200">
-                {product.brand}
-              </span>
-            )}
-
-            {/* Compare */}
+            {/* Brand + Compare */}
             <div className="flex items-center gap-2 flex-wrap">
               {product.brand && (
                 <span className="text-xs uppercase tracking-widest text-brand-500 font-black bg-brand-50 px-4 py-2 rounded-full border border-brand-200">

@@ -23,18 +23,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: { default: `${brandName} | Accessoires mobiles`, template: `%s | ${brandName}` },
     description: site.description,
     metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
-    manifest: "/manifest.json",
-    themeColor: "#d97706",
-    appleWebApp: {
-      capable: true,
-      statusBarStyle: "black-translucent",
-      title: brandName,
-    },
-    viewport: {
-      width: "device-width",
-      initialScale: 1,
-      maximumScale: 5,
-    }
+    manifest: "/manifest.json"
   };
 }
 
