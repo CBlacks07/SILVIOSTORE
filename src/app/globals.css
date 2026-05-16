@@ -614,12 +614,12 @@ video {
 
 /* Header Search Responsive */
 .header-search-container {
-  display: none;
+  display: flex;
 }
 
-@media (min-width: 1024px) {
+@media (max-width: 480px) {
   .header-search-container {
-    display: flex;
+    display: none;
   }
 }
 
