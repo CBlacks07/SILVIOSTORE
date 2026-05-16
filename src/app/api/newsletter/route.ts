@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { sql } from "@/lib/db";
+import { sendNewsletterWelcome } from "@/lib/email";
+import { getSetting } from "@/lib/settings";
 
 export async function POST(req: Request) {
   try {
@@ -18,6 +20,12 @@ export async function POST(req: Request) {
       VALUES (${emailTrimmed}, ${source || "welcome_popup"})
       ON CONFLICT (email) DO NOTHING
     `;
+
+    // Send welcome email (best-effort)
+    try {
+      const marketing = await getSetting("marketing");
+      await sendNewsletterWelcome(emailTrimmed, marketing.welcome_popup.promo_code);
+    } catch {}
 
     return NextResponse.json({ ok: true });
   } catch (e: any) {
