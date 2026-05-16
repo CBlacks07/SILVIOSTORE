@@ -27,10 +27,11 @@ export async function Footer() {
   const brandName = sanitizeSiteName(site.name) || "SILVIO STORE";
 
   const socialLinks = [
-    { icon: Facebook, url: social.facebook },
-    { icon: Instagram, url: social.instagram },
-    { icon: Twitter, url: social.twitter },
-    { icon: MessageCircle, url: social.whatsapp }, // WhatsApp fallback
+    { icon: Facebook, url: social.facebook, type: "lucide" },
+    { icon: Instagram, url: social.instagram, type: "lucide" },
+    { icon: Twitter, url: social.twitter, type: "lucide" },
+    { icon: MessageCircle, url: social.whatsapp, type: "lucide" },
+    { icon: null, url: social.tiktok, type: "tiktok" },
   ].filter(s => !!s.url);
 
   return (
@@ -55,7 +56,13 @@ export async function Footer() {
             <div className="mt-6 flex gap-4">
               {socialLinks.map((s, i) => (
                 <a key={i} href={s.url} target="_blank" rel="noopener noreferrer" className="text-brand-400 hover:text-white transition-colors">
-                  <s.icon className="h-5 w-5" />
+                  {s.type === "tiktok" ? (
+                    <svg viewBox="0 0 24 24" className="h-5 w-5 fill-current" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.17 8.17 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/>
+                    </svg>
+                  ) : (
+                    s.icon && <s.icon className="h-5 w-5" />
+                  )}
                 </a>
               ))}
             </div>
