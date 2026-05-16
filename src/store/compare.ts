@@ -1,11 +1,13 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
+export type CompareItem = { id: string; name: string };
+
 type CompareState = {
-  ids: string[];
-  add: (id: string) => void;
+  items: CompareItem[];
+  add: (item: CompareItem) => void;
   remove: (id: string) => void;
-  toggle: (id: string) => void;
+  toggle: (item: CompareItem) => void;
   has: (id: string) => boolean;
   clear: () => void;
 };
@@ -13,15 +15,19 @@ type CompareState = {
 export const useCompare = create<CompareState>()(
   persist(
     (set, get) => ({
-      ids: [],
-      add: (id) => {
-        if (get().ids.length >= 3) return;
-        if (!get().ids.includes(id)) set({ ids: [...get().ids, id] });
+      items: [],
+      add: (item) => {
+        if (get().items.length >= 3) return;
+        if (!get().items.find(i => i.id === item.id))
+          set({ items: [...get().items, item] });
       },
-      remove: (id) => set({ ids: get().ids.filter((i) => i !== id) }),
-      toggle: (id) => get().ids.includes(id) ? get().remove(id) : get().add(id),
-      has: (id) => get().ids.includes(id),
-      clear: () => set({ ids: [] }),
+      remove: (id) => set({ items: get().items.filter(i => i.id !== id) }),
+      toggle: (item) =>
+        get().items.find(i => i.id === item.id)
+          ? get().remove(item.id)
+          : get().add(item),
+      has: (id) => !!get().items.find(i => i.id === id),
+      clear: () => set({ items: [] }),
     }),
     { name: "silvio-compare", storage: createJSONStorage(() => localStorage) }
   )

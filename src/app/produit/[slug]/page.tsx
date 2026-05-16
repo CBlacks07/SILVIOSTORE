@@ -177,7 +177,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
                   {product.brand}
                 </span>
               )}
-              <CompareButton productId={product.id} />
+              <CompareButton productId={product.id} productName={product.name} />
             </div>
 
             {/* Title */}

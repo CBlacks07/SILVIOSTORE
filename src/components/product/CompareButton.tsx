@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import { GitCompareArrows } from "lucide-react";
 import { useCompare } from "@/store/compare";
 
-export function CompareButton({ productId }: { productId: string }) {
+export function CompareButton({ productId, productName }: { productId: string; productName: string }) {
   const toggle = useCompare((s) => s.toggle);
-  const active = useCompare((s) => s.ids.includes(productId));
-  const count = useCompare((s) => s.ids.length);
+  const active = useCompare((s) => !!s.items.find(i => i.id === productId));
+  const count = useCompare((s) => s.items.length);
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
   if (!mounted) return null;
@@ -15,8 +15,8 @@ export function CompareButton({ productId }: { productId: string }) {
   return (
     <button
       type="button"
-      onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggle(productId); }}
-      title={active ? "Retirer de la comparaison" : count >= 3 ? "Max 3 produits" : "Ajouter à la comparaison"}
+      onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggle({ id: productId, name: productName }); }}
+      title={active ? "Retirer de la comparaison" : count >= 3 ? "Max 3 produits" : "Comparer ce produit"}
       style={{
         background: active ? "rgba(217,119,6,0.12)" : "rgba(255,255,255,0.88)",
         border: `1.5px solid ${active ? "#d97706" : "rgba(217,119,6,0.20)"}`,
