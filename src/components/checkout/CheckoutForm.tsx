@@ -244,11 +244,11 @@ export function CheckoutForm({
         ))}
       </div>
 
-      <form onSubmit={handleSubmit} className="mt-8 grid gap-8 lg:grid-cols-[1fr,380px]">
-        <div className="space-y-6">
-          <section style={{ background: "#fff", borderRadius: "16px", border: "1px solid rgba(217,119,6,0.15)", padding: "24px", boxShadow: "0 2px 12px rgba(0,0,0,0.04)" }}>
-            <h2 style={{ fontSize: "15px", fontWeight: 700, color: "#1a1008", margin: "0 0 20px", display: "flex", alignItems: "center", gap: "8px" }}>
-              <span style={{ width: "24px", height: "24px", borderRadius: "999px", background: "rgba(217,119,6,0.12)", color: "#d97706", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "11px", fontWeight: 800 }}>1</span>
+      <form onSubmit={handleSubmit} className="mt-8 grid gap-8 lg:grid-cols-[1fr,360px] items-start">
+        <div className="space-y-5">
+          <section className="card p-6">
+            <h2 className="mb-5 font-semibold text-brand-950 flex items-center gap-2 text-sm">
+              <span style={{ width: "22px", height: "22px", borderRadius: "999px", background: "rgba(217,119,6,0.12)", color: "#d97706", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "10px", fontWeight: 800, flexShrink: 0 }}>1</span>
               Vos informations
             </h2>
             <div className="grid gap-4 sm:grid-cols-2">
@@ -287,9 +287,9 @@ export function CheckoutForm({
             </div>
           </section>
 
-          <section style={{ background: "#fff", borderRadius: "16px", border: "1px solid rgba(217,119,6,0.15)", padding: "24px", boxShadow: "0 2px 12px rgba(0,0,0,0.04)" }}>
-            <h2 style={{ fontSize: "15px", fontWeight: 700, color: "#1a1008", margin: "0 0 20px", display: "flex", alignItems: "center", gap: "8px" }}>
-              <span style={{ width: "24px", height: "24px", borderRadius: "999px", background: "rgba(217,119,6,0.12)", color: "#d97706", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "11px", fontWeight: 800 }}>2</span>
+          <section className="card p-6">
+            <h2 className="mb-5 font-semibold text-brand-950 flex items-center gap-2 text-sm">
+              <span style={{ width: "22px", height: "22px", borderRadius: "999px", background: "rgba(217,119,6,0.12)", color: "#d97706", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "10px", fontWeight: 800, flexShrink: 0 }}>2</span>
               Adresse de livraison
             </h2>
             <div className="grid gap-4 sm:grid-cols-2">
@@ -331,8 +331,8 @@ export function CheckoutForm({
         </div>
 
         <aside className="self-start space-y-4 lg:sticky lg:top-24">
-          <div style={{ background: "#fff", borderRadius: "16px", border: "1px solid rgba(217,119,6,0.15)", padding: "24px", boxShadow: "0 4px 20px rgba(0,0,0,0.06)" }}>
-            <h2 style={{ fontSize: "15px", fontWeight: 700, color: "#1a1008", margin: "0 0 16px" }}>Récapitulatif</h2>
+          <div className="card p-5">
+            <h2 className="mb-4 font-semibold text-brand-950 text-sm">Récapitulatif</h2>
             <div className="max-h-72 space-y-3 overflow-y-auto pr-1">
               {items.map((i) => (
                 <div key={i.productId + (i.variantLabel || "")} className="flex gap-3 text-sm">
@@ -364,7 +364,6 @@ export function CheckoutForm({
                 <div className="flex gap-2">
                   <input
                     className="input flex-1"
-                    placeholder="SILVIO10"
                     value={promoInput}
                     onChange={(e) => setPromoInput(e.target.value.toUpperCase())}
                     onKeyDown={(e) => {
@@ -395,21 +394,21 @@ export function CheckoutForm({
               )}
             </div>
 
-            <div className="mt-5">
+            <div className="mt-5 flex justify-center">
               <button
                 type="submit"
                 disabled={submitting}
                 style={{
-                  width: "100%", padding: "16px", border: "none", borderRadius: "12px",
+                  padding: "14px 32px", border: "none", borderRadius: "999px",
                   background: submitting ? "#9ca3af" : "linear-gradient(135deg, #d97706, #f59e0b)",
                   color: "#fff", fontSize: "15px", fontWeight: 800, cursor: submitting ? "not-allowed" : "pointer",
-                  display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
+                  display: "inline-flex", alignItems: "center", gap: "8px",
                   boxShadow: submitting ? "none" : "0 4px 20px rgba(217,119,6,0.35)",
-                  letterSpacing: "0.02em",
+                  letterSpacing: "0.02em", whiteSpace: "nowrap",
                 }}
               >
                 {submitting
-                  ? <><Loader2 className="h-5 w-5 animate-spin" /> Redirection vers FedaPay...</>
+                  ? <><Loader2 className="h-5 w-5 animate-spin" /> Redirection...</>
                   : <>Payer {formatPrice(total)} →</>
                 }
               </button>
