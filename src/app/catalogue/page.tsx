@@ -141,7 +141,7 @@ export default async function CataloguePage({ searchParams }: { searchParams: Se
       {/* Active filters bar */}
       {activeFilters.length > 0 && (
         <div className="border-b border-brand-100 bg-gradient-to-r from-brand-50 to-white shadow-sm">
-          <div className="container-page py-4 flex flex-wrap items-center gap-3">
+          <div className="container-page py-5 flex flex-wrap items-center gap-3">
             <span className="flex items-center gap-2 text-sm font-bold text-brand-700 shrink-0">
               <SlidersHorizontal className="h-4 w-4" />
               Filtres actifs :
