@@ -195,7 +195,7 @@ export default async function HomePage() {
       <Testimonials data={testimonials} />
 
       {/* CTA + SEO fusionnés */}
-      <section className="container-page py-16">
+      <section className="py-16" style={{ paddingLeft: "clamp(16px, 4vw, 64px)", paddingRight: "clamp(16px, 4vw, 64px)", maxWidth: "1600px", margin: "0 auto" }}>
         <div
           className="relative rounded-2xl overflow-hidden"
           style={{ background: "linear-gradient(135deg, #1a1008 0%, #2c1c06 60%, #1a1008 100%)", boxShadow: "0 20px 60px rgba(26,16,8,0.35)" }}
