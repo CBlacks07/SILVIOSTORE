@@ -129,11 +129,16 @@ export default async function HomePage() {
             Aucun produit vedette pour le moment. Connectez-vous à l'admin pour en ajouter.
           </div>
         ) : (
-          <div style={{ display: "flex", gap: "1rem", overflowX: "auto", paddingBottom: "12px", scrollbarWidth: "none", WebkitOverflowScrolling: "touch" }}
-            className="snap-x snap-mandatory">
-            <style>{`.selection-scroll::-webkit-scrollbar{display:none}`}</style>
+          {/* Mobile: scroll horizontal — Desktop: grille */}
+          <div className="hidden md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
             {featured.map((p) => (
-              <div key={p.id} style={{ flexShrink: 0, width: "clamp(200px, 45vw, 260px)" }} className="snap-start">
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
+          <div className="flex md:hidden gap-4 overflow-x-auto pb-3 snap-x snap-mandatory" style={{ scrollbarWidth: "none" }}>
+            <style>{`.sel-scroll::-webkit-scrollbar{display:none}`}</style>
+            {featured.map((p) => (
+              <div key={p.id} className="snap-start shrink-0" style={{ width: "clamp(190px, 44vw, 240px)" }}>
                 <ProductCard product={p} />
               </div>
             ))}
