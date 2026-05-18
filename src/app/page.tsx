@@ -185,50 +185,44 @@ export default async function HomePage() {
 
       <Testimonials data={testimonials} />
 
-      {cta.enabled && (
-        <section className="container-page py-16">
-          <div
-            className="relative rounded-2xl text-white p-10 md:p-14 grid md:grid-cols-2 gap-8 items-center overflow-hidden"
-            style={{
-              background: "linear-gradient(135deg, #1a1008 0%, #2c1c06 50%, #1a1008 100%)",
-              boxShadow: "0 20px 60px rgba(26,16,8,0.35)",
-            }}
-          >
-            {/* Gold glow */}
-            <div className="absolute inset-0 rounded-2xl pointer-events-none" style={{ background: "radial-gradient(ellipse at 0% 50%, rgba(217,119,6,0.15) 0%, transparent 60%)" }} />
-            <div className="relative">
-              <p className="text-xs font-black uppercase tracking-[0.28em] mb-3" style={{ color: "#d97706" }}>Notre engagement</p>
-              <h3 className="font-display text-2xl md:text-3xl font-bold text-white">{cta.title}</h3>
-              <p className="mt-3 text-sm leading-relaxed" style={{ color: "rgba(253,230,138,0.85)" }}>{cta.text}</p>
-            </div>
-            {cta.cta_label && cta.cta_link && (
-              <div className="flex md:justify-end relative">
-                <Link href={cta.cta_link} className="btn-accent">{cta.cta_label}</Link>
+      {/* CTA + SEO fusionnés */}
+      <section className="container-page py-16">
+        <div
+          className="relative rounded-2xl overflow-hidden"
+          style={{ background: "linear-gradient(135deg, #1a1008 0%, #2c1c06 60%, #1a1008 100%)", boxShadow: "0 20px 60px rgba(26,16,8,0.35)" }}
+        >
+          {/* Gold glow */}
+          <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 5% 30%, rgba(217,119,6,0.18) 0%, transparent 55%), radial-gradient(ellipse at 95% 70%, rgba(217,119,6,0.10) 0%, transparent 55%)" }} />
+
+          {/* Top — CTA */}
+          {cta.enabled && (
+            <div className="relative px-8 md:px-14 pt-10 md:pt-14 pb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+              <div className="flex-1">
+                <p className="text-xs font-black uppercase tracking-[0.28em] mb-2" style={{ color: "#d97706" }}>Notre engagement</p>
+                <h3 className="font-display text-2xl md:text-3xl font-bold text-white">{cta.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed max-w-xl" style={{ color: "rgba(253,230,138,0.85)" }}>{cta.text}</p>
               </div>
-            )}
-          </div>
-        </section>
-      )}
-      {/* Bloc SEO — texte pour Google, visuellement discret */}
-      <section className="container-page py-12 max-w-4xl">
-        <div className="text-center mb-8">
-          <p className="text-xs font-black uppercase tracking-[0.28em] text-accent mb-2">Notre boutique</p>
-          <h2 className="font-display text-xl md:text-2xl font-bold text-brand-950 tracking-tight">
-            Pochettes, coques et accessoires téléphone originaux au Togo
-          </h2>
-        </div>
-        <div className="grid md:grid-cols-3 gap-6 text-sm text-brand-600 leading-relaxed">
-          <div>
-            <h3 className="font-semibold text-brand-900 mb-2">Pochettes de luxe & coques originales</h3>
-            <p>SILVIO STORE propose une sélection premium de pochettes de luxe et coques téléphone originales pour iPhone, Samsung et autres modèles. Des designs exclusifs, des matériaux de qualité — protection et style réunis.</p>
-          </div>
-          <div>
-            <h3 className="font-semibold text-brand-900 mb-2">Accessoires téléphone authentiques</h3>
-            <p>Chargeurs rapides USB-C, bracelets Apple Watch cuir, protections écran verre trempé — tous nos accessoires sont authentiques et garantis. Compatibilité testée, qualité vérifiée avant expédition.</p>
-          </div>
-          <div>
-            <h3 className="font-semibold text-brand-900 mb-2">Livraison dans toute la sous région</h3>
-            <p>Basés à Lomé-Nukafu, Togo, nous livrons dans toute la sous région : Bénin, Ghana, Côte d&apos;Ivoire, Sénégal, Burkina Faso et plus. Paiement Mobile Money, MTN, Moov, Orange acceptés.</p>
+              {cta.cta_label && cta.cta_link && (
+                <Link href={cta.cta_link} className="btn-accent shrink-0 self-start sm:self-auto">{cta.cta_label}</Link>
+              )}
+            </div>
+          )}
+
+          {/* Divider */}
+          <div className="mx-8 md:mx-14" style={{ height: "1px", background: "rgba(217,119,6,0.20)" }} />
+
+          {/* Bottom — SEO 3 colonnes */}
+          <div className="relative px-8 md:px-14 py-10 grid md:grid-cols-3 gap-8">
+            {[
+              { title: "Pochettes de luxe & coques originales", text: "Sélection premium de pochettes et coques pour iPhone, Samsung et tous modèles. Designs exclusifs, matériaux haut de gamme — protection et style réunis." },
+              { title: "Accessoires authentiques & garantis", text: "Bracelets Apple Watch cuir, chargeurs rapides USB-C, verres trempés — chaque accessoire est vérifié, original et garanti avant expédition." },
+              { title: "Livraison dans toute la sous région", text: "Lomé-Nukafu, Togo. Livraison au Bénin, Ghana, Côte d'Ivoire, Sénégal, Burkina Faso et plus. Paiement Mobile Money accepté." },
+            ].map(({ title, text }) => (
+              <div key={title}>
+                <h3 style={{ fontSize: "13px", fontWeight: 700, color: "#d97706", margin: "0 0 8px", letterSpacing: "0.01em" }}>{title}</h3>
+                <p style={{ fontSize: "13px", color: "rgba(253,230,138,0.70)", lineHeight: 1.65, margin: 0 }}>{text}</p>
+              </div>
+            ))}
           </div>
         </div>
 
