@@ -24,8 +24,9 @@ export async function generateMetadata(): Promise<Metadata> {
   const logoUrl = `${SITE_URL}/logo-03.png`;
 
   return {
-    title: { default: `${brandName} | Accessoires mobiles`, template: `%s | ${brandName}` },
-    description: site.description,
+    title: { default: `${brandName} | Coques, pochettes & accessoires téléphone premium`, template: `%s | ${brandName}` },
+    description: `${brandName} — Pochettes de luxe, coques originales, accessoires téléphone authentiques. Bracelets Apple Watch, protections écran, chargeurs rapides. Livraison dans toute la sous région. Paiement Mobile Money.`,
+    keywords: ["pochette de luxe", "coque téléphone", "pochette originale", "accessoires téléphone originaux", "coque iPhone", "bracelet Apple Watch", "protection écran", "chargeur rapide", "accessoires mobile Togo", "boutique accessoires Lomé", "SILVIO STORE", "accessoires premium sous région"],
     metadataBase: new URL(SITE_URL),
     manifest: "/manifest.json",
     icons: {
@@ -58,7 +59,7 @@ const organizationJsonLd = {
     height: 512,
   },
   image: `${SITE_URL}/logo-03.png`,
-  description: "Accessoires mobiles premium livrés dans toute la sous région. Coques, bracelets Apple Watch, chargeurs, protections écran.",
+  description: "Pochettes de luxe et coques téléphone originales au Togo. Accessoires iPhone et Samsung authentiques : bracelets Apple Watch, protections écran, chargeurs rapides USB-C. Boutique en ligne livraison dans toute la sous région Afrique de l'Ouest. Paiement Mobile Money accepté.",
   address: {
     "@type": "PostalAddress",
     addressLocality: "Lomé",

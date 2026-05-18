@@ -209,6 +209,57 @@ export default async function HomePage() {
           </div>
         </section>
       )}
+      {/* Bloc SEO — texte pour Google, visuellement discret */}
+      <section className="container-page py-12 max-w-4xl">
+        <div className="text-center mb-8">
+          <p className="text-xs font-black uppercase tracking-[0.28em] text-accent mb-2">Notre boutique</p>
+          <h2 className="font-display text-xl md:text-2xl font-bold text-brand-950 tracking-tight">
+            Pochettes, coques et accessoires téléphone originaux au Togo
+          </h2>
+        </div>
+        <div className="grid md:grid-cols-3 gap-6 text-sm text-brand-600 leading-relaxed">
+          <div>
+            <h3 className="font-semibold text-brand-900 mb-2">Pochettes de luxe & coques originales</h3>
+            <p>SILVIO STORE propose une sélection premium de pochettes de luxe et coques téléphone originales pour iPhone, Samsung et autres modèles. Des designs exclusifs, des matériaux de qualité — protection et style réunis.</p>
+          </div>
+          <div>
+            <h3 className="font-semibold text-brand-900 mb-2">Accessoires téléphone authentiques</h3>
+            <p>Chargeurs rapides USB-C, bracelets Apple Watch cuir, protections écran verre trempé — tous nos accessoires sont authentiques et garantis. Compatibilité testée, qualité vérifiée avant expédition.</p>
+          </div>
+          <div>
+            <h3 className="font-semibold text-brand-900 mb-2">Livraison dans toute la sous région</h3>
+            <p>Basés à Lomé-Nukafu, Togo, nous livrons dans toute la sous région : Bénin, Ghana, Côte d&apos;Ivoire, Sénégal, Burkina Faso et plus. Paiement Mobile Money, MTN, Moov, Orange acceptés.</p>
+          </div>
+        </div>
+
+        {/* FAQ Schema pour Google */}
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Où acheter des pochettes de luxe pour téléphone au Togo ?",
+              "acceptedAnswer": { "@type": "Answer", "text": "SILVIO STORE à Lomé-Nukafu propose une large sélection de pochettes de luxe et coques originales pour iPhone et Samsung. Commandez en ligne sur silviostore.com avec livraison partout en Afrique de l'Ouest." }
+            },
+            {
+              "@type": "Question",
+              "name": "Les accessoires téléphone de SILVIO STORE sont-ils originaux ?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Oui, tous les accessoires téléphone vendus sur SILVIO STORE sont authentiques et originaux. Coques, pochettes, bracelets Apple Watch, chargeurs — chaque produit est vérifié avant expédition." }
+            },
+            {
+              "@type": "Question",
+              "name": "Peut-on payer en Mobile Money sur SILVIO STORE ?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Oui, SILVIO STORE accepte le paiement Mobile Money (MTN, Moov, Orange, Togocel) via FedaPay. Livraison dans toute la sous région Afrique de l'Ouest." }
+            },
+            {
+              "@type": "Question",
+              "name": "SILVIO STORE livre-t-il en dehors du Togo ?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Oui, SILVIO STORE livre dans toute la sous région : Togo, Bénin, Ghana, Côte d'Ivoire, Sénégal, Burkina Faso, Mali, Niger, Guinée et Nigeria." }
+            }
+          ]
+        })}} />
+      </section>
     </>
   );
 }
