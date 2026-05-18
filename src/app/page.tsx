@@ -8,6 +8,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { BrandLogo } from "@/components/home/BrandLogo";
 import { WhySilvioStore } from "@/components/home/WhySilvioStore";
 import { Testimonials } from "@/components/home/Testimonials";
+import { CategoriesMarquee } from "@/components/home/CategoriesMarquee";
 import { ProductCarousel } from "@/components/ui/ProductCarousel";
 import { getFeaturedProducts } from "@/lib/queries";
 import { getSetting, listActiveBanners, listActiveBrands } from "@/lib/settings";
@@ -63,7 +64,7 @@ export default async function HomePage() {
         </Reveal>
       )}
 
-      <Reveal as="section" className="container-page py-14">
+      <section className="container-page py-14">
         <div className="flex items-end justify-between mb-8">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.28em] text-accent mb-2">Catalogue</p>
@@ -73,46 +74,8 @@ export default async function HomePage() {
             Tout voir
           </Link>
         </div>
-        <div className="categories-scroll-row">
-          {categories.map((c) => (
-            <Link
-              key={c.slug}
-              href={"/catalogue?categorie=" + c.slug}
-              className="btn-hero-secondary whitespace-nowrap shrink-0 sm:shrink"
-            >
-              {c.name}
-            </Link>
-          ))}
-        </div>
-        <style>{`
-          .categories-scroll-row {
-            display: flex;
-            gap: 0.75rem;
-            overflow-x: auto;
-            padding: 4px 4px 12px 4px;
-            margin: -4px -4px 0 -4px;
-            scrollbar-width: none;
-            -webkit-overflow-scrolling: touch;
-          }
-          .categories-scroll-row::-webkit-scrollbar {
-            display: none;
-          }
-          @media (min-width: 768px) {
-            .categories-scroll-row {
-              display: grid;
-              grid-template-columns: repeat(3, 1fr);
-              overflow-x: visible;
-              padding: 0;
-              margin: 0;
-            }
-          }
-          @media (min-width: 1024px) {
-            .categories-scroll-row {
-              grid-template-columns: repeat(6, 1fr);
-            }
-          }
-        `}</style>
-      </Reveal>
+        <CategoriesMarquee categories={categories} />
+      </section>
 
       <Reveal as="section" className="container-page py-14">
         <div className="flex items-end justify-between mb-8">
