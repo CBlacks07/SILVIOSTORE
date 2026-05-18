@@ -26,18 +26,18 @@ export default function ContactPage() {
         </div>
       </div>
 
-      <div className="container-page py-12 max-w-5xl">
+      <div className="container-page py-16 max-w-5xl">
 
         {/* Canaux de contact */}
-        <div className="grid sm:grid-cols-3 gap-4 mb-12">
+        <div className="grid sm:grid-cols-3 gap-5 mb-16">
           {[
             { icon: Phone, label: "Téléphone", lines: [SITE.contact.phone, SITE.contact.phone2].filter(Boolean) as string[], note: "Lun – Sam, 8h – 19h", href: "tel:" + SITE.contact.phone },
             { icon: Mail, label: "E-mail", lines: [SITE.contact.email], note: "Réponse sous 24h", href: "mailto:" + SITE.contact.email },
             { icon: MapPin, label: "Boutique", lines: [SITE.contact.address], note: "Passage bienvenu", href: "https://maps.google.com/?q=SILVIO+STORE+Lomé+Nukafu" },
           ].map(({ icon: Icon, label, lines, note, href }) => (
             <a key={label} href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer"
-              className="card p-5 hover:shadow-md transition-all group"
-              style={{ borderColor: "rgba(217,119,6,0.15)", textDecoration: "none" }}
+              className="p-6 hover:shadow-md transition-all group rounded-2xl"
+              style={{ background: "#fff", textDecoration: "none" }}
             >
               <div style={{ width: "40px", height: "40px", borderRadius: "10px", background: "rgba(217,119,6,0.10)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "12px" }}>
                 <Icon className="h-5 w-5 text-accent" />
@@ -53,12 +53,12 @@ export default function ContactPage() {
         </div>
 
         {/* Grille principale */}
-        <div className="grid lg:grid-cols-[1fr,360px] gap-8">
+        <div className="grid lg:grid-cols-[1fr,360px] gap-10">
 
           {/* Formulaire */}
-          <div className="card p-6 md:p-8">
+          <div className="p-6 md:p-10 rounded-2xl" style={{ background: "#fff" }}>
             <h2 className="font-display text-xl font-bold text-brand-950 mb-6">Envoyez-nous un message</h2>
-            <form className="space-y-4" action={"mailto:" + SITE.contact.email} method="post" encType="text/plain">
+            <form className="space-y-5" action={"mailto:" + SITE.contact.email} method="post" encType="text/plain">
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wide text-brand-500 mb-1.5">Nom complet</label>
@@ -85,7 +85,7 @@ export default function ContactPage() {
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-4">
+          <div className="space-y-5">
 
             {/* WhatsApp */}
             <div className="rounded-2xl overflow-hidden" style={{ background: "linear-gradient(135deg, #1a1008, #2c1c06)", border: "1px solid rgba(217,119,6,0.25)" }}>
@@ -103,7 +103,7 @@ export default function ContactPage() {
             </div>
 
             {/* Horaires */}
-            <div className="card p-5">
+            <div className="p-5 rounded-2xl" style={{ background: "#fff" }}>
               <p style={{ fontSize: "10px", fontWeight: 800, letterSpacing: "0.15em", textTransform: "uppercase", color: "#9ca3af", marginBottom: "12px" }}>Horaires boutique</p>
               {[
                 { j: "Lun – Ven", h: "8 h – 19 h" },
@@ -121,8 +121,8 @@ export default function ContactPage() {
             <a
               href="https://www.google.com/search?q=SILVIO+STORE+Avis&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOc3j1OA2wPQcuXVfKLbyYgqgULX7xlej7SKORIfTrv3Y-krwCRQyx6Kqih2ytaSsjycNnWAr0ac2IHlond6bhytfAgB_"
               target="_blank" rel="noopener noreferrer"
-              className="card p-5 block hover:shadow-md transition-all"
-              style={{ textDecoration: "none", borderColor: "rgba(217,119,6,0.18)" }}
+              className="p-5 block hover:shadow-md transition-all rounded-2xl"
+              style={{ textDecoration: "none", background: "#fff" }}
             >
               <div style={{ display: "flex", gap: "4px", marginBottom: "8px" }}>
                 {[1,2,3,4,5].map(i => <Star key={i} size={16} fill="#d97706" color="#d97706" />)}
