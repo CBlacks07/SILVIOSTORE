@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const product = await getProductBySlug(params.slug);
   if (!product) return {};
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://silviostore.vercel.app";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://silviostore.com";
   const image = product.images?.[0];
   const imageUrl = image
     ? image.startsWith("http") ? image : `${siteUrl}${image}`

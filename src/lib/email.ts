@@ -2,7 +2,7 @@ import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const FROM = process.env.RESEND_FROM_EMAIL || "SILVIO STORE <contact@silviostore.com>";
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://silviostore.vercel.app";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://silviostore.com";
 
 // ─────────────────────────────────────────
 // Email de confirmation de commande

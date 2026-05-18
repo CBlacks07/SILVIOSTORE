@@ -10,7 +10,8 @@
       "Bash(head -5 src/lib/db.js)",
       "Bash(cd \"c:\\\\Users\\\\CCL\\\\Desktop\\\\SILVIO STORE\" && sed -i 's/<CompareButton productId={product.id} \\\\/>/<CompareButton productId={product.id} productName={product.name} \\\\/>/' src/app/produit/\\\\[slug\\\\]/page.tsx && grep -n \"CompareButton\" src/app/produit/\\\\[slug\\\\]/page.tsx)",
       "Bash(sed -n '85,95p' src/app/api/checkout/route.ts)",
-      "Bash(sed -n '100,110p' src/lib/queries.ts)"
+      "Bash(sed -n '100,110p' src/lib/queries.ts)",
+      "Bash(cd \"c:\\\\Users\\\\CCL\\\\Desktop\\\\SILVIO STORE\" && sed -i 's|https://silviostore\\\\.vercel\\\\.app|https://silviostore.com|g' src/app/produit/\\\\[slug\\\\]/page.tsx src/app/robots.ts src/app/sitemap.ts src/lib/email.ts && echo \"Done\")"
     ],
     "additionalDirectories": [
       "C:\\Users\\CCL\\Desktop\\SILVIO STORE\\src\\app\\produit\\[slug]",

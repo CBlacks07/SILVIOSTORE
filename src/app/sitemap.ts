@@ -4,7 +4,7 @@ import { sql } from "@/lib/db";
 export const dynamic = "force-dynamic";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const base = process.env.NEXT_PUBLIC_SITE_URL || "https://silviostore.vercel.app";
+  const base = process.env.NEXT_PUBLIC_SITE_URL || "https://silviostore.com";
 
   const products = await sql<{ slug: string; updated_at: string }[]>`
     SELECT slug, updated_at FROM products WHERE is_active = true ORDER BY updated_at DESC
