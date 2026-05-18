@@ -5,8 +5,10 @@ import { OrdersList } from "@/components/account/OrdersList";
 
 export default async function OrdersPage() {
   const user = (await getCurrentUser())!;
-  const initialOrders = await sql<Order[]>`
-    select * from orders where user_id = ${user.id} order by created_at desc
+  type OrderRow = { id: string; reference: string; status: string; total: number; created_at: string; is_hidden: boolean; payment_reference: string | null };
+  const initialOrders = await sql<OrderRow[]>`
+    SELECT id, reference, status, total, created_at, COALESCE(is_hidden, false) as is_hidden, payment_reference
+    FROM orders WHERE user_id = ${user.id} ORDER BY created_at DESC
   `;
 
   const pendingOrders = initialOrders.filter((o) => o.status === "pending" && o.payment_reference);
@@ -28,10 +30,7 @@ export default async function OrdersPage() {
     }
   }
 
-  const orders = await sql<{ id: string; reference: string; status: string; total: number; created_at: string; is_hidden: boolean }[]>`
-    SELECT id, reference, status, total, created_at, COALESCE(is_hidden, false) as is_hidden
-    FROM orders WHERE user_id = ${user.id} ORDER BY created_at DESC
-  `;
+  const orders = initialOrders;
 
   return (
     <div className="card p-6">

@@ -104,41 +104,36 @@ export default async function HomePage() {
       </Reveal>
 
       {brands.length > 0 && (
-        <section className="section-band">
-          <div className="container-page py-14">
-            <div className="text-center mb-14">
-              <p className="text-xs font-black uppercase tracking-[0.28em] text-accent mb-3">Marques</p>
-              <h2 className="font-display text-2xl md:text-3xl font-bold text-brand-950 tracking-tight">
-                Les grandes marques, à portée de main.
-              </h2>
-              <p className="mt-3 text-sm text-brand-600">Originaux, compatibles et garantis dans la sous région.</p>
-            </div>
+        <section className="py-14 overflow-hidden" style={{ borderTop: "1px solid rgba(217,119,6,0.10)", borderBottom: "1px solid rgba(217,119,6,0.10)" }}>
+          <div className="container-page text-center mb-10">
+            <p className="text-xs font-black uppercase tracking-[0.28em] text-accent mb-3">Marques</p>
+            <h2 className="font-display text-2xl md:text-3xl font-bold text-brand-950 tracking-tight">
+              Les grandes marques, à portée de main.
+            </h2>
+            <p className="mt-3 text-sm text-brand-600">Originaux, compatibles et garantis dans la sous région.</p>
+          </div>
+          <div style={{ position: "relative", overflow: "hidden" }}>
+            {/* Fade edges */}
+            <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: "80px", background: "linear-gradient(to right, rgb(250,248,245), transparent)", zIndex: 1, pointerEvents: "none" }} />
+            <div style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: "80px", background: "linear-gradient(to left, rgb(250,248,245), transparent)", zIndex: 1, pointerEvents: "none" }} />
             <style>{`
-              .brands-row {
+              @keyframes brands-scroll {
+                from { transform: translateX(0); }
+                to   { transform: translateX(-50%); }
+              }
+              .brands-marquee {
                 display: flex;
-                flex-wrap: nowrap;
                 align-items: center;
-                justify-content: flex-start;
-                gap: 40px;
-                overflow-x: auto;
-                padding-bottom: 8px;
-                -webkit-overflow-scrolling: touch;
-                scrollbar-width: none;
+                gap: clamp(40px, 6vw, 80px);
+                animation: brands-scroll 22s linear infinite;
+                will-change: transform;
+                width: max-content;
               }
-              .brands-row::-webkit-scrollbar { display: none; }
-              @media (min-width: 768px) {
-                .brands-row {
-                  flex-wrap: wrap;
-                  justify-content: center;
-                  gap: clamp(48px, 6vw, 96px);
-                  overflow-x: visible;
-                  padding-bottom: 0;
-                }
-              }
+              .brands-marquee:hover { animation-play-state: paused; }
             `}</style>
-            <div className="brands-row">
-              {brands.map((b) => (
-                <div key={b.id} className="flex-shrink-0 snap-center">
+            <div className="brands-marquee" style={{ padding: "8px 0" }}>
+              {[...brands, ...brands].map((b, i) => (
+                <div key={b.id + i} style={{ flexShrink: 0 }}>
                   <BrandLogo name={b.name} logo_url={b.logo_url} />
                 </div>
               ))}
