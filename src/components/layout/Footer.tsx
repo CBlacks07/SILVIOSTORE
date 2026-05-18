@@ -134,7 +134,17 @@ export async function Footer() {
 
       <div style={{ borderTop: "1px solid rgba(217,119,6,0.12)" }}>
         <div className="container-page py-8">
-          <p className="text-xs font-semibold uppercase tracking-widest text-brand-500 mb-3">Nous trouver</p>
+          <div className="flex items-center justify-between mb-3 flex-wrap gap-3">
+            <p className="text-xs font-semibold uppercase tracking-widest text-brand-500">Nous trouver</p>
+            <a
+              href="https://g.page/r/CYSAZ3AQQUhvEAE/review"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "6px 14px", borderRadius: "999px", background: "rgba(217,119,6,0.12)", border: "1px solid rgba(217,119,6,0.30)", fontSize: "11px", fontWeight: 700, color: "#d97706", textDecoration: "none" }}
+            >
+              ★ Laisser un avis Google
+            </a>
+          </div>
           <div className="overflow-hidden rounded-xl" style={{ height: "220px" }}>
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d495.8368726951702!2d1.2393653999999998!3d6.171579299999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1023e3b2e5de9d93%3A0xb88741022aa66084!2sSILVIO%20STORE!5e0!3m2!1sfr!2stg!4v1778576589663!5m2!1sfr!2stg"

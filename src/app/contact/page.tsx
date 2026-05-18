@@ -1,3 +1,5 @@
+export const revalidate = 3600;
+
 import Link from "next/link";
 import { Mail, MapPin, Phone, Clock, MessageSquare } from "lucide-react";
 import { SITE } from "@/lib/constants";

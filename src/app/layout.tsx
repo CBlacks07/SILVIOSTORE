@@ -27,6 +27,9 @@ export async function generateMetadata(): Promise<Metadata> {
     title: { default: `${brandName} | Coques, pochettes & accessoires téléphone premium`, template: `%s | ${brandName}` },
     description: `${brandName} — Pochettes de luxe, coques originales, accessoires téléphone authentiques. Bracelets Apple Watch, protections écran, chargeurs rapides. Livraison dans toute la sous région. Paiement Mobile Money.`,
     keywords: ["pochette de luxe", "coque téléphone", "pochette originale", "accessoires téléphone originaux", "coque iPhone", "bracelet Apple Watch", "protection écran", "chargeur rapide", "accessoires mobile Togo", "boutique accessoires Lomé", "SILVIO STORE", "accessoires premium sous région"],
+    verification: {
+      google: process.env.GOOGLE_SITE_VERIFICATION || "",
+    },
     metadataBase: new URL(SITE_URL),
     manifest: "/manifest.json",
     icons: {
@@ -95,10 +98,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-screen flex flex-col font-sans">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
+        <a href="#main-content" className="skip-to-content">Aller au contenu</a>
         <AuthSync />
         <PageAnimations />
         <Header />
-        <main className="flex-1">{children}</main>
+        <main id="main-content" className="flex-1">{children}</main>
         <Footer />
         <WhatsAppFloat />
         <CompareBar />

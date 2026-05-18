@@ -6,6 +6,7 @@ import { ProductCard } from "@/components/product/ProductCard";
 import { ProductGallery } from "@/components/product/ProductGallery";
 import { AddToCartForm } from "@/components/product/AddToCartForm";
 import { StockUrgency } from "@/components/marketing/StockUrgency";
+import { StockNotify } from "@/components/product/StockNotify";
 import { RecentlyViewedTracker, RecentlyViewedSection } from "@/components/product/RecentlyViewed";
 import { CompareButton } from "@/components/product/CompareButton";
 import { ProductTabs } from "@/components/product/ProductTabs";
@@ -165,7 +166,11 @@ export default async function ProductPage({ params }: { params: { slug: string }
         <div className="product-layout">
           {/* Gallery */}
           <div className="order-2 lg:order-1">
-            <ProductGallery images={product.images ?? []} alt={product.name} discount={discount} />
+            <ProductGallery
+              images={product.images ?? []}
+              alt={`${product.name}${product.brand ? ` — ${product.brand}` : ""} | SILVIO STORE`}
+              discount={discount}
+            />
           </div>
 
           {/* Product Info */}
@@ -237,9 +242,13 @@ export default async function ProductPage({ params }: { params: { slug: string }
               <StockUrgency stock={product.stock} threshold={marketing.stock_urgency.threshold} />
             )}
 
-            {/* Add to Cart */}
+            {/* Add to Cart or Stock Notify */}
             <div className="py-2">
-              <AddToCartForm product={product} />
+              {product.stock > 0 ? (
+                <AddToCartForm product={product} />
+              ) : (
+                <StockNotify productId={product.id} productName={product.name} />
+              )}
             </div>
 
             {/* Trust Badges */}

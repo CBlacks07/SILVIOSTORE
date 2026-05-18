@@ -2958,3 +2958,30 @@ body {
     grid-template-columns: 3fr 1.2fr;
   }
 }
+
+/* ── Lighthouse / Accessibilité ── */
+/* Focus visible sur tous les éléments interactifs */
+:focus-visible {
+  outline: 2px solid #d97706;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Skip to content link */
+.skip-to-content {
+  position: absolute;
+  top: -40px;
+  left: 8px;
+  background: #d97706;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 0 0 8px 8px;
+  font-weight: 700;
+  font-size: 13px;
+  z-index: 999999;
+  text-decoration: none;
+  transition: top 0.2s;
+}
+.skip-to-content:focus {
+  top: 0;
+}

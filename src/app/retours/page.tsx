@@ -1,3 +1,5 @@
+export const revalidate = 3600;
+
 import Link from "next/link";
 import { CheckCircle, Package, Clock, ArrowRight } from "lucide-react";
 
