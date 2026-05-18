@@ -129,9 +129,13 @@ export default async function HomePage() {
             Aucun produit vedette pour le moment. Connectez-vous à l'admin pour en ajouter.
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-3 sm:gap-4 md:gap-6">
+          <div style={{ display: "flex", gap: "1rem", overflowX: "auto", paddingBottom: "12px", scrollbarWidth: "none", WebkitOverflowScrolling: "touch" }}
+            className="snap-x snap-mandatory">
+            <style>{`.selection-scroll::-webkit-scrollbar{display:none}`}</style>
             {featured.map((p) => (
-              <ProductCard key={p.id} product={p} />
+              <div key={p.id} style={{ flexShrink: 0, width: "clamp(200px, 45vw, 260px)" }} className="snap-start">
+                <ProductCard product={p} />
+              </div>
             ))}
           </div>
         )}
