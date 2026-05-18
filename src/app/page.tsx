@@ -199,7 +199,6 @@ export default async function HomePage() {
           {cta.enabled && (
             <div className="container-page" style={{ paddingTop: "clamp(40px, 6vw, 64px)", paddingBottom: "32px", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "24px" }}>
               <div className="flex-1">
-                <p className="text-xs font-black uppercase tracking-[0.28em] mb-2" style={{ color: "#d97706" }}>Notre engagement</p>
                 <h3 className="font-display text-2xl md:text-3xl font-bold text-white">{cta.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed max-w-xl" style={{ color: "rgba(253,230,138,0.85)" }}>{cta.text}</p>
               </div>
