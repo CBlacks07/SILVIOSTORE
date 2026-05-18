@@ -113,6 +113,30 @@ export default async function HomePage() {
         `}</style>
       </Reveal>
 
+      <Reveal as="section" className="container-page py-14">
+        <div className="flex items-end justify-between mb-8">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.28em] text-accent mb-2">Sélection</p>
+            <h2 className="font-display text-2xl md:text-3xl font-bold text-brand-950 tracking-tight">Notre sélection du moment</h2>
+            <p className="mt-1 text-sm text-brand-600">Luxe, tendance et protection — les pièces que nos clients adorent.</p>
+          </div>
+          <Link href="/catalogue" className="hidden sm:btn-hero-outline">
+            Voir tout
+          </Link>
+        </div>
+        {featured.length === 0 ? (
+          <div className="card p-10 text-center text-sm text-brand-500">
+            Aucun produit vedette pour le moment. Connectez-vous à l'admin pour en ajouter.
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-3 sm:gap-4 md:gap-6">
+            {featured.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
+        )}
+      </Reveal>
+
       {brands.length > 0 && (
         <section className="section-band">
           <div className="container-page py-14">
@@ -160,31 +184,6 @@ export default async function HomePage() {
       <WhySilvioStore />
 
       <Testimonials data={testimonials} />
-
-      <Reveal as="section" className="container-page py-14">
-          <div className="flex items-end justify-between mb-8">
-            <div>
-              <p className="text-xs font-black uppercase tracking-[0.28em] text-accent mb-2">Sélection</p>
-              <h2 className="font-display text-2xl md:text-3xl font-bold text-brand-950 tracking-tight">Notre sélection du moment</h2>
-              <p className="mt-1 text-sm text-brand-600">Luxe, tendance et protection — les pièces que nos clients adorent.</p>
-            </div>
-            <Link href="/catalogue" className="hidden sm:btn-hero-outline">
-              Voir tout
-            </Link>
-          </div>
-
-          {featured.length === 0 ? (
-            <div className="card p-10 text-center text-sm text-brand-500">
-              Aucun produit vedette pour le moment. Connectez-vous à l'admin pour en ajouter.
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-3 sm:gap-4 md:gap-6">
-              {featured.map((p) => (
-                <ProductCard key={p.id} product={p} />
-              ))}
-            </div>
-          )}
-      </Reveal>
 
       {cta.enabled && (
         <section className="container-page py-16">
