@@ -107,17 +107,18 @@ export function Hero({ hero, extraImages = [] }: any) {
           overflow: hidden;
         }
         .hero-grid {
-          display: grid;
-          grid-template-columns: 1.05fr 1fr;
-          align-items: stretch;
-          min-height: clamp(600px, 85vh, 820px);
-          max-width: 1920px;
-          margin: 0 auto;
+          display: flex;
+          flex-direction: column;
+          min-height: auto;
         }
-        @media (max-width: 1024px) {
+        @media (min-width: 1024px) {
           .hero-grid {
-            grid-template-columns: 1fr;
-            min-height: auto;
+            display: grid;
+            grid-template-columns: 1.05fr 1fr;
+            align-items: stretch;
+            min-height: clamp(600px, 85vh, 820px);
+            max-width: 1920px;
+            margin: 0 auto;
           }
         }
 
@@ -327,16 +328,19 @@ export function Hero({ hero, extraImages = [] }: any) {
           position: relative;
           overflow: hidden;
           min-height: clamp(480px, 70vh, 820px);
+          width: 100%;
         }
         @media (max-width: 1024px) {
           .hero-right {
             order: -1;
-            min-height: clamp(260px, 55vw, 420px);
+            width: 100%;
+            min-height: clamp(260px, 60vw, 420px);
           }
         }
         @media (max-width: 640px) {
           .hero-right {
-            min-height: 260px;
+            width: 100%;
+            min-height: 280px;
           }
         }
         .hero-right-bg {
