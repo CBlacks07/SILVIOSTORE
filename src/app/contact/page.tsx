@@ -122,6 +122,23 @@ export default function ContactPage() {
               </a>
             </div>
 
+            <a
+              href="https://www.google.com/search?q=SILVIO+STORE+Avis&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOc3j1OA2wPQcuXVfKLbyYgqgULX7xlej7SKORIfTrv3Y-krwCRQyx6Kqih2ytaSsjycNnWAr0ac2IHlond6bhytfAgB_"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block rounded-2xl border border-brand-100 bg-white p-7 hover:border-accent/40 hover:shadow-md transition-all"
+            >
+              <p className="text-xs font-bold uppercase tracking-widest text-brand-500 mb-3">Votre avis compte</p>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="text-2xl">⭐⭐⭐⭐⭐</div>
+              </div>
+              <p className="text-sm font-semibold text-brand-950 mb-1">Laissez un avis Google</p>
+              <p className="text-xs text-brand-500">Partagez votre expérience et aidez d&apos;autres clients à nous découvrir.</p>
+              <span className="mt-3 inline-flex items-center gap-1.5 text-xs font-bold text-accent">
+                Écrire un avis →
+              </span>
+            </a>
+
             <div className="rounded-2xl border border-brand-100 bg-white p-7">
               <p className="text-xs font-bold uppercase tracking-widest text-brand-500 mb-3">Horaires boutique</p>
               <div className="space-y-2 text-sm">

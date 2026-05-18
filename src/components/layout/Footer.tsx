@@ -137,7 +137,7 @@ export async function Footer() {
           <div className="flex items-center justify-between mb-3 flex-wrap gap-3">
             <p className="text-xs font-semibold uppercase tracking-widest text-brand-500">Nous trouver</p>
             <a
-              href="https://g.page/r/CYSAZ3AQQUhvEAE/review"
+              href="https://www.google.com/search?q=SILVIO+STORE+Avis&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOc3j1OA2wPQcuXVfKLbyYgqgULX7xlej7SKORIfTrv3Y-krwCRQyx6Kqih2ytaSsjycNnWAr0ac2IHlond6bhytfAgB_"
               target="_blank"
               rel="noopener noreferrer"
               style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "6px 14px", borderRadius: "999px", background: "rgba(217,119,6,0.12)", border: "1px solid rgba(217,119,6,0.30)", fontSize: "11px", fontWeight: 700, color: "#d97706", textDecoration: "none" }}
