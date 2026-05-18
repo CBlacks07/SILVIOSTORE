@@ -8,6 +8,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { BrandLogo } from "@/components/home/BrandLogo";
 import { WhySilvioStore } from "@/components/home/WhySilvioStore";
 import { Testimonials } from "@/components/home/Testimonials";
+import { ProductCarousel } from "@/components/ui/ProductCarousel";
 import { getFeaturedProducts } from "@/lib/queries";
 import { getSetting, listActiveBanners, listActiveBrands } from "@/lib/settings";
 import type { Category } from "@/lib/types";
@@ -129,20 +130,13 @@ export default async function HomePage() {
             Aucun produit vedette pour le moment. Connectez-vous à l'admin pour en ajouter.
           </div>
         ) : (
-          <>
-            <div className="hidden md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
-              {featured.map((p) => (
-                <ProductCard key={p.id} product={p} />
-              ))}
-            </div>
-            <div className="flex md:hidden gap-4 overflow-x-auto pb-3 snap-x snap-mandatory" style={{ scrollbarWidth: "none" as const }}>
-              {featured.map((p) => (
-                <div key={p.id} className="snap-start shrink-0" style={{ width: "clamp(190px, 44vw, 240px)" }}>
-                  <ProductCard product={p} />
-                </div>
-              ))}
-            </div>
-          </>
+          <ProductCarousel>
+            {featured.map((p) => (
+              <div key={p.id} style={{ flexShrink: 0, width: "clamp(190px, 22vw, 240px)", scrollSnapAlign: "start" }}>
+                <ProductCard product={p} />
+              </div>
+            ))}
+          </ProductCarousel>
         )}
       </Reveal>
 

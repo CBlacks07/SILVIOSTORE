@@ -2985,3 +2985,5 @@ body {
 .skip-to-content:focus {
   top: 0;
 }
+
+.carousel-hide-scroll::-webkit-scrollbar { display: none; }
