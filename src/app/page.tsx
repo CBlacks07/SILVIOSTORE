@@ -197,7 +197,7 @@ export default async function HomePage() {
 
           {/* Top — CTA */}
           {cta.enabled && (
-            <div className="container-page pt-10 md:pt-14 pb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+            <div className="container-page" style={{ paddingTop: "clamp(40px, 6vw, 64px)", paddingBottom: "32px", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "24px" }}>
               <div className="flex-1">
                 <p className="text-xs font-black uppercase tracking-[0.28em] mb-2" style={{ color: "#d97706" }}>Notre engagement</p>
                 <h3 className="font-display text-2xl md:text-3xl font-bold text-white">{cta.title}</h3>
@@ -213,7 +213,7 @@ export default async function HomePage() {
           <div className="container-page"><div style={{ height: "1px", background: "rgba(217,119,6,0.20)" }} /></div>
 
           {/* Bottom — SEO 3 colonnes */}
-          <div className="container-page py-10 grid md:grid-cols-3 gap-8">
+          <div className="container-page" style={{ paddingTop: "32px", paddingBottom: "clamp(40px, 6vw, 56px)", display: "grid", gap: "32px", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))" }}>
             {[
               { title: "Pochettes de luxe & coques originales", text: "Sélection premium de pochettes et coques pour iPhone, Samsung et tous modèles. Designs exclusifs, matériaux haut de gamme — protection et style réunis." },
               { title: "Accessoires authentiques & garantis", text: "Bracelets Apple Watch cuir, chargeurs rapides USB-C, verres trempés — chaque accessoire est vérifié, original et garanti avant expédition." },
