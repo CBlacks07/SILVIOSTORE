@@ -188,18 +188,16 @@ export default async function HomePage() {
 
       <Testimonials data={testimonials} />
 
-      {/* CTA + SEO fusionnés */}
-      <section className="py-16" style={{ paddingLeft: "clamp(16px, 4vw, 64px)", paddingRight: "clamp(16px, 4vw, 64px)", maxWidth: "1600px", margin: "0 auto" }}>
-        <div
-          className="relative rounded-2xl overflow-hidden"
-          style={{ background: "linear-gradient(135deg, #1a1008 0%, #2c1c06 60%, #1a1008 100%)", boxShadow: "0 20px 60px rgba(26,16,8,0.35)" }}
-        >
+      {/* CTA + SEO — full width */}
+      <section className="mt-16 relative overflow-hidden"
+        style={{ background: "linear-gradient(135deg, #1a1008 0%, #2c1c06 60%, #1a1008 100%)" }}
+      >
           {/* Gold glow */}
           <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 5% 30%, rgba(217,119,6,0.18) 0%, transparent 55%), radial-gradient(ellipse at 95% 70%, rgba(217,119,6,0.10) 0%, transparent 55%)" }} />
 
           {/* Top — CTA */}
           {cta.enabled && (
-            <div className="relative px-8 md:px-14 pt-10 md:pt-14 pb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+            <div className="container-page pt-10 md:pt-14 pb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
               <div className="flex-1">
                 <p className="text-xs font-black uppercase tracking-[0.28em] mb-2" style={{ color: "#d97706" }}>Notre engagement</p>
                 <h3 className="font-display text-2xl md:text-3xl font-bold text-white">{cta.title}</h3>
@@ -212,10 +210,10 @@ export default async function HomePage() {
           )}
 
           {/* Divider */}
-          <div className="mx-8 md:mx-14" style={{ height: "1px", background: "rgba(217,119,6,0.20)" }} />
+          <div className="container-page"><div style={{ height: "1px", background: "rgba(217,119,6,0.20)" }} /></div>
 
           {/* Bottom — SEO 3 colonnes */}
-          <div className="relative px-8 md:px-14 py-10 grid md:grid-cols-3 gap-8">
+          <div className="container-page py-10 grid md:grid-cols-3 gap-8">
             {[
               { title: "Pochettes de luxe & coques originales", text: "Sélection premium de pochettes et coques pour iPhone, Samsung et tous modèles. Designs exclusifs, matériaux haut de gamme — protection et style réunis." },
               { title: "Accessoires authentiques & garantis", text: "Bracelets Apple Watch cuir, chargeurs rapides USB-C, verres trempés — chaque accessoire est vérifié, original et garanti avant expédition." },
@@ -227,7 +225,6 @@ export default async function HomePage() {
               </div>
             ))}
           </div>
-        </div>
 
         {/* FAQ Schema pour Google */}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
