@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, ChevronRight, SlidersHorizontal, X } from "lucide-react";
 import type { Metadata } from "next";
 import { BannerCard } from "@/components/ui/BannerCard";
+import { BannerSlider } from "@/components/ui/BannerSlider";
 import { ProductCard } from "@/components/product/ProductCard";
 import { SortSelect } from "@/components/catalogue/SortSelect";
 import { MobileFilterDrawer } from "@/components/catalogue/MobileFilterDrawer";
@@ -113,8 +114,13 @@ export default async function CataloguePage({ searchParams }: { searchParams: Se
 
           {/* Top banners */}
           {topBanners.length > 0 && (
-            <div className="mt-10 grid md:grid-cols-2 gap-5">
-              {topBanners.map((b) => <BannerCard key={b.id} banner={b} />)}
+            <div className="mt-10">
+              <div className="hidden md:block">
+                <BannerSlider banners={topBanners} />
+              </div>
+              <div className="md:hidden grid gap-4">
+                {topBanners.map((b) => <BannerCard key={b.id} banner={b} />)}
+              </div>
             </div>
           )}
         </div>
