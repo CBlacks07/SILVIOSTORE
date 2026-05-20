@@ -703,27 +703,35 @@ export function Hero({ hero, extraImages = [] }: any) {
                 </button>
               </div>
 
-              <div className="hero-progress">
-                <span className="hero-progress-num">
-                  {String(current + 1).padStart(2, "0")}
-                </span>
-                <div
-                  className={"hero-progress-bar" + (panel.caption === "#1f2a3c" ? " dark" : "")}
-                >
-                  <motion.div
-                    className="hero-progress-fill"
-                    key={"fill-" + current + "-" + paused}
-                    initial={{ scaleX: 0 }}
-                    animate={{ scaleX: paused || reduce ? 0 : 1 }}
-                    transition={{
-                      duration: paused || reduce ? 0 : AUTOPLAY_MS / 1000,
-                      ease: "linear",
+              {/* Samsung-style indicator dots */}
+              <div style={{
+                position: "absolute",
+                bottom: "16px",
+                left: "50%",
+                transform: "translateX(-50%)",
+                display: "flex",
+                gap: "6px",
+                alignItems: "center",
+                zIndex: 3,
+              }}>
+                {slides.map((_, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => setCurrent(i)}
+                    style={{
+                      height: "3px",
+                      borderRadius: "999px",
+                      border: "none",
+                      cursor: "pointer",
+                      padding: 0,
+                      transition: "width 0.3s ease, opacity 0.3s ease",
+                      width: i === current ? "24px" : "6px",
+                      background: i === current ? "#d97706" : "rgba(255,255,255,0.45)",
+                      opacity: i === current ? 1 : 0.7,
                     }}
                   />
-                </div>
-                <span className="hero-progress-num">
-                  {String(slides.length).padStart(2, "0")}
-                </span>
+                ))}
               </div>
             </>
           )}

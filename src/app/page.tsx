@@ -9,7 +9,7 @@ import { BrandLogo } from "@/components/home/BrandLogo";
 import { WhySilvioStore } from "@/components/home/WhySilvioStore";
 import { Testimonials } from "@/components/home/Testimonials";
 import { CategoriesMarquee } from "@/components/home/CategoriesMarquee";
-import { ProductCarousel } from "@/components/ui/ProductCarousel";
+import { SelectionStrip } from "@/components/home/SelectionStrip";
 import { getFeaturedProducts } from "@/lib/queries";
 import { getSetting, listActiveBanners, listActiveBrands } from "@/lib/settings";
 import type { Category } from "@/lib/types";
@@ -93,13 +93,7 @@ export default async function HomePage() {
             Aucun produit vedette pour le moment. Connectez-vous à l'admin pour en ajouter.
           </div>
         ) : (
-          <ProductCarousel>
-            {featured.map((p) => (
-              <div key={p.id} style={{ flexShrink: 0, width: "clamp(190px, 22vw, 240px)", scrollSnapAlign: "start" }}>
-                <ProductCard product={p} />
-              </div>
-            ))}
-          </ProductCarousel>
+          <SelectionStrip products={featured} />
         )}
       </Reveal>
 

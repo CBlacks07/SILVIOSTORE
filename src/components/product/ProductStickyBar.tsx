@@ -38,18 +38,41 @@ export function ProductStickyBar({ product }: { product: Product }) {
   return (
     <div
       aria-hidden={!visible}
-      className={
-        "fixed inset-x-0 bottom-0 z-40 border-t border-brand-100 bg-white/95 backdrop-blur transition-transform duration-300 lg:hidden " +
-        (visible ? "translate-y-0" : "translate-y-full")
-      }
-      style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+      style={{
+        position: "fixed", left: 0, right: 0, bottom: 0, zIndex: 40,
+        background: "rgba(255,255,255,0.97)",
+        backdropFilter: "blur(12px)",
+        borderTop: "1px solid rgba(217,119,6,0.15)",
+        boxShadow: "0 -4px 24px rgba(0,0,0,0.10)",
+        paddingBottom: "env(safe-area-inset-bottom)",
+        transform: visible ? "translateY(0)" : "translateY(100%)",
+        transition: "transform 0.3s cubic-bezier(0.22,1,0.36,1)",
+      }}
+      className="lg:hidden"
     >
-      <div className="container-page flex items-center gap-3 py-3">
-        <div className="min-w-0 flex-1">
-          <p className="truncate text-[11px] uppercase tracking-wide text-brand-500">{product.name}</p>
-          <p className="font-bold text-brand-950">{formatPrice(product.price)}</p>
+      <div style={{ display: "flex", alignItems: "center", gap: "12px", padding: "12px 20px" }}>
+        {/* Product image */}
+        {product.images?.[0] && (
+          <div style={{ width: "44px", height: "44px", borderRadius: "10px", overflow: "hidden", background: "rgb(248,248,250)", flexShrink: 0 }}>
+            <img src={product.images[0]} alt={product.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          </div>
+        )}
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <p style={{ fontSize: "11px", color: "#9ca3af", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{product.name}</p>
+          <p style={{ fontSize: "16px", fontWeight: 800, color: "#1a1008", margin: 0 }}>{formatPrice(product.price)}</p>
         </div>
-        <button type="button" disabled={outOfStock} onClick={handleAdd} className="btn-accent">
+        <button type="button" disabled={outOfStock} onClick={handleAdd}
+          style={{
+            background: added ? "linear-gradient(135deg,#16a34a,#22c55e)" : "linear-gradient(135deg,#d97706,#f59e0b)",
+            color: "#fff", border: "none", borderRadius: "999px",
+            padding: "13px 28px", fontSize: "14px", fontWeight: 700,
+            cursor: outOfStock ? "not-allowed" : "pointer",
+            flexShrink: 0, display: "flex", alignItems: "center", gap: "8px",
+            boxShadow: "0 4px 16px rgba(217,119,6,0.35)",
+            transition: "all 0.25s ease",
+            opacity: outOfStock ? 0.5 : 1,
+          }}
+        >
           {added ? (
             <>
               <Check className="h-4 w-4" />
