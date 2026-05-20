@@ -103,13 +103,13 @@ export function BannerSlider({ banners }: { banners: Banner[] }) {
       {/* Navigation arrows */}
       {banners.length > 1 && (
         <>
-          <button onClick={prev} style={{ position: "absolute", left: "16px", top: "50%", transform: "translateY(-50%)", zIndex: 3, width: "40px", height: "40px", borderRadius: "999px", background: "rgba(255,255,255,0.12)", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", backdropFilter: "blur(4px)", transition: "background 0.2s" }}
+          <button onClick={e => { e.preventDefault(); e.stopPropagation(); prev(); }} style={{ position: "absolute", left: "16px", top: "50%", transform: "translateY(-50%)", zIndex: 3, width: "40px", height: "40px", borderRadius: "999px", background: "rgba(255,255,255,0.12)", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", backdropFilter: "blur(4px)", transition: "background 0.2s" }}
             onMouseOver={e => (e.currentTarget.style.background = "rgba(217,119,6,0.50)")}
             onMouseOut={e => (e.currentTarget.style.background = "rgba(255,255,255,0.12)")}
           >
             <ChevronLeft size={18} />
           </button>
-          <button onClick={next} style={{ position: "absolute", right: "16px", top: "50%", transform: "translateY(-50%)", zIndex: 3, width: "40px", height: "40px", borderRadius: "999px", background: "rgba(255,255,255,0.12)", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", backdropFilter: "blur(4px)", transition: "background 0.2s" }}
+          <button onClick={e => { e.preventDefault(); e.stopPropagation(); next(); }} style={{ position: "absolute", right: "16px", top: "50%", transform: "translateY(-50%)", zIndex: 3, width: "40px", height: "40px", borderRadius: "999px", background: "rgba(255,255,255,0.12)", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", backdropFilter: "blur(4px)", transition: "background 0.2s" }}
             onMouseOver={e => (e.currentTarget.style.background = "rgba(217,119,6,0.50)")}
             onMouseOut={e => (e.currentTarget.style.background = "rgba(255,255,255,0.12)")}
           >
@@ -119,7 +119,7 @@ export function BannerSlider({ banners }: { banners: Banner[] }) {
           {/* Dots */}
           <div style={{ position: "absolute", bottom: "16px", left: "50%", transform: "translateX(-50%)", display: "flex", gap: "6px", zIndex: 3 }}>
             {banners.map((_, i) => (
-              <button key={i} onClick={() => go(i)} style={{ height: "3px", width: i === current ? "24px" : "6px", borderRadius: "999px", border: "none", cursor: "pointer", padding: 0, background: i === current ? "#d97706" : "rgba(255,255,255,0.40)", transition: "width 0.3s ease, background 0.3s ease" }} />
+              <button key={i} onClick={e => { e.preventDefault(); e.stopPropagation(); go(i); }} style={{ height: "3px", width: i === current ? "24px" : "6px", borderRadius: "999px", border: "none", cursor: "pointer", padding: 0, background: i === current ? "#d97706" : "rgba(255,255,255,0.40)", transition: "width 0.3s ease, background 0.3s ease" }} />
             ))}
           </div>
         </>
