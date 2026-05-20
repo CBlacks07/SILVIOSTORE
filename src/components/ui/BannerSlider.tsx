@@ -102,7 +102,11 @@ export function BannerSlider({ banners }: { banners: Banner[] }) {
         <div className="bs-text" style={{ opacity: animating ? 0 : 1, transform: animating ? "translateY(10px)" : "translateY(0)", transition: "opacity 0.35s ease, transform 0.35s ease" }}>
           <h2 className="bs-title">{b.title}</h2>
           {b.subtitle && <p className="bs-sub">{b.subtitle}</p>}
-          {b.cta_label && <div className="bs-cta">{b.cta_label} →</div>}
+          {b.cta_label && (
+          b.link_url
+            ? <Link href={b.link_url} onClick={e => e.stopPropagation()} className="bs-cta" style={{ textDecoration: "none" }}>{b.cta_label} →</Link>
+            : <div className="bs-cta">{b.cta_label} →</div>
+        )}
         </div>
 
         {/* Image */}
@@ -145,7 +149,5 @@ export function BannerSlider({ banners }: { banners: Banner[] }) {
     </div>
   );
 
-  return b.link_url
-    ? <Link href={b.link_url} style={{ textDecoration: "none", display: "block" }}>{inner}</Link>
-    : inner;
+  return inner;
 }
