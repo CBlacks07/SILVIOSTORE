@@ -115,12 +115,7 @@ export default async function CataloguePage({ searchParams }: { searchParams: Se
           {/* Top banners */}
           {topBanners.length > 0 && (
             <div style={{ marginTop: "40px" }}>
-              <div className="banner-desktop">
-                <BannerSlider banners={topBanners} />
-              </div>
-              <div className="banner-mobile" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                {topBanners.map((b) => <BannerCard key={b.id} banner={b} />)}
-              </div>
+              <BannerSlider banners={topBanners} />
             </div>
           )}
         </div>
