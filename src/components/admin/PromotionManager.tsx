@@ -39,8 +39,8 @@ function toDraft(p: Promotion): Draft {
     discount_value: p.discount_value,
     min_order: p.min_order,
     max_uses: p.max_uses != null ? String(p.max_uses) : "",
-    starts_at: p.starts_at ? p.starts_at.slice(0, 16) : "",
-    ends_at: p.ends_at ? p.ends_at.slice(0, 16) : "",
+    starts_at: p.starts_at ? String(p.starts_at).slice(0, 16) : "",
+    ends_at: p.ends_at ? String(p.ends_at).slice(0, 16) : "",
     is_active: p.is_active
   };
 }

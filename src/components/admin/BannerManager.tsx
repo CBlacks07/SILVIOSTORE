@@ -61,8 +61,8 @@ function toDraft(b: Banner): Draft {
     position: b.position,
     sort_order: b.sort_order,
     is_active: b.is_active,
-    starts_at: b.starts_at ? b.starts_at.slice(0, 16) : "",
-    ends_at: b.ends_at ? b.ends_at.slice(0, 16) : ""
+    starts_at: b.starts_at ? String(b.starts_at).slice(0, 16) : "",
+    ends_at: b.ends_at ? String(b.ends_at).slice(0, 16) : ""
   };
 }
 
