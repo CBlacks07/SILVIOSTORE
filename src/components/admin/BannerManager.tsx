@@ -124,6 +124,7 @@ export function BannerManager({ initial }: { initial: Banner[] }) {
       }
 
       setDraft(null);
+      window.scrollTo({ top: 0, behavior: "smooth" });
       router.refresh();
     } catch (e: any) {
       setError(e.message);
