@@ -18,7 +18,7 @@ import type { Category } from "@/lib/types";
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const [featured, categories, hero, cta, topBanners, brands, features, testimonials] = await Promise.all([
+  const [featured, categories, hero, cta, topBanners, brands, features, testimonials, midBanners] = await Promise.all([
     getFeaturedProducts(8),
     sql<Pick<Category, "slug" | "name">[]>`
       select slug, name from categories
@@ -36,7 +36,8 @@ export default async function HomePage() {
     listActiveBanners("home_hero"),
     listActiveBrands(),
     getSetting("features"),
-    getSetting("testimonials")
+    getSetting("testimonials"),
+    listActiveBanners("home_mid")
   ]);
 
   const heroExtraImages = topBanners.map((b) => b.image_url).filter((u): u is string => !!u);
@@ -149,6 +150,15 @@ export default async function HomePage() {
       <WhySilvioStore />
 
       <Testimonials data={testimonials} />
+
+      {/* Bannières milieu de page */}
+      {midBanners.filter(b => b.image_url || b.title).length > 0 && (
+        <section className="container-page py-10">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {midBanners.filter(b => b.image_url || b.title).map(b => <BannerCard key={b.id} banner={b} />)}
+          </div>
+        </section>
+      )}
 
       {/* CTA + SEO — full width */}
       <section className="mt-16 relative overflow-hidden"
