@@ -41,7 +41,7 @@ export default async function HomePage() {
     listActiveBanners("home_mid")
   ]);
 
-  const heroExtraImages = topBanners.map((b) => b.image_url).filter((u): u is string => !!u);
+  const heroExtraImages: string[] = []; // bannières affichées dans BannerSlider, pas dans le hero
 
   return (
     <>
