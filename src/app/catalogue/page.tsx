@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, ChevronRight, SlidersHorizontal, X } from "lucide-react";
 import type { Metadata } from "next";
+import { BannerCard } from "@/components/ui/BannerCard";
 import { ProductCard } from "@/components/product/ProductCard";
 import { SortSelect } from "@/components/catalogue/SortSelect";
 import { MobileFilterDrawer } from "@/components/catalogue/MobileFilterDrawer";
@@ -110,29 +111,10 @@ export default async function CataloguePage({ searchParams }: { searchParams: Se
             </div>
           </div>
 
-          {/* Top banners inside hero */}
+          {/* Top banners */}
           {topBanners.length > 0 && (
             <div className="mt-10 grid md:grid-cols-2 gap-5">
-              {topBanners.map((b) => {
-                const content = (
-                  <div className="relative overflow-hidden rounded-2xl border border-white/20 bg-white/5 backdrop-blur-md group hover:bg-white/10 hover:border-white/30 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl">
-                    {b.image_url && (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={b.image_url} alt={b.title} className="w-full h-auto block" loading="lazy" />
-                    )}
-                    <div className="p-5">
-                      <h3 className="font-bold text-white text-lg">{b.title}</h3>
-                      {b.subtitle && <p className="mt-2 text-sm text-white/70 leading-relaxed">{b.subtitle}</p>}
-                      {b.cta_label && (
-                        <span className="mt-3 inline-flex items-center gap-2 text-accent text-sm font-semibold group-hover:gap-3 transition-all">
-                          {b.cta_label} <ArrowRight className="h-4 w-4" />
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                );
-                return b.link_url ? <Link key={b.id} href={b.link_url}>{content}</Link> : <div key={b.id}>{content}</div>;
-              })}
+              {topBanners.map((b) => <BannerCard key={b.id} banner={b} />)}
             </div>
           )}
         </div>

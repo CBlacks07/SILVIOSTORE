@@ -10,6 +10,7 @@ import { WhySilvioStore } from "@/components/home/WhySilvioStore";
 import { Testimonials } from "@/components/home/Testimonials";
 import { CategoriesMarquee } from "@/components/home/CategoriesMarquee";
 import { SelectionStrip } from "@/components/home/SelectionStrip";
+import { BannerCard } from "@/components/ui/BannerCard";
 import { getFeaturedProducts } from "@/lib/queries";
 import { getSetting, listActiveBanners, listActiveBrands } from "@/lib/settings";
 import type { Category } from "@/lib/types";
@@ -62,6 +63,15 @@ export default async function HomePage() {
             );
           })}
         </Reveal>
+      )}
+
+      {/* Bannières admin */}
+      {topBanners.filter(b => b.image_url || b.title).length > 0 && (
+        <section className="container-page py-10">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {topBanners.filter(b => b.image_url || b.title).map(b => <BannerCard key={b.id} banner={b} />)}
+          </div>
+        </section>
       )}
 
       <section className="container-page py-14">
