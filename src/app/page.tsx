@@ -69,18 +69,22 @@ export default async function HomePage() {
 
       {/* Bannières admin */}
       {topBanners.filter(b => b.image_url || b.title).length > 0 && (
-        <>
-          {/* Desktop: slider pleine largeur */}
-          <div className="hidden md:block">
+        <div className="banner-responsive-wrap">
+          <style>{`
+            .banner-desktop { display: none; }
+            .banner-mobile  { display: block; }
+            @media(min-width:768px){
+              .banner-desktop { display: block; }
+              .banner-mobile  { display: none; }
+            }
+          `}</style>
+          <div className="banner-desktop">
             <BannerSlider banners={topBanners.filter(b => b.image_url || b.title)} />
           </div>
-          {/* Mobile: cards */}
-          <section className="md:hidden container-page py-8">
-            <div className="grid gap-4">
-              {topBanners.filter(b => b.image_url || b.title).map(b => <BannerCard key={b.id} banner={b} />)}
-            </div>
-          </section>
-        </>
+          <div className="banner-mobile container-page" style={{ paddingTop: "32px", paddingBottom: "8px", display: "flex", flexDirection: "column", gap: "16px" }}>
+            {topBanners.filter(b => b.image_url || b.title).map(b => <BannerCard key={b.id} banner={b} />)}
+          </div>
+        </div>
       )}
 
       <section className="container-page py-14">
@@ -161,16 +165,14 @@ export default async function HomePage() {
 
       {/* Bannières milieu */}
       {midBanners.filter(b => b.image_url || b.title).length > 0 && (
-        <>
-          <div className="hidden md:block mt-6">
+        <div>
+          <div className="banner-desktop" style={{ marginTop: "24px" }}>
             <BannerSlider banners={midBanners.filter(b => b.image_url || b.title)} />
           </div>
-          <section className="md:hidden container-page py-8">
-            <div className="grid gap-4">
-              {midBanners.filter(b => b.image_url || b.title).map(b => <BannerCard key={b.id} banner={b} />)}
-            </div>
-          </section>
-        </>
+          <div className="banner-mobile container-page" style={{ paddingTop: "24px", paddingBottom: "8px", display: "flex", flexDirection: "column", gap: "16px" }}>
+            {midBanners.filter(b => b.image_url || b.title).map(b => <BannerCard key={b.id} banner={b} />)}
+          </div>
+        </div>
       )}
 
       {/* CTA + SEO — full width */}

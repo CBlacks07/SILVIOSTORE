@@ -2988,3 +2988,11 @@ body {
 }
 
 .carousel-hide-scroll::-webkit-scrollbar { display: none; }
+
+/* Banner responsive */
+.banner-desktop { display: none; }
+.banner-mobile  { display: flex; flex-direction: column; gap: 16px; }
+@media (min-width: 768px) {
+  .banner-desktop { display: block; }
+  .banner-mobile  { display: none !important; }
+}
