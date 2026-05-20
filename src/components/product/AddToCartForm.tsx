@@ -82,12 +82,17 @@ export function AddToCartForm({ product }: { product: Product }) {
           disabled={outOfStock}
           onClick={handleAdd}
           className="btn-accent flex-1"
+          style={{
+            transition: "all 0.25s cubic-bezier(0.22,1,0.36,1)",
+            transform: added ? "scale(1.03)" : "scale(1)",
+            background: added ? "linear-gradient(135deg, #16a34a, #22c55e)" : undefined,
+          }}
         >
           {added ? (
-            <>
+            <span style={{ display: "flex", alignItems: "center", gap: "8px", animation: "fadeInUp 0.2s ease" }}>
               <Check className="h-4 w-4" />
-              Ajouté au panier
-            </>
+              Ajouté !
+            </span>
           ) : (
             <>
               <ShoppingBag className="h-4 w-4" />

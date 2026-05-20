@@ -9,6 +9,7 @@ import { PageAnimations } from "@/components/layout/PageAnimations";
 import { WhatsAppFloat } from "@/components/layout/WhatsAppFloat";
 import { MarketingProvider } from "@/components/marketing/MarketingProvider";
 import { CompareBar } from "@/components/product/CompareBar";
+import { CartToast } from "@/components/cart/CartToast";
 import "./globals.css";
 import "./theme.css";
 import "./typography.css";
@@ -106,6 +107,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main id="main-content" className="flex-1">{children}</main>
         <Footer />
         <WhatsAppFloat />
+        <CartToast />
         <CompareBar />
         <MarketingProvider />
       </body>
