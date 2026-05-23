@@ -1,20 +1,18 @@
-import crypto from "crypto";
 import { NextResponse } from "next/server";
 import { sql } from "@/lib/db";
 import { getFedaPayTransaction } from "@/lib/fedapay";
 import { sendOrderConfirmation } from "@/lib/email";
 
 export async function POST(req: Request) {
-  // Read raw body first — required for signature verification
+  // Read raw body
   const rawBody = await req.text();
 
-  // 1. Signature verification (if FEDAPAY_WEBHOOK_SECRET is set in env)
+  // 1. Vérification du secret webhook (header personnalisé configuré dans FedaPay)
   const webhookSecret = process.env.FEDAPAY_WEBHOOK_SECRET;
   if (webhookSecret) {
-    const sig = req.headers.get("x-fedapay-signature") ?? "";
-    const expected = crypto.createHmac("sha256", webhookSecret).update(rawBody).digest("hex");
-    if (sig !== expected && sig !== `sha256=${expected}`) {
-      console.error("webhook: invalid signature");
+    const receivedSecret = req.headers.get("x-webhook-secret") ?? "";
+    if (receivedSecret !== webhookSecret) {
+      console.error("webhook: invalid secret header");
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
   }
