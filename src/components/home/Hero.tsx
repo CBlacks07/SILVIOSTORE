@@ -33,6 +33,7 @@ type Slide = {
 
 export function Hero({ hero, extraImages = [] }: any) {
   const [current, setCurrent] = useState(0);
+  const [direction, setDirection] = useState(1); // 1 = forward, -1 = backward
   const [paused, setPaused] = useState(false);
   const reduce = useReducedMotion();
 
@@ -80,6 +81,7 @@ export function Hero({ hero, extraImages = [] }: any) {
   useEffect(() => {
     if (slides.length <= 1 || paused || reduce) return;
     const id = setInterval(() => {
+      setDirection(1);
       setCurrent((i) => (i + 1) % slides.length);
     }, AUTOPLAY_MS);
     return () => clearInterval(id);
@@ -562,13 +564,19 @@ export function Hero({ hero, extraImages = [] }: any) {
       <div className="hero-grid">
         {/* ─────────── LEFT: editorial copy + CTAs + trust ─────────── */}
         <div className="hero-left">
-          <AnimatePresence mode="wait" initial={false}>
+          <AnimatePresence mode="wait" initial={false} custom={direction}>
             <motion.div
               key={"left-" + current}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.55, ease }}
+              custom={direction}
+              variants={{
+                enter: (dir: number) => ({ opacity: 0, x: dir > 0 ? 60 : -60 }),
+                center: { opacity: 1, x: 0 },
+                exit: (dir: number) => ({ opacity: 0, x: dir > 0 ? -60 : 60 }),
+              }}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.6, ease }}
               style={{ display: "flex", flexDirection: "column", gap: 24 }}
             >
               <span className="hero-eyebrow">
@@ -652,14 +660,20 @@ export function Hero({ hero, extraImages = [] }: any) {
           <div className="hero-right-bg" style={{ background: panel.bg }} />
           <div className="hero-right-grain" />
 
-          {/* Image crossfade */}
-          <AnimatePresence mode="sync" initial={false}>
+          {/* Image slide parallax */}
+          <AnimatePresence mode="sync" initial={false} custom={direction}>
             <motion.div
               key={"img-" + current}
-              initial={{ opacity: 0, scale: 1.04 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.98 }}
-              transition={{ duration: 0.9, ease }}
+              custom={direction}
+              variants={{
+                enter: (dir: number) => ({ x: dir > 0 ? "100%" : "-100%" }),
+                center: { x: 0 },
+                exit: (dir: number) => ({ x: dir > 0 ? "-100%" : "100%" }),
+              }}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.75, ease }}
               className="hero-image-frame"
             >
               <div className="hero-image-wrap">
@@ -690,14 +704,14 @@ export function Hero({ hero, extraImages = [] }: any) {
                 <button
                   className="hero-arrow"
                   aria-label="Slide précédent"
-                  onClick={() => setCurrent((i) => (i === 0 ? slides.length - 1 : i - 1))}
+                  onClick={() => { setDirection(-1); setCurrent((i) => (i === 0 ? slides.length - 1 : i - 1)); }}
                 >
                   <ChevronLeft className="h-4 w-4" />
                 </button>
                 <button
                   className="hero-arrow"
                   aria-label="Slide suivant"
-                  onClick={() => setCurrent((i) => (i + 1) % slides.length)}
+                  onClick={() => { setDirection(1); setCurrent((i) => (i + 1) % slides.length); }}
                 >
                   <ChevronRight className="h-4 w-4" />
                 </button>
@@ -718,7 +732,7 @@ export function Hero({ hero, extraImages = [] }: any) {
                   <button
                     key={i}
                     type="button"
-                    onClick={() => setCurrent(i)}
+                    onClick={() => { setDirection(i > current ? 1 : -1); setCurrent(i); }}
                     style={{
                       height: "3px",
                       borderRadius: "999px",
