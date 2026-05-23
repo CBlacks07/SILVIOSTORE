@@ -25,6 +25,7 @@ export async function GET() {
         o.shipping_city,
         o.shipping_country
       FROM orders o
+      WHERE o.status != 'cancelled'
       ORDER BY o.created_at DESC
       LIMIT 5000
     `;
@@ -33,6 +34,7 @@ export async function GET() {
       SELECT o.reference as order_reference, oi.product_name, oi.quantity, oi.unit_price
       FROM order_items oi
       JOIN orders o ON o.id = oi.order_id
+      WHERE o.status != 'cancelled'
       ORDER BY o.created_at DESC
     `;
 

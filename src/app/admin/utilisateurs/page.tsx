@@ -28,7 +28,7 @@ export default async function AdminUsersPage() {
   const users = await sql<Row[]>`
     select
       u.id, u.full_name, u.phone, u.email, u.role, u.created_at,
-      count(o.id)::int as order_count
+      count(o.id) filter (where o.status != 'cancelled')::int as order_count
     from users u
     left join orders o on o.user_id = u.id
     group by u.id

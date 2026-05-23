@@ -23,17 +23,10 @@ const COUNTRY_DIAL_CODE: Record<string, string> = {
   Nigeria: "+234"
 };
 
-const FEDAPAY_SANDBOX_SUCCESS_NUMBERS = new Set(["64000001", "66000001"]);
-
 function normalizePhone(phone: string, country: string): string | null {
   const compact = String(phone || "").trim().replace(/[^\d+]/g, "");
   if (!compact) return null;
-  const isSandbox = (process.env.FEDAPAY_ENVIRONMENT || "sandbox") !== "live";
   const digits = compact.replace(/\D/g, "");
-
-  if (isSandbox && FEDAPAY_SANDBOX_SUCCESS_NUMBERS.has(digits)) {
-    return digits;
-  }
 
   if (compact.startsWith("+")) {
     if (!/^\+\d{8,15}$/.test(compact)) return null;
@@ -74,13 +67,8 @@ export async function POST(req: Request) {
     }
     const normalizedPhone = normalizePhone(form.phone, form.country);
     if (!normalizedPhone) {
-      const isSandbox = (process.env.FEDAPAY_ENVIRONMENT || "sandbox") !== "live";
       return NextResponse.json(
-        {
-          error: isSandbox
-            ? "Numéro invalide. En mode test FedaPay, utilisez l'opérateur Momo Test avec 64000001 ou 66000001."
-            : "Numéro de paiement invalide. Entrez un numéro Mobile Money valide."
-        },
+        { error: "Numéro de paiement invalide. Entrez un numéro Mobile Money valide." },
         { status: 400 }
       );
     }
@@ -203,10 +191,6 @@ export async function POST(req: Request) {
     const lastname = rest.join(" ") || firstname;
 
     const callbackPath = user ? "/compte/commandes" : "/commande/" + reference;
-    const isSandbox = (process.env.FEDAPAY_ENVIRONMENT || "sandbox") !== "live";
-    const sandboxTestIso =
-      isSandbox && FEDAPAY_SANDBOX_SUCCESS_NUMBERS.has(normalizedPhone) ? "bj" : null;
-
     const fp = await createFedaPayCheckout({
       amount: total,
       description: "Commande " + reference + " - " + items.length + " article(s)",
@@ -217,7 +201,7 @@ export async function POST(req: Request) {
         lastname,
         email: form.email || "no-reply@silviostore.com",
         phone: normalizedPhone,
-        countryIso: sandboxTestIso || COUNTRY_TO_ISO[form.country] || "tg"
+        countryIso: COUNTRY_TO_ISO[form.country] || "tg"
       }
     });
 

@@ -28,6 +28,7 @@ export default async function AdminDashboardPage() {
       coalesce(avg(total), 0)::int                                          as avg_basket
     from orders
     where created_at >= now() - interval '14 days'
+      and status != 'cancelled'
   `;
 
   const [kpiPrev] = await sql<{ revenue: number; orders: number }[]>`
@@ -37,6 +38,7 @@ export default async function AdminDashboardPage() {
     from orders
     where created_at >= now() - interval '28 days'
       and created_at < now() - interval '14 days'
+      and status != 'cancelled'
   `;
 
   const pipeline = await sql<{ status: string; count: number }[]>`
