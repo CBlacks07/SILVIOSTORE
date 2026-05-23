@@ -83,6 +83,8 @@ export type Order = {
   subtotal: number;
   shipping_cost: number;
   total: number;
+  discount_amount: number;
+  promo_code: string | null;
   customer_name: string;
   customer_phone: string;
   customer_email: string | null;
@@ -92,6 +94,9 @@ export type Order = {
   payment_provider: "fedapay" | null;
   payment_reference: string | null;
   paid_at: string | null;
+  stock_reserved: boolean;
+  failed_reason: string | null;
+  expires_at: string | null;
   created_at: string;
 };
 

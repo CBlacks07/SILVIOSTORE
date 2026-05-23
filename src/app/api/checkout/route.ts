@@ -110,25 +110,42 @@ export async function POST(req: Request) {
 
     const orderId = await sql.begin(async (tx) => {
       if (user?.id) {
-        await tx`
-          update orders
-          set status = 'cancelled'
-          where user_id = ${user.id}
-            and status = 'pending'
+        // Cancel old pending orders AND restore stock they had reserved
+        const oldPending = await tx<{ id: string; stock_reserved: boolean }[]>`
+          update orders set status = 'cancelled'
+          where user_id = ${user.id} and status = 'pending'
+          returning id, stock_reserved
         `;
+        const reservedIds = oldPending.filter(o => o.stock_reserved).map(o => o.id);
+        if (reservedIds.length > 0) {
+          await tx`
+            with item_qty as (
+              select product_id, sum(quantity)::int as qty
+              from order_items
+              where order_id = any(${reservedIds}::uuid[]) and product_id is not null
+              group by product_id
+            )
+            update products p
+            set stock = p.stock + item_qty.qty
+            from item_qty
+            where p.id = item_qty.product_id
+          `;
+        }
       }
 
       const orderRows = await tx<{ id: string }[]>`
         insert into orders (
           reference, user_id, status, subtotal, shipping_cost, total, discount_amount, promo_code,
           customer_name, customer_phone, customer_email,
-          shipping_country, shipping_city, shipping_address, payment_provider
+          shipping_country, shipping_city, shipping_address, payment_provider,
+          expires_at
         ) values (
           ${reference}, ${user?.id ?? null}, 'pending', ${subtotal}, ${shipping.cost}, ${total}, ${discount}, ${appliedCode},
           ${form.fullName}, ${normalizedPhone}, ${form.email || null},
           ${form.country}, ${form.city},
           ${[form.district, form.details].filter(Boolean).join(" - ")},
-          'fedapay'
+          'fedapay',
+          now() + interval '30 minutes'
         )
         returning id
       `;
@@ -141,6 +158,19 @@ export async function POST(req: Request) {
           values (${createdOrderId}, ${p.id}, ${p.name}, ${p.price}, ${i.quantity}, ${i.variantLabel || null})
         `;
       }
+
+      // Atomically reserve stock — throws if any item is out of stock (race condition guard)
+      for (const i of items) {
+        const reserved = await tx<{ id: string }[]>`
+          update products set stock = stock - ${i.quantity}
+          where id = ${i.productId} and stock >= ${i.quantity}
+          returning id
+        `;
+        if (!reserved[0]) {
+          throw new Error("Stock insuffisant au moment de la réservation");
+        }
+      }
+      await tx`update orders set stock_reserved = true where id = ${createdOrderId}`;
 
       if (user?.id) {
         const fullName = form.fullName.trim();
@@ -210,6 +240,9 @@ export async function POST(req: Request) {
     return NextResponse.json({ paymentUrl: fp.paymentUrl, reference });
   } catch (e: any) {
     console.error("checkout error", e);
+    if (e.message?.includes("Stock insuffisant")) {
+      return NextResponse.json({ error: e.message }, { status: 400 });
+    }
     return NextResponse.json({ error: e.message || "Erreur interne" }, { status: 500 });
   }
 }
