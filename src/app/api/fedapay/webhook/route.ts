@@ -37,13 +37,8 @@ export async function POST(req: Request) {
     if (!orderRef) return NextResponse.json({ ok: true });
 
     if (tx.status === "approved") {
-      let emailPayload: {
-        email: string; name: string;
-        items: { name: string; quantity: number; price: number }[];
-        total: number;
-      } | null = null;
-
-      await sql.begin(async (trx) => {
+      // sql.begin returns whatever the callback returns — TypeScript tracks it correctly
+      const emailPayload = await sql.begin(async (trx) => {
         // 4. Lock the order row to prevent race conditions from simultaneous webhooks
         const rows = await trx<{
           id: string; total: number; status: string;
@@ -56,7 +51,7 @@ export async function POST(req: Request) {
           for update
         `;
         const order = rows[0];
-        if (!order || order.status !== "pending") return;
+        if (!order || order.status !== "pending") return null;
 
         // 5. Verify amount — reject if FedaPay amount doesn't match order total
         if (Math.abs(tx.amount - order.total) > 1) {
@@ -72,7 +67,7 @@ export async function POST(req: Request) {
                ${order.total}, ${tx.amount}, ${JSON.stringify({ orderRef })}::jsonb)
           `;
           console.error(`webhook: amount mismatch ${orderRef} — expected ${order.total}, received ${tx.amount}`);
-          return;
+          return null;
         }
 
         // 6. Mark order as paid
@@ -121,18 +116,17 @@ export async function POST(req: Request) {
              ${order.total}, ${tx.amount}, ${JSON.stringify({ orderRef })}::jsonb)
         `;
 
-        // 11. Collect email data (sent AFTER transaction commits)
-        if (order.customer_email) {
-          const orderItems = await trx<{ product_name: string; quantity: number; unit_price: number }[]>`
-            select product_name, quantity, unit_price from order_items where order_id = ${order.id}
-          `;
-          emailPayload = {
-            email: order.customer_email,
-            name: order.customer_name || "Client",
-            items: orderItems.map(i => ({ name: i.product_name, quantity: i.quantity, price: i.unit_price })),
-            total: tx.amount,
-          };
-        }
+        // 11. Return email data — sent AFTER transaction commits
+        if (!order.customer_email) return null;
+        const orderItems = await trx<{ product_name: string; quantity: number; unit_price: number }[]>`
+          select product_name, quantity, unit_price from order_items where order_id = ${order.id}
+        `;
+        return {
+          email: order.customer_email,
+          name: order.customer_name || "Client",
+          items: orderItems.map(i => ({ name: i.product_name, quantity: i.quantity, price: i.unit_price })),
+          total: tx.amount,
+        };
       });
 
       // 12. Send confirmation email after transaction commits (best-effort)
