@@ -1,23 +1,19 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ChevronRight, Truck, ShieldCheck, MessageCircle, CheckCircle2, Tag, Hash, PackageCheck } from "lucide-react";
+import { ChevronRight, Truck, ShieldCheck, MessageCircle, Tag, Hash, PackageCheck } from "lucide-react";
 import type { Metadata } from "next";
 import { ProductCard } from "@/components/product/ProductCard";
 import { ProductGallery } from "@/components/product/ProductGallery";
 import { AddToCartForm } from "@/components/product/AddToCartForm";
 import { StockUrgency } from "@/components/marketing/StockUrgency";
 import { StockNotify } from "@/components/product/StockNotify";
-import { RecentlyViewedTracker, RecentlyViewedSection } from "@/components/product/RecentlyViewed";
 import { CompareButton } from "@/components/product/CompareButton";
 import { ProductTabs } from "@/components/product/ProductTabs";
 import { ProductStickyBar } from "@/components/product/ProductStickyBar";
-import { QuickAddButton } from "@/components/product/QuickAddButton";
-import { AddBundleButton } from "@/components/product/AddBundleButton";
 import { ReviewForm } from "@/components/product/ReviewForm";
 import { getCurrentUser } from "@/lib/auth";
 import { sql } from "@/lib/db";
 import {
-  getFrequentlyBoughtTogether,
   getProductBySlug,
   getProductReviews,
   getProductSocialProof,
@@ -76,9 +72,8 @@ export default async function ProductPage({ params }: { params: { slug: string }
   const product = await getProductBySlug(params.slug);
   if (!product) notFound();
 
-  const [related, frequentlyBought, site, socialProof, reviews, user, marketing] = await Promise.all([
+  const [related, site, socialProof, reviews, user, marketing] = await Promise.all([
     getRelatedProducts(product, 4),
-    getFrequentlyBoughtTogether(product.id, 3),
     getSetting("site"),
     getProductSocialProof(product.id),
     getProductReviews(product.id, 6),
@@ -109,28 +104,6 @@ export default async function ProductPage({ params }: { params: { slug: string }
     `Bonjour SILVIO STORE, je suis intéressé par : ${product.name} (${formatPrice(product.price)}).`
   );
 
-  const keyBenefits = [
-    "Compatibilité large avec les modèles du marché",
-    "Qualité testée pour un usage quotidien fiable",
-    "Livraison rapide et support WhatsApp réactif"
-  ];
-
-  const quickFaq =
-    product.faq?.slice(0, 3) ??
-    [
-      {
-        question: "Cet accessoire est-il compatible avec mon appareil ?",
-        answer: "Écrivez-nous sur WhatsApp avec votre modèle exact, nous confirmons immédiatement."
-      },
-      {
-        question: "Quel est le délai de livraison ?",
-        answer: "La livraison est généralement effectuée en 3 à 5 jours selon la zone."
-      },
-      {
-        question: "Puis-je retourner le produit ?",
-        answer: "Oui, selon nos conditions de retour, si le produit est dans son état d'origine."
-      }
-    ];
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://silviostore.com";
   const avgRating = reviews.length
@@ -307,21 +280,6 @@ export default async function ProductPage({ params }: { params: { slug: string }
               </div>
             </div>
 
-            {/* Benefits */}
-            <div className="rounded-xl border border-green-100 bg-green-50/40 p-4">
-              <h2 className="text-base md:text-lg font-black text-brand-950 mb-5 flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 md:h-6 md:w-6 text-green-600" />
-                Pourquoi cet accessoire ?
-              </h2>
-              <ul className="space-y-3">
-                {keyBenefits.map((item) => (
-                  <li key={item} className="flex items-start gap-3">
-                    <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-green-600" />
-                    <span className="text-sm md:text-base text-brand-700 leading-relaxed">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
 
             {/* WhatsApp */}
             {waUrl && (
@@ -344,7 +302,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
       </div>
 
       <div className="container-page">
-        <ProductTabs product={product} faqItems={quickFaq} />
+        <ProductTabs product={product} />
 
         <section className="mt-12 grid gap-8 lg:grid-cols-2">
           <div className="rounded-xl border border-brand-100 bg-white p-5">
@@ -384,27 +342,6 @@ export default async function ProductPage({ params }: { params: { slug: string }
           </div>
         </section>
 
-        {frequentlyBought.length > 0 && (
-          <section className="mt-16">
-            <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
-              <h2 className="font-display text-2xl md:text-3xl font-black text-brand-950">Souvent achetés ensemble</h2>
-              <AddBundleButton products={frequentlyBought} />
-            </div>
-            <div className="grid gap-5 md:grid-cols-3">
-              {frequentlyBought.map((p) => (
-                <div key={p.id} className="rounded-xl border border-brand-100 bg-white p-4">
-                  <Link href={"/produit/" + p.slug} className="text-base font-bold text-brand-900 hover:text-accent transition-colors">
-                    {p.name}
-                  </Link>
-                  <p className="mt-2 text-base text-brand-600 font-semibold">{formatPrice(p.price)}</p>
-                  <div className="mt-4">
-                    <QuickAddButton product={p} className="btn-outline h-11 px-5 text-sm w-full" />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
 
         {related.length > 0 && (
           <section className="mt-20 pb-12">
@@ -418,10 +355,6 @@ export default async function ProductPage({ params }: { params: { slug: string }
         )}
       </div>
 
-      <RecentlyViewedTracker product={{ id: product.id, slug: product.slug, name: product.name, price: product.price, image: product.images?.[0] ?? null }} />
-      <div className="container-page">
-        <RecentlyViewedSection currentId={product.id} />
-      </div>
       <ProductStickyBar product={product} />
     </div>
   );

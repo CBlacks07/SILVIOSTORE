@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import type { MarketingSettings } from "@/lib/types";
 import { WelcomePopup } from "./WelcomePopup";
-import { SocialProofToast } from "./SocialProofToast";
 import { ExitIntentPopup } from "./ExitIntentPopup";
 import { CartReminderPopup } from "./CartReminderPopup";
 
@@ -23,9 +22,6 @@ export function MarketingProvider() {
     <>
       {settings.welcome_popup.enabled && (
         <WelcomePopup config={settings.welcome_popup} />
-      )}
-      {settings.social_proof.enabled && (
-        <SocialProofToast config={settings.social_proof} />
       )}
       {settings.exit_intent.enabled && (
         <ExitIntentPopup config={settings.exit_intent} />
