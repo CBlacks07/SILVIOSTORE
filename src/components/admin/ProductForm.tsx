@@ -37,6 +37,7 @@ export function ProductForm({ product, categories }: Props) {
   const [images, setImages] = useState<string[]>(product?.images ?? []);
   const [specs, setSpecs] = useState<ProductSpec[]>(product?.specifications ?? []);
   const [faq, setFaq] = useState<ProductFaq[]>(product?.faq ?? []);
+  const [highlights, setHighlights] = useState<string[]>(product?.highlights ?? []);
   const [uploading, setUploading] = useState(false);
   const [showPicker, setShowPicker] = useState(false);
   const [urlInput, setUrlInput] = useState("");
@@ -88,7 +89,8 @@ export function ProductForm({ product, categories }: Props) {
         stock: Number(form.stock),
         images,
         specifications: specs,
-        faq
+        faq,
+        highlights: highlights.filter(h => h.trim())
       };
 
       const url = isEdit ? "/api/admin/products/" + product!.id : "/api/admin/products";
@@ -184,6 +186,38 @@ export function ProductForm({ product, categories }: Props) {
                 <input className="input" placeholder="Libellé" value={s.label} onChange={(e) => setSpecs(specs.map((x, j) => j === i ? { ...x, label: e.target.value } : x))} />
                 <input className="input" placeholder="Valeur" value={s.value} onChange={(e) => setSpecs(specs.map((x, j) => j === i ? { ...x, value: e.target.value } : x))} />
                 <button type="button" onClick={() => setSpecs(specs.filter((_, j) => j !== i))} className="btn-ghost text-red-700" aria-label="Supprimer">
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div className="card p-6 space-y-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="font-semibold text-brand-950">Points forts</h2>
+            <p className="text-xs text-brand-500 mt-0.5">Affiché sur la page produit sous forme de liste à cocher.</p>
+          </div>
+          <button type="button" onClick={() => setHighlights([...highlights, ""])} className="btn-outline text-xs">
+            <Plus className="h-3.5 w-3.5" /> Ajouter
+          </button>
+        </div>
+
+        {highlights.length === 0 ? (
+          <p className="text-xs text-brand-500">Aucun point fort. Cliquez sur Ajouter pour en créer.</p>
+        ) : (
+          <div className="space-y-2">
+            {highlights.map((h, i) => (
+              <div key={i} className="flex items-center gap-2">
+                <input
+                  className="input flex-1"
+                  placeholder="Ex : Compatible iPhone 15 / 15 Pro"
+                  value={h}
+                  onChange={(e) => setHighlights(highlights.map((x, j) => j === i ? e.target.value : x))}
+                />
+                <button type="button" onClick={() => setHighlights(highlights.filter((_, j) => j !== i))} className="btn-ghost text-red-700" aria-label="Supprimer">
                   <X className="h-4 w-4" />
                 </button>
               </div>

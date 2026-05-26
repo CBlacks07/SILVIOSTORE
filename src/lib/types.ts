@@ -26,6 +26,7 @@ export type Product = {
   variants: ProductVariant[] | null;
   specifications: ProductSpec[] | null;
   faq: ProductFaq[] | null;
+  highlights: string[] | null;
   created_at: string;
   updated_at: string;
 };

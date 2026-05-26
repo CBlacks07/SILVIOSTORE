@@ -7,13 +7,17 @@ import { ProductGallery } from "@/components/product/ProductGallery";
 import { AddToCartForm } from "@/components/product/AddToCartForm";
 import { StockUrgency } from "@/components/marketing/StockUrgency";
 import { StockNotify } from "@/components/product/StockNotify";
+import { RecentlyViewedTracker, RecentlyViewedSection } from "@/components/product/RecentlyViewed";
 import { CompareButton } from "@/components/product/CompareButton";
 import { ProductTabs } from "@/components/product/ProductTabs";
 import { ProductStickyBar } from "@/components/product/ProductStickyBar";
+import { QuickAddButton } from "@/components/product/QuickAddButton";
+import { AddBundleButton } from "@/components/product/AddBundleButton";
 import { ReviewForm } from "@/components/product/ReviewForm";
 import { getCurrentUser } from "@/lib/auth";
 import { sql } from "@/lib/db";
 import {
+  getFrequentlyBoughtTogether,
   getProductBySlug,
   getProductReviews,
   getProductSocialProof,
@@ -72,8 +76,9 @@ export default async function ProductPage({ params }: { params: { slug: string }
   const product = await getProductBySlug(params.slug);
   if (!product) notFound();
 
-  const [related, site, socialProof, reviews, user, marketing] = await Promise.all([
+  const [related, frequentlyBought, site, socialProof, reviews, user, marketing] = await Promise.all([
     getRelatedProducts(product, 4),
+    getFrequentlyBoughtTogether(product.id, 3),
     getSetting("site"),
     getProductSocialProof(product.id),
     getProductReviews(product.id, 6),
@@ -281,6 +286,22 @@ export default async function ProductPage({ params }: { params: { slug: string }
             </div>
 
 
+            {/* Points forts */}
+            {product.highlights && product.highlights.length > 0 && (
+              <div className="rounded-xl border border-green-100 bg-green-50/40 p-4">
+                <ul className="space-y-2.5">
+                  {product.highlights.map((item, i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <svg className="mt-0.5 h-5 w-5 shrink-0 text-green-600" viewBox="0 0 20 20" fill="currentColor" aria-hidden>
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      <span className="text-sm md:text-base text-brand-700 leading-relaxed">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
             {/* WhatsApp */}
             {waUrl && (
               <div className="flex justify-center mt-2">
@@ -343,6 +364,28 @@ export default async function ProductPage({ params }: { params: { slug: string }
         </section>
 
 
+        {frequentlyBought.length > 0 && (
+          <section className="mt-16">
+            <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+              <h2 className="font-display text-2xl md:text-3xl font-black text-brand-950">Souvent achetés ensemble</h2>
+              <AddBundleButton products={frequentlyBought} />
+            </div>
+            <div className="grid gap-5 md:grid-cols-3">
+              {frequentlyBought.map((p) => (
+                <div key={p.id} className="rounded-xl border border-brand-100 bg-white p-4">
+                  <Link href={"/produit/" + p.slug} className="text-base font-bold text-brand-900 hover:text-accent transition-colors">
+                    {p.name}
+                  </Link>
+                  <p className="mt-2 text-base text-brand-600 font-semibold">{formatPrice(p.price)}</p>
+                  <div className="mt-4">
+                    <QuickAddButton product={p} className="btn-outline h-11 px-5 text-sm w-full" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
         {related.length > 0 && (
           <section className="mt-20 pb-12">
             <h2 className="mb-8 font-display text-2xl md:text-3xl font-black text-brand-950 tracking-tight">Vous pourriez aussi aimer</h2>
@@ -353,6 +396,11 @@ export default async function ProductPage({ params }: { params: { slug: string }
             </div>
           </section>
         )}
+      </div>
+
+      <RecentlyViewedTracker product={{ id: product.id, slug: product.slug, name: product.name, price: product.price, image: product.images?.[0] ?? null }} />
+      <div className="container-page pb-8">
+        <RecentlyViewedSection currentId={product.id} />
       </div>
 
       <ProductStickyBar product={product} />

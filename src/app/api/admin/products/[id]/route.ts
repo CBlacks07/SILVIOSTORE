@@ -12,6 +12,7 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
   try {
     const specs = Array.isArray(b.specifications) ? b.specifications.filter((s: any) => s.label && s.value) : null;
     const faq = Array.isArray(b.faq) ? b.faq.filter((f: any) => f.question && f.answer) : null;
+    const highlights = Array.isArray(b.highlights) ? b.highlights.filter((h: any) => typeof h === "string" && h.trim()) : null;
     const rows = await sql`
       update products set
         name             = ${b.name},
@@ -28,7 +29,8 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
         is_featured      = ${!!b.is_featured},
         images           = ${sql.array(b.images || [])},
         specifications   = ${specs && specs.length > 0 ? sql.json(specs) : null},
-        faq              = ${faq && faq.length > 0 ? sql.json(faq) : null}
+        faq              = ${faq && faq.length > 0 ? sql.json(faq) : null},
+        highlights       = ${highlights && highlights.length > 0 ? sql.json(highlights) : null}
       where id = ${params.id}
       returning *
     `;
