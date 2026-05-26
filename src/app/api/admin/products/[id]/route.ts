@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
 import { sql } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
-import { slugify } from "@/lib/utils";
+import { slugify, isValidUUID, invalidId } from "@/lib/utils";
 
 export async function PATCH(req: Request, { params }: { params: { id: string } }) {
   const auth = await requireAdmin();
   if (!auth.ok) return NextResponse.json({ error: auth.message }, { status: auth.status });
+  if (!isValidUUID(params.id)) return invalidId();
 
   const b = await req.json();
   try {

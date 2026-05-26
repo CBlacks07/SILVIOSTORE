@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { Loader2, Plus, Trash2, X, Upload } from "lucide-react";
 import { slugify } from "@/lib/utils";
 import { ImageUploader } from "@/components/admin/ImageUploader";
@@ -170,7 +171,7 @@ export function CategoryManager({ initial }: { initial: Category[] }) {
                 <td className="px-4 py-3">
                   <div className="relative h-12 w-12 rounded-lg bg-white border border-brand-100 overflow-hidden group">
                     {c.image_url ? (
-                      <img src={c.image_url} alt="" className="h-full w-full object-cover" />
+                      <Image src={c.image_url} alt="" fill className="object-cover" sizes="48px" />
                     ) : (
                       <div className="h-full w-full flex items-center justify-center text-brand-300">
                         <Upload className="h-4 w-4" />

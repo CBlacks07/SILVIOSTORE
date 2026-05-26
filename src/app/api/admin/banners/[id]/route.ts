@@ -1,12 +1,14 @@
 import { NextResponse } from "next/server";
 import { sql } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
+import { isValidUUID, invalidId } from "@/lib/utils";
 
 const FIELDS = ["title", "subtitle", "image_url", "link_url", "cta_label", "position", "sort_order", "is_active", "starts_at", "ends_at"] as const;
 
 export async function PATCH(req: Request, { params }: { params: { id: string } }) {
   const auth = await requireAdmin();
   if (!auth.ok) return NextResponse.json({ error: auth.message }, { status: auth.status });
+  if (!isValidUUID(params.id)) return invalidId();
 
   const body = await req.json();
   const patch: Record<string, unknown> = {};

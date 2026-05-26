@@ -273,9 +273,13 @@ export function CheckoutForm({
                 />
                 {phoneError ? (
                   <p className="mt-1 text-xs text-red-700">{phoneError}</p>
+                ) : form.phone && isPhoneLikelyValid(form.phone) ? (
+                  <p className="mt-1 text-xs text-emerald-600 flex items-center gap-1">
+                    <Check className="h-3 w-3" /> Numéro valide
+                  </p>
                 ) : (
                   <p className="mt-1 text-xs text-brand-500">
-  "Entrez le numéro qui recevra la demande Mobile Money."
+                    Entrez le numéro qui recevra la demande Mobile Money.
                   </p>
                 )}
 

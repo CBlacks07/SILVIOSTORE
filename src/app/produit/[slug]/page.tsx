@@ -132,20 +132,37 @@ export default async function ProductPage({ params }: { params: { slug: string }
       }
     ];
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://silviostore.com";
+  const avgRating = reviews.length
+    ? reviews.reduce((s, r) => s + r.rating, 0) / reviews.length
+    : null;
+
   const jsonLd = {
     "@context": "https://schema.org/",
     "@type": "Product",
     name: product.name,
     description: product.description || product.long_description || undefined,
     sku: product.sku || undefined,
+    url: `${siteUrl}/produit/${product.slug}`,
     brand: product.brand ? { "@type": "Brand", name: product.brand } : undefined,
     image: product.images ?? [],
     offers: {
       "@type": "Offer",
+      url: `${siteUrl}/produit/${product.slug}`,
       price: product.price,
       priceCurrency: site.currency || "XOF",
-      availability: product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock"
-    }
+      availability: product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      seller: { "@type": "Organization", name: "SILVIO STORE" },
+    },
+    ...(avgRating && reviews.length >= 3 ? {
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: Math.round(avgRating * 10) / 10,
+        reviewCount: reviews.length,
+        bestRating: 5,
+        worstRating: 1,
+      }
+    } : {})
   };
 
   return (

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { AlertTriangle, ArrowUpRight, TrendingDown, TrendingUp } from "lucide-react";
 import { sql } from "@/lib/db";
 import { formatPrice } from "@/lib/utils";
@@ -338,8 +339,7 @@ export default async function AdminDashboardPage() {
                   <li key={p.id} className="flex items-center gap-3 px-4 py-3 md:px-5 hover:bg-brand-50/40 transition-colors">
                     <div className="h-9 w-9 rounded-lg bg-brand-100 shrink-0 overflow-hidden">
                       {p.images?.[0] && (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={p.images[0]} alt="" className="h-full w-full object-cover" />
+                        <Image src={p.images[0]} alt="" fill className="object-cover" sizes="36px" />
                       )}
                     </div>
                     <div className="flex-1 min-w-0">

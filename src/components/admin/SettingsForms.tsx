@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import NextImage from "next/image";
 import { Loader2, Plus, Save, Trash2, Upload, X } from "lucide-react";
 import { ImageUploader } from "@/components/admin/ImageUploader";
 import type {
@@ -101,8 +102,7 @@ export function SiteInfoForm({ initial }: { initial: SiteSettings }) {
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 bg-brand-50/50 p-4 rounded-xl border border-brand-100">
             <div className="w-32 h-16 relative bg-brand-900 rounded-lg overflow-hidden flex items-center justify-center border border-brand-200 shrink-0">
               {v.logo_url ? (
-                /* eslint-disable-next-line @next/next/no-img-element */
-                <img src={v.logo_url} alt="Logo header" className="max-w-full max-h-full object-contain p-2" />
+                <NextImage src={v.logo_url} alt="Logo header" fill className="object-contain p-2" sizes="128px" />
               ) : (
                 <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">Aucun logo</span>
               )}
@@ -123,8 +123,7 @@ export function SiteInfoForm({ initial }: { initial: SiteSettings }) {
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 bg-brand-50/50 p-4 rounded-xl border border-brand-100">
             <div className="w-16 h-16 relative bg-brand-900 rounded-full overflow-hidden flex items-center justify-center border border-brand-200 shrink-0">
               {v.logo_footer_url ? (
-                /* eslint-disable-next-line @next/next/no-img-element */
-                <img src={v.logo_footer_url} alt="Logo footer" className="max-w-full max-h-full object-cover" />
+                <NextImage src={v.logo_footer_url} alt="Logo footer" fill className="object-cover" sizes="64px" />
               ) : (
                 <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">Aucun</span>
               )}

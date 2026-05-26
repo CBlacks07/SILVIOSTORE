@@ -319,8 +319,7 @@ export function ProductForm({ product, categories }: Props) {
                 onMouseEnter={() => setHoveredImg(i)}
                 onMouseLeave={() => setHoveredImg(null)}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={src} alt="" className="h-full w-full object-cover" />
+                <Image src={src} alt="" fill className="object-cover" sizes="120px" />
 
                 {i === 0 && (
                   <span style={{ position: "absolute", bottom: "4px", left: "4px", fontSize: "9px", fontWeight: 700, background: "#d97706", color: "#fff", padding: "2px 6px", borderRadius: "4px" }}>
