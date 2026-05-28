@@ -161,7 +161,7 @@ export async function Footer() {
         <div className="container-page py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
           <span className="text-xs text-brand-400">&copy; {new Date().getFullYear()} {brandName}. Tous droits réservés.</span>
           <div className="flex items-center gap-2 flex-wrap justify-center">
-            {["Mobile Money", "Moov Money", "Wave", "MTN Money", "YAS Togo", "Visa / Mastercard"].map((m) => (
+            {["Moov Money", "Wave", "MTN Money", "YAS Togo", "Visa / Mastercard"].map((m) => (
               <span key={m} className="text-[10px] font-bold px-2.5 py-1 rounded-md text-brand-400" style={{ border: "1px solid rgba(217,119,6,0.20)", background: "rgba(217,119,6,0.06)" }}>
                 {m}
               </span>
