@@ -337,7 +337,7 @@ export default async function AdminDashboardPage() {
               <ul className="divide-y divide-brand-50">
                 {lowStock.map((p) => (
                   <li key={p.id} className="flex items-center gap-3 px-4 py-3 md:px-5 hover:bg-brand-50/40 transition-colors">
-                    <div className="h-9 w-9 rounded-lg bg-brand-100 shrink-0 overflow-hidden">
+                    <div className="relative h-9 w-9 rounded-lg bg-brand-100 shrink-0 overflow-hidden">
                       {p.images?.[0] && (
                         <Image src={p.images[0]} alt="" fill className="object-cover" sizes="36px" />
                       )}
