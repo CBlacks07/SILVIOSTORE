@@ -110,7 +110,7 @@ export default function WishlistPage() {
                   </div>
                 </Link>
                 <button
-                  onClick={() => toggle(p.id)}
+                  onClick={() => { toggle(p.id); setProducts((prev) => prev.filter((x) => x.id !== p.id)); }}
                   title="Retirer de la liste"
                   style={{ position: "absolute", top: "8px", left: "8px", width: "30px", height: "30px", borderRadius: "999px", background: "rgba(217,119,6,0.15)", border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}
                 >
