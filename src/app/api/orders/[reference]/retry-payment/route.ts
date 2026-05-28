@@ -27,7 +27,7 @@ export async function POST(_: Request, { params }: { params: { reference: string
       return NextResponse.json({ error: "Accès refusé" }, { status: 403 });
     }
 
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://silviostore.com";
     const callbackPath = "/compte/commandes";
     const [firstname, ...rest] = (order.customer_name || "Client").trim().split(" ");
     const lastname = rest.join(" ") || firstname || "Client";

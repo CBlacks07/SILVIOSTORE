@@ -47,7 +47,7 @@ export async function POST(req: Request) {
         values (${user.id}, ${tokenHash}, ${expiresAt.toISOString()})
       `;
 
-      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://silviostore.com";
       const resetUrl = `${baseUrl}/reinitialiser-mot-de-passe?token=${token}`;
       await sendPasswordResetEmail({ to: user.email, fullName: user.full_name, resetUrl });
     }
