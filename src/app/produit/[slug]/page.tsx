@@ -227,9 +227,11 @@ export default async function ProductPage({ params }: { params: { slug: string }
               )}
             </div>
 
-            {/* Description */}
+            {/* Tagline — phrase forte */}
             {product.description && (
-              <p className="text-sm leading-relaxed text-brand-700 border-l-2 pl-4" style={{ borderColor: "rgba(217,119,6,0.40)" }}>{product.description}</p>
+              <p className="text-base md:text-lg font-semibold text-brand-950 leading-snug" style={{ fontFamily: "var(--font-playfair), Georgia, serif", fontStyle: "italic" }}>
+                &ldquo;{product.description}&rdquo;
+              </p>
             )}
 
             {/* Stock urgency */}
