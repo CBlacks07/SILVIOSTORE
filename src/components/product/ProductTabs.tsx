@@ -20,11 +20,11 @@ export function ProductTabs({
   const faq: ProductFaq[] = faqItems ?? product.faq ?? [];
 
   const tabs: { key: TabKey; label: string; available: boolean; count?: number }[] = [
-    { key: "description", label: "Description",          available: !!description },
-    { key: "reviews",     label: "Avis clients",         available: true, count: reviews.length },
-    { key: "delivery",   label: "Livraison & garantie",  available: true },
-    { key: "faq",        label: "Questions fréquentes",  available: faq.length > 0 },
-    { key: "specs",      label: "Caractéristiques",      available: specs.length > 0 },
+    { key: "description", label: "Description",         available: !!description },
+    { key: "reviews",     label: "Avis clients",        available: true, count: reviews.length },
+    { key: "delivery",   label: "Livraison & garantie", available: true },
+    { key: "faq",        label: "Questions fréquentes", available: faq.length > 0 },
+    // Specs déplacées dans le bloc "Informations produit" sur la page produit
   ];
 
   const initial = tabs.find((t) => t.available)?.key ?? "delivery";

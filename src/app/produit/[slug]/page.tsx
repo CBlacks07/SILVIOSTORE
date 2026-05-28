@@ -266,9 +266,9 @@ export default async function ProductPage({ params }: { params: { slug: string }
               ))}
             </div>
 
-            {/* Product Info Cards */}
-            <div className="rounded-xl border border-brand-100 bg-white p-4">
-              <h2 className="text-base md:text-lg font-black text-brand-950 mb-5 flex items-center gap-2">
+            {/* Product Info Cards + Specs */}
+            <div className="rounded-xl border border-brand-100 bg-white p-4 space-y-4">
+              <h2 className="text-base md:text-lg font-black text-brand-950 flex items-center gap-2">
                 <PackageCheck className="h-5 w-5 md:h-6 md:w-6 text-accent" />
                 Informations produit
               </h2>
@@ -285,6 +285,25 @@ export default async function ProductPage({ params }: { params: { slug: string }
                   </div>
                 ))}
               </div>
+
+              {/* Caractéristiques techniques directement sous les infos */}
+              {product.specifications && product.specifications.length > 0 && (
+                <div className="border-t border-brand-100 pt-4">
+                  <p className="text-[10px] uppercase tracking-wider text-brand-400 font-bold mb-3">Caractéristiques</p>
+                  <div className="overflow-hidden rounded-lg border border-brand-100">
+                    <table className="w-full text-sm">
+                      <tbody>
+                        {product.specifications.map((s, i) => (
+                          <tr key={i} className={i % 2 === 0 ? "bg-brand-50/40" : "bg-white"}>
+                            <th className="px-3 py-2 text-left text-xs font-semibold text-brand-600 w-2/5">{s.label}</th>
+                            <td className="px-3 py-2 text-xs text-brand-900">{s.value}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
             </div>
 
 
