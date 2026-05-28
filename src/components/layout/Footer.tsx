@@ -160,15 +160,15 @@ export async function Footer() {
       <div style={{ borderTop: "1px solid rgba(217,119,6,0.12)" }}>
         <div className="container-page py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
           <span className="text-xs text-brand-400">&copy; {new Date().getFullYear()} {brandName}. Tous droits réservés.</span>
-          <div className="flex items-center gap-3 flex-wrap justify-center">
+          <div className="flex items-center gap-3 overflow-x-auto pb-1" style={{ scrollbarWidth: "none", WebkitOverflowScrolling: "touch" as any }}>
             {[
-              { src: "/moov money.jpg", alt: "Moov Money" },
-              { src: "/wave.jpg",       alt: "Wave" },
-              { src: "/mtn.jpg",        alt: "MTN Money" },
-              { src: "/yas.jpg",        alt: "YAS Togo" },
+              { src: "/yas.jpg",             alt: "YAS Togo" },
+              { src: "/moov money.jpg",      alt: "Moov Money" },
+              { src: "/wave.jpg",            alt: "Wave" },
+              { src: "/mtn.jpg",             alt: "MTN Money" },
               { src: "/visa-mastercard.jpg", alt: "Visa / Mastercard" },
             ].map(({ src, alt }) => (
-              <div key={alt} className="relative h-7 w-14 overflow-hidden rounded" style={{ background: "rgba(255,255,255,0.08)" }}>
+              <div key={alt} className="relative shrink-0 h-7 w-14 overflow-hidden rounded" style={{ background: "rgba(255,255,255,0.08)" }}>
                 <Image src={src} alt={alt} fill className="object-contain p-0.5" sizes="56px" />
               </div>
             ))}
