@@ -7,14 +7,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = process.env.NEXT_PUBLIC_SITE_URL || "https://silviostore.com";
 
   const [products, categories, brands] = await Promise.all([
-    sql<{ slug: string; updated_at: string; images: string[] }[]>`
-      SELECT slug, updated_at, images
-      FROM products
-      WHERE is_active = true
-      ORDER BY updated_at DESC
-    `,
     sql<{ slug: string; updated_at: string }[]>`
-      SELECT slug, updated_at FROM categories ORDER BY sort_order ASC
+      SELECT slug, updated_at FROM products WHERE is_active = true ORDER BY updated_at DESC
+    `,
+    sql<{ slug: string }[]>`
+      SELECT slug FROM categories ORDER BY sort_order ASC
     `,
     sql<{ slug: string }[]>`
       SELECT slug FROM brands WHERE is_active = true ORDER BY name ASC
@@ -33,26 +30,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/connexion`,           lastModified: now, changeFrequency: "yearly",  priority: 0.2 },
   ];
 
-  // Produits — avec image pour Google Image Search
   const productPages: MetadataRoute.Sitemap = products.map((p) => ({
     url: `${base}/produit/${p.slug}`,
     lastModified: new Date(p.updated_at),
     changeFrequency: "weekly" as const,
     priority: 0.85,
-    ...(p.images?.[0] ? {
-      images: [{ url: p.images[0].startsWith("http") ? p.images[0] : `${base}${p.images[0]}` }],
-    } : {}),
   }));
 
-  // Catégories — page catalogue filtrée
   const categoryPages: MetadataRoute.Sitemap = categories.map((c) => ({
     url: `${base}/catalogue?categorie=${c.slug}`,
-    lastModified: new Date(c.updated_at),
+    lastModified: now,
     changeFrequency: "weekly" as const,
     priority: 0.7,
   }));
 
-  // Marques — page catalogue filtrée
   const brandPages: MetadataRoute.Sitemap = brands.map((b) => ({
     url: `${base}/catalogue?marque=${b.slug}`,
     lastModified: now,
