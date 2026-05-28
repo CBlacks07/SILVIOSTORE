@@ -75,23 +75,25 @@ export default function LoginPage() {
               <div className="rounded-lg bg-red-50 border border-red-100 px-4 py-2.5 text-sm text-red-700">{error}</div>
             )}
 
-            <div className="flex justify-center pt-2">
-              <button type="submit" disabled={loading}
-                className="flex items-center gap-2 rounded-full px-10 py-3.5 text-sm font-bold text-white transition-opacity hover:opacity-90"
-                style={{ background: loading ? "#9ca3af" : "linear-gradient(135deg, #1a1008, #2c1c06)" }}>
-                {loading ? <><Loader2 className="h-4 w-4 animate-spin" /> Connexion...</> : "Se connecter"}
-              </button>
-            </div>
+            <button type="submit" disabled={loading}
+              className="w-full flex items-center justify-center gap-2 rounded-xl py-4 text-[15px] font-bold text-white mt-2 transition-all hover:opacity-90 active:scale-[0.99]"
+              style={{
+                background: loading ? "#9ca3af" : "linear-gradient(135deg, #d97706 0%, #b45309 100%)",
+                boxShadow: loading ? "none" : "0 4px 20px rgba(217,119,6,0.35)",
+              }}>
+              {loading ? <><Loader2 className="h-4 w-4 animate-spin" /> Connexion...</> : "Se connecter"}
+            </button>
           </form>
 
-          <div className="flex items-center gap-3 mt-8 mb-5">
+          <div className="flex items-center gap-3 mt-7 mb-5">
             <div className="flex-1 h-px bg-brand-100" />
             <span className="text-xs text-brand-400 font-medium">Nouveau client ?</span>
             <div className="flex-1 h-px bg-brand-100" />
           </div>
 
           <Link href="/inscription"
-            className="flex items-center justify-center w-full rounded-full py-3.5 text-sm font-bold text-accent border-2 border-accent/30 hover:border-accent hover:bg-accent/5 transition-all">
+            className="w-full flex items-center justify-center rounded-xl py-4 text-[15px] font-bold transition-all hover:opacity-80"
+            style={{ background: "#f5f0e8", color: "#92400e" }}>
             Créer un compte
           </Link>
         </div>
