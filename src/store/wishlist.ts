@@ -3,15 +3,18 @@ import { persist, createJSONStorage } from "zustand/middleware";
 
 type WishlistState = {
   items: string[];
+  _hydrated: boolean;
   toggle: (id: string) => void;
   has: (id: string) => boolean;
   sync: (validIds: string[]) => void;
+  setHydrated: () => void;
 };
 
 export const useWishlist = create<WishlistState>()(
   persist(
     (set, get) => ({
       items: [],
+      _hydrated: false,
 
       toggle: (id: string) => {
         const current = get().items;
@@ -24,16 +27,20 @@ export const useWishlist = create<WishlistState>()(
 
       has: (id: string) => get().items.includes(id),
 
-      // Supprime les IDs qui n'existent plus en base
       sync: (validIds: string[]) => {
         const current = get().items;
         const cleaned = current.filter((id) => validIds.includes(id));
         if (cleaned.length !== current.length) set({ items: cleaned });
       },
+
+      setHydrated: () => set({ _hydrated: true }),
     }),
     {
       name: "silvio-wishlist",
-      storage: createJSONStorage(() => localStorage)
+      storage: createJSONStorage(() => localStorage),
+      onRehydrateStorage: () => (state) => {
+        state?.setHydrated();
+      },
     }
   )
 );
