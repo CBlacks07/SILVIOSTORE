@@ -26,8 +26,8 @@ export function PageAnimations() {
 
       setCovering(true);
     }
-    document.addEventListener("click", onLinkClick, true);
-    return () => document.removeEventListener("click", onLinkClick, true);
+    document.addEventListener("click", onLinkClick);
+    return () => document.removeEventListener("click", onLinkClick);
   }, [pathname]);
 
   // Retire l'overlay + scroll en haut quand la pathname change
