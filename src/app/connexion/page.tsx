@@ -44,7 +44,7 @@ export default function LoginPage() {
     <div className="min-h-[85vh] flex items-center justify-center px-4 py-12"
       style={{ background: "linear-gradient(135deg, #1a1008 0%, #2c1c06 100%)" }}>
 
-      <div className="w-full max-w-[420px]">
+      <div style={{ width: "100%", maxWidth: "440px" }}>
         {/* Logo + titre */}
         <div className="text-center mb-8">
           <div className="relative h-16 w-16 mx-auto mb-5 rounded-full overflow-hidden ring-4 ring-accent/30">
