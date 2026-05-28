@@ -4,6 +4,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { getShippingFor } from "@/lib/shipping";
 import { validatePromotion } from "@/lib/promotions";
 import { COUNTRY_TO_ISO, createFedaPayCheckout } from "@/lib/fedapay";
+import { rateLimit, getIp } from "@/lib/rateLimit";
 import type { CartItem } from "@/lib/types";
 
 const COUNTRY_DIAL_CODE: Record<string, string> = {
@@ -46,6 +47,10 @@ function generateReference(): string {
 }
 
 export async function POST(req: Request) {
+  if (!rateLimit(`checkout:${getIp(req)}`, 10, 10 * 60 * 1000)) {
+    return NextResponse.json({ error: "Trop de tentatives. Réessayez dans 10 minutes." }, { status: 429 });
+  }
+
   try {
     const { form, items, promoCode } = (await req.json()) as {
       form: {

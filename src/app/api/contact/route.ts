@@ -1,27 +1,14 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
+import { rateLimit, getIp } from "@/lib/rateLimit";
+
 const resend = new Resend(process.env.RESEND_API_KEY);
 const TO     = "contact@silviostore.com";
 const FROM   = process.env.RESEND_FROM_EMAIL || "SILVIO STORE <contact@silviostore.com>";
 
-// Simple in-memory rate limit: 3 messages / 10 min par IP
-const rl = new Map<string, { count: number; resetAt: number }>();
-function rateLimit(ip: string): boolean {
-  const now = Date.now();
-  const entry = rl.get(ip);
-  if (entry && now < entry.resetAt) {
-    if (entry.count >= 3) return false;
-    entry.count++;
-  } else {
-    rl.set(ip, { count: 1, resetAt: now + 10 * 60 * 1000 });
-  }
-  return true;
-}
-
 export async function POST(req: Request) {
-  const ip = req.headers.get("x-forwarded-for")?.split(",")[0] ?? "unknown";
-  if (!rateLimit(ip)) {
+  if (!rateLimit(`contact:${getIp(req)}`, 3, 10 * 60 * 1000)) {
     return NextResponse.json({ error: "Trop de messages. Réessayez dans 10 minutes." }, { status: 429 });
   }
 

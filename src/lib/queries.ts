@@ -35,35 +35,49 @@ type CatalogFilters = {
   tri?: "recent" | "prix-asc" | "prix-desc" | "nom";
 };
 
-export async function searchProducts(filters: CatalogFilters): Promise<Product[]> {
-  const catCond = filters.categorie ? sql`and c.slug = ${filters.categorie}` : sql``;
-  const brandCond = filters.marque ? sql`and p.brand = ${filters.marque}` : sql``;
-  const qCond = filters.q ? sql`and p.name ilike ${"%" + filters.q + "%"}` : sql``;
-  const minCond = filters.prixMin != null ? sql`and p.price >= ${filters.prixMin}` : sql``;
-  const maxCond = filters.prixMax != null ? sql`and p.price <= ${filters.prixMax}` : sql``;
+const PAGE_SIZE = 24;
+
+export async function searchProducts(
+  filters: CatalogFilters,
+  page = 1
+): Promise<{ products: Product[]; total: number; pageSize: number }> {
+  const catCond   = filters.categorie ? sql`and c.slug = ${filters.categorie}` : sql``;
+  const brandCond = filters.marque    ? sql`and p.brand = ${filters.marque}`   : sql``;
+  const qCond     = filters.q         ? sql`and (p.name ilike ${"%" + filters.q + "%"} or p.description ilike ${"%" + filters.q + "%"})` : sql``;
+  const minCond   = filters.prixMin != null ? sql`and p.price >= ${filters.prixMin}` : sql``;
+  const maxCond   = filters.prixMax != null ? sql`and p.price <= ${filters.prixMax}` : sql``;
 
   const orderBy = (() => {
     switch (filters.tri) {
       case "prix-asc":  return sql`order by p.price asc`;
       case "prix-desc": return sql`order by p.price desc`;
       case "nom":       return sql`order by p.name asc`;
-      default:          return sql`order by p.created_at desc`;
+      default:          return sql`order by p.is_featured desc, p.created_at desc`;
     }
   })();
 
-  return sql<Product[]>`
-    select p.*
-    from products p
-    left join categories c on c.id = p.category_id
-    where p.is_active = true
-    ${catCond}
-    ${brandCond}
-    ${qCond}
-    ${minCond}
-    ${maxCond}
-    ${orderBy}
-    limit 60
-  `;
+  const offset = (Math.max(1, page) - 1) * PAGE_SIZE;
+
+  const [products, countRows] = await Promise.all([
+    sql<Product[]>`
+      select p.*
+      from products p
+      left join categories c on c.id = p.category_id
+      where p.is_active = true
+      ${catCond} ${brandCond} ${qCond} ${minCond} ${maxCond}
+      ${orderBy}
+      limit ${PAGE_SIZE} offset ${offset}
+    `,
+    sql<{ count: number }[]>`
+      select count(*)::int as count
+      from products p
+      left join categories c on c.id = p.category_id
+      where p.is_active = true
+      ${catCond} ${brandCond} ${qCond} ${minCond} ${maxCond}
+    `,
+  ]);
+
+  return { products, total: countRows[0]?.count ?? 0, pageSize: PAGE_SIZE };
 }
 
 export async function getProductBySlug(slug: string): Promise<Product | null> {

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, ChevronRight, SlidersHorizontal, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, SlidersHorizontal, X } from "lucide-react";
 import type { Metadata } from "next";
 import { BannerCard } from "@/components/ui/BannerCard";
 import { BannerSlider } from "@/components/ui/BannerSlider";
@@ -19,6 +19,7 @@ type Search = {
   prixMin: string;
   prixMax: string;
   tri: string;
+  page: string;
 };
 
 export async function generateMetadata({ searchParams }: { searchParams: Search }): Promise<Metadata> {
@@ -31,7 +32,9 @@ export async function generateMetadata({ searchParams }: { searchParams: Search 
 }
 
 export default async function CataloguePage({ searchParams }: { searchParams: Search }) {
-  const [products, categories, brands, topBanners] = await Promise.all([
+  const currentPage = Math.max(1, parseInt(searchParams.page || "1") || 1);
+
+  const [{ products, total, pageSize }, categories, brands, topBanners] = await Promise.all([
     searchProducts({
       q: searchParams.q,
       categorie: searchParams.categorie,
@@ -39,11 +42,13 @@ export default async function CataloguePage({ searchParams }: { searchParams: Se
       prixMin: searchParams.prixMin ? Number(searchParams.prixMin) : undefined,
       prixMax: searchParams.prixMax ? Number(searchParams.prixMax) : undefined,
       tri: (searchParams.tri as any) || "recent",
-    }),
+    }, currentPage),
     getCategories(),
     listActiveBrands(),
     listActiveBanners("catalogue_top"),
   ]);
+
+  const totalPages = Math.ceil(total / pageSize);
 
   const activeCat = categories.find((c) => c.slug === searchParams.categorie);
   const hasFilters = Boolean(
@@ -58,6 +63,19 @@ export default async function CataloguePage({ searchParams }: { searchParams: Se
     if (searchParams.prixMin && omit !== "prix") params.set("prixMin", searchParams.prixMin);
     if (searchParams.prixMax && omit !== "prix") params.set("prixMax", searchParams.prixMax);
     if (searchParams.tri) params.set("tri", searchParams.tri);
+    const qs = params.toString();
+    return "/catalogue" + (qs ? "?" + qs : "");
+  };
+
+  const buildPageUrl = (p: number) => {
+    const params = new URLSearchParams();
+    if (searchParams.q) params.set("q", searchParams.q);
+    if (searchParams.categorie) params.set("categorie", searchParams.categorie);
+    if (searchParams.marque) params.set("marque", searchParams.marque);
+    if (searchParams.prixMin) params.set("prixMin", searchParams.prixMin);
+    if (searchParams.prixMax) params.set("prixMax", searchParams.prixMax);
+    if (searchParams.tri) params.set("tri", searchParams.tri);
+    if (p > 1) params.set("page", String(p));
     const qs = params.toString();
     return "/catalogue" + (qs ? "?" + qs : "");
   };
@@ -168,8 +186,9 @@ export default async function CataloguePage({ searchParams }: { searchParams: Se
             <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-5 bg-white rounded-2xl p-5 border border-brand-100 shadow-sm">
               <div className="flex items-center justify-between w-full sm:w-auto">
                 <p className="text-base text-brand-700 font-medium">
-                  <span className="font-black text-brand-950 text-lg">{products.length}</span>{" "}
-                  résultat{products.length > 1 ? "s" : ""}
+                  <span className="font-black text-brand-950 text-lg">{total}</span>{" "}
+                  résultat{total > 1 ? "s" : ""}
+                  {totalPages > 1 && <span className="text-sm text-brand-400 ml-2">· page {currentPage}/{totalPages}</span>}
                 </p>
                 {/* Mobile Filter Trigger */}
                 <div className="lg:hidden">
@@ -202,11 +221,59 @@ export default async function CataloguePage({ searchParams }: { searchParams: Se
                 </Link>
               </div>
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-7">
-                {products.map((p) => (
-                  <ProductCard key={p.id} product={p} />
-                ))}
-              </div>
+              <>
+                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-7">
+                  {products.map((p) => (
+                    <ProductCard key={p.id} product={p} />
+                  ))}
+                </div>
+
+                {/* Pagination */}
+                {totalPages > 1 && (
+                  <div className="mt-12 flex items-center justify-center gap-3">
+                    {currentPage > 1 ? (
+                      <Link href={buildPageUrl(currentPage - 1)}
+                        className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-brand-200 bg-white text-sm font-semibold text-brand-700 hover:border-accent hover:text-accent transition-all">
+                        <ChevronLeft className="h-4 w-4" /> Précédent
+                      </Link>
+                    ) : (
+                      <span className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-brand-100 bg-brand-50 text-sm font-semibold text-brand-300 cursor-not-allowed">
+                        <ChevronLeft className="h-4 w-4" /> Précédent
+                      </span>
+                    )}
+
+                    <div className="flex items-center gap-1.5">
+                      {Array.from({ length: totalPages }, (_, i) => i + 1)
+                        .filter(p => p === 1 || p === totalPages || Math.abs(p - currentPage) <= 1)
+                        .reduce<(number | "…")[]>((acc, p, idx, arr) => {
+                          if (idx > 0 && (p as number) - (arr[idx - 1] as number) > 1) acc.push("…");
+                          acc.push(p);
+                          return acc;
+                        }, [])
+                        .map((p, i) => p === "…" ? (
+                          <span key={"e" + i} className="px-2 text-brand-400">…</span>
+                        ) : (
+                          <Link key={p} href={buildPageUrl(p as number)}
+                            className={"w-9 h-9 flex items-center justify-center rounded-lg text-sm font-bold transition-all " +
+                              (p === currentPage ? "bg-accent text-white shadow-sm" : "border border-brand-200 bg-white text-brand-700 hover:border-accent hover:text-accent")}>
+                            {p}
+                          </Link>
+                        ))}
+                    </div>
+
+                    {currentPage < totalPages ? (
+                      <Link href={buildPageUrl(currentPage + 1)}
+                        className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-brand-200 bg-white text-sm font-semibold text-brand-700 hover:border-accent hover:text-accent transition-all">
+                        Suivant <ChevronRight className="h-4 w-4" />
+                      </Link>
+                    ) : (
+                      <span className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-brand-100 bg-brand-50 text-sm font-semibold text-brand-300 cursor-not-allowed">
+                        Suivant <ChevronRight className="h-4 w-4" />
+                      </span>
+                    )}
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
