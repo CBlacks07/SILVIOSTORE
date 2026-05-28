@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { formatPrice } from "@/lib/utils";
 
@@ -14,51 +14,102 @@ type Product = {
   brand?: string | null;
 };
 
-// Slight rotations for each card — alternating like BrandLyft
 const ROTATIONS = [-3, 2, -2, 3, -1.5, 2.5, -3, 1.5, -2.5, 3];
+const SPEED = 0.7; // px per frame
 
 export function SelectionStrip({ products }: { products: Product[] }) {
-  const [paused, setPaused] = useState(false);
-  const items = [...products, ...products]; // duplicate for seamless loop
+  const trackRef = useRef<HTMLDivElement>(null);
+  const rafRef = useRef<number>(0);
+  const pausedRef = useRef(false);
+  const dragging = useRef(false);
+  const dragStartX = useRef(0);
+  const dragScrollStart = useRef(0);
+
+  // Duplicate for seamless loop
+  const items = [...products, ...products];
+
+  const tick = useCallback(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    if (!pausedRef.current) {
+      el.scrollLeft += SPEED;
+      // Seamless loop: once we've scrolled past the first copy, reset to start
+      if (el.scrollLeft >= el.scrollWidth / 2) {
+        el.scrollLeft = 0;
+      }
+    }
+    rafRef.current = requestAnimationFrame(tick);
+  }, []);
+
+  useEffect(() => {
+    rafRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [tick]);
+
+  // Mouse drag handlers
+  const onMouseEnter = () => { pausedRef.current = true; };
+  const onMouseLeave = () => {
+    if (!dragging.current) pausedRef.current = false;
+  };
+  const onMouseDown = (e: React.MouseEvent) => {
+    dragging.current = true;
+    dragStartX.current = e.clientX;
+    dragScrollStart.current = trackRef.current?.scrollLeft ?? 0;
+    pausedRef.current = true;
+    if (trackRef.current) trackRef.current.style.cursor = "grabbing";
+  };
+  const onMouseMove = (e: React.MouseEvent) => {
+    if (!dragging.current) return;
+    const dx = e.clientX - dragStartX.current;
+    if (trackRef.current) trackRef.current.scrollLeft = dragScrollStart.current - dx;
+  };
+  const onMouseUp = () => {
+    dragging.current = false;
+    pausedRef.current = false;
+    if (trackRef.current) trackRef.current.style.cursor = "grab";
+  };
 
   return (
-    <div style={{ position: "relative", overflow: "hidden", paddingTop: "32px", paddingBottom: "40px" }}
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-    >
+    <div style={{ position: "relative", paddingTop: "32px", paddingBottom: "40px" }}>
       {/* Fade edges */}
       <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: "80px", background: "linear-gradient(to right, rgb(250,248,245), transparent)", zIndex: 2, pointerEvents: "none" }} />
       <div style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: "80px", background: "linear-gradient(to left, rgb(250,248,245), transparent)", zIndex: 2, pointerEvents: "none" }} />
 
       <style>{`
-        @keyframes strip-scroll {
-          from { transform: translateX(0); }
-          to   { transform: translateX(-50%); }
-        }
         .strip-track {
           display: flex;
           gap: 20px;
-          width: max-content;
-          animation: strip-scroll 35s linear infinite;
-          will-change: transform;
+          overflow-x: scroll;
+          scroll-behavior: auto;
+          scrollbar-width: none;
+          -ms-overflow-style: none;
           align-items: center;
+          cursor: grab;
+          padding: 8px 80px;
+          user-select: none;
+          -webkit-user-select: none;
         }
-        .strip-track.paused { animation-play-state: paused; }
+        .strip-track::-webkit-scrollbar { display: none; }
         .strip-card {
           transition: transform 0.4s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s ease;
-          cursor: pointer;
           flex-shrink: 0;
         }
         .strip-card:hover {
           transform: rotate(0deg) scale(1.06) translateY(-8px) !important;
           z-index: 10;
         }
-        .strip-card:hover .strip-overlay {
-          opacity: 1 !important;
-        }
+        .strip-card:hover .strip-overlay { opacity: 1 !important; }
       `}</style>
 
-      <div className={`strip-track${paused ? " paused" : ""}`}>
+      <div
+        ref={trackRef}
+        className="strip-track"
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+        onMouseDown={onMouseDown}
+        onMouseMove={onMouseMove}
+        onMouseUp={onMouseUp}
+      >
         {items.map((p, i) => {
           const rot = ROTATIONS[i % ROTATIONS.length];
           const img = p.images?.[0];
@@ -71,6 +122,11 @@ export function SelectionStrip({ products }: { products: Product[] }) {
               key={p.id + i}
               href={"/produit/" + p.slug}
               className="strip-card"
+              draggable={false}
+              onClick={(e) => {
+                // Prevent navigation if the user was dragging
+                if (Math.abs(dragStartX.current - (e.clientX)) > 5) e.preventDefault();
+              }}
               style={{
                 transform: `rotate(${rot}deg)`,
                 display: "block",
@@ -82,7 +138,6 @@ export function SelectionStrip({ products }: { products: Product[] }) {
                 position: "relative",
               }}
             >
-              {/* Image */}
               <div style={{ height: "clamp(200px, 22vw, 280px)", background: "rgb(248,248,250)", overflow: "hidden", position: "relative" }}>
                 {img
                   ? <img src={img} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.4s ease" }} />
@@ -95,7 +150,6 @@ export function SelectionStrip({ products }: { products: Product[] }) {
                 )}
               </div>
 
-              {/* Info overlay on hover */}
               <div className="strip-overlay" style={{
                 position: "absolute", bottom: 0, left: 0, right: 0,
                 background: "linear-gradient(to top, rgba(26,16,8,0.92) 0%, rgba(26,16,8,0.60) 60%, transparent 100%)",
@@ -107,7 +161,6 @@ export function SelectionStrip({ products }: { products: Product[] }) {
                 <p style={{ fontSize: "13px", fontWeight: 800, color: "#d97706", margin: 0 }}>{formatPrice(p.price)}</p>
               </div>
 
-              {/* Static price bottom */}
               <div style={{ background: "#fff", padding: "10px 14px" }}>
                 <p style={{ fontSize: "11px", color: "#9ca3af", margin: "0 0 2px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{p.brand || "SILVIO STORE"}</p>
                 <p style={{ fontSize: "13px", fontWeight: 800, color: "#1a1008", margin: 0 }}>{formatPrice(p.price)}</p>
