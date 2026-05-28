@@ -1,6 +1,6 @@
 import Link from "next/link";
 import * as LucideIcons from "lucide-react";
-import dynamic from "next/dynamic";
+import lazy from "next/dynamic";
 import { sql } from "@/lib/db";
 import { ProductCard } from "@/components/product/ProductCard";
 import { Hero } from "@/components/home/Hero";
@@ -14,9 +14,9 @@ import { getFeaturedProducts } from "@/lib/queries";
 import { getSetting, listActiveBanners, listActiveBrands } from "@/lib/settings";
 import type { Category } from "@/lib/types";
 
-const BrandLogo     = dynamic(() => import("@/components/home/BrandLogo").then(m => m.BrandLogo), { ssr: false });
-const WhySilvioStore = dynamic(() => import("@/components/home/WhySilvioStore").then(m => m.WhySilvioStore), { ssr: false });
-const Testimonials  = dynamic(() => import("@/components/home/Testimonials").then(m => m.Testimonials), { ssr: false });
+const BrandLogo      = lazy(() => import("@/components/home/BrandLogo").then(m => m.BrandLogo), { ssr: false });
+const WhySilvioStore = lazy(() => import("@/components/home/WhySilvioStore").then(m => m.WhySilvioStore), { ssr: false });
+const Testimonials   = lazy(() => import("@/components/home/Testimonials").then(m => m.Testimonials), { ssr: false });
 
 export const dynamic = "force-dynamic";
 
