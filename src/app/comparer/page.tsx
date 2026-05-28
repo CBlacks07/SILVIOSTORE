@@ -2,8 +2,9 @@ export const dynamic = "force-dynamic";
 
 import { sql } from "@/lib/db";
 import Link from "next/link";
+import Image from "next/image";
 import { formatPrice } from "@/lib/utils";
-import { CheckCircle2, XCircle } from "lucide-react";
+import { CheckCircle2, XCircle, X } from "lucide-react";
 import { QuickAddButton } from "@/components/product/QuickAddButton";
 import type { Product } from "@/lib/types";
 
@@ -64,32 +65,27 @@ export default async function ComparePage({
               <th style={{ width: "120px" }} />
               {products.map((p) => (
                 <th key={p.id} style={{ padding: "0 10px 24px", verticalAlign: "top" }}>
-                  <div style={{
-                    background: "#fff",
-                    borderRadius: "20px",
-                    border: "1px solid rgba(217,119,6,0.20)",
-                    overflow: "hidden",
-                    boxShadow: "0 4px 24px rgba(217,119,6,0.08), 0 1px 4px rgba(0,0,0,0.06)",
-                    transition: "box-shadow 0.2s ease",
-                  }}>
-                    {/* Image frame — fond clair avec padding, image contenue */}
-                    <div style={{
-                      height: "200px",
-                      background: "linear-gradient(145deg, #faf8f5, #f5f2ed)",
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                      padding: "16px",
-                      borderBottom: "1px solid rgba(217,119,6,0.08)",
-                    }}>
-                      {p.images?.[0]
-                        ? <img src={p.images[0]} alt={p.name} style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain", borderRadius: "8px" }} />
-                        : <span style={{ fontSize: "11px", color: "#9ca3af" }}>Aucune image</span>
-                      }
+                  <div style={{ background: "#fff", borderRadius: "20px", border: "1px solid rgba(217,119,6,0.20)", overflow: "hidden", boxShadow: "0 4px 24px rgba(217,119,6,0.08), 0 1px 4px rgba(0,0,0,0.06)", position: "relative" }}>
+                    {/* Bouton retirer */}
+                    <Link
+                      href={"/comparer?ids=" + ids.filter(id => id !== p.id).join(",")}
+                      style={{ position: "absolute", top: "8px", right: "8px", zIndex: 10, width: "28px", height: "28px", borderRadius: "999px", background: "rgba(255,255,255,0.9)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 1px 4px rgba(0,0,0,0.15)", textDecoration: "none" }}
+                      title="Retirer ce produit"
+                    >
+                      <X size={14} color="#6b7280" />
+                    </Link>
+
+                    <div style={{ height: "200px", background: "linear-gradient(145deg, #faf8f5, #f5f2ed)", display: "flex", alignItems: "center", justifyContent: "center", padding: "16px", borderBottom: "1px solid rgba(217,119,6,0.08)", position: "relative" }}>
+                      {p.images?.[0] ? (
+                        <div style={{ position: "relative", width: "100%", height: "100%" }}>
+                          <Image src={p.images[0]} alt={p.name} fill style={{ objectFit: "contain" }} sizes="200px" />
+                        </div>
+                      ) : <span style={{ fontSize: "11px", color: "#9ca3af" }}>Aucune image</span>}
                     </div>
-                    {/* Infos produit */}
                     <div style={{ padding: "16px 16px 18px" }}>
                       <p style={{ fontSize: "14px", fontWeight: 700, color: "#1a1008", margin: "0 0 4px", lineHeight: 1.3, textAlign: "center" }}>{p.name}</p>
                       <div style={{ textAlign: "center" }}>
-                        <Link href={"/produit/" + p.slug} style={{ fontSize: "11px", color: "#d97706", textDecoration: "none", fontWeight: 700, letterSpacing: "0.03em" }}>Voir le produit →</Link>
+                        <Link href={"/produit/" + p.slug} style={{ fontSize: "11px", color: "#d97706", textDecoration: "none", fontWeight: 700 }}>Voir le produit →</Link>
                       </div>
                     </div>
                   </div>

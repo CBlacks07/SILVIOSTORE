@@ -325,7 +325,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
       </div>
 
       <div className="container-page">
-        <ProductTabs product={product} />
+        <ProductTabs product={product} reviews={reviews} />
 
         <section className="mt-12 grid gap-8 lg:grid-cols-2">
           <div className="rounded-xl border border-brand-100 bg-white p-5">

@@ -134,6 +134,19 @@ export function Testimonials({ data }: { data: TestimonialsSettings }) {
           ))}
         </div>
       </div>
+
+      {/* CTA laisser un avis */}
+      <div className="container-page mt-10 text-center">
+        <a
+          href="https://www.google.com/search?q=SILVIO+STORE+Avis&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOc3j1OA2wPQcuXVfKLbyYgqgULX7xlej7SKORIfTrv3Y-krwCRQyx6Kqih2ytaSsjycNnWAr0ac2IHlond6bhytfAgB_"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-bold transition-all hover:opacity-90"
+          style={{ background: "rgba(217,119,6,0.10)", border: "1px solid rgba(217,119,6,0.25)", color: "#d97706" }}
+        >
+          <span>★</span> Laisser un avis Google
+        </a>
+      </div>
     </section>
   );
 }

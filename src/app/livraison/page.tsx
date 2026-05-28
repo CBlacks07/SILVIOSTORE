@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Truck, Clock, CreditCard, MapPin } from "lucide-react";
 import { SITE } from "@/lib/constants";
 import { formatPrice } from "@/lib/utils";
+import { DeliveryEstimator } from "@/components/shipping/DeliveryEstimator";
 
 export const metadata = { title: "Livraison — SILVIO STORE" };
 
@@ -38,6 +39,8 @@ export default function ShippingPage() {
       </div>
 
       <div className="container-page py-14 max-w-4xl">
+        <DeliveryEstimator />
+
         <h2 className="font-display text-xl font-bold text-brand-950 mb-6">Zones et délais</h2>
         <div className="rounded-2xl border border-brand-100 overflow-hidden">
           <table className="w-full text-sm">

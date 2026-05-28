@@ -55,9 +55,26 @@ export default function TermsPage() {
       </div>
 
       <div className="container-page py-14 max-w-4xl">
+
+        {/* Sommaire cliquable */}
+        <nav className="mb-10 rounded-2xl border border-brand-100 bg-white p-5">
+          <p className="text-xs font-black uppercase tracking-widest text-accent mb-3">Sommaire</p>
+          <ol className="grid sm:grid-cols-2 gap-1.5">
+            {SECTIONS.map((s, i) => (
+              <li key={i}>
+                <a href={`#section-${i}`}
+                  className="flex items-center gap-2.5 text-sm text-brand-600 hover:text-accent transition-colors group">
+                  <span className="text-[10px] font-black text-brand-300 group-hover:text-accent w-4 shrink-0">{String(i + 1).padStart(2, "0")}</span>
+                  {s.title}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+
         <div className="grid md:grid-cols-2 gap-5">
           {SECTIONS.map((s, i) => (
-            <div key={i} className="rounded-2xl border border-brand-100 bg-white p-6 hover:border-accent/30 hover:shadow-md transition-all duration-200">
+            <div key={i} id={`section-${i}`} className="rounded-2xl border border-brand-100 bg-white p-6 hover:border-accent/30 hover:shadow-md transition-all duration-200 scroll-mt-24">
               <div className="h-11 w-11 rounded-xl bg-accent/10 grid place-items-center text-accent mb-4">
                 <s.icon className="h-5 w-5" />
               </div>

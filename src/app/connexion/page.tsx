@@ -1,9 +1,10 @@
-﻿"use client";
+"use client";
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import { Loader2 } from "lucide-react";
+import { Loader2, ShieldCheck, Truck, Star } from "lucide-react";
 import { sanitizeRedirect } from "@/lib/safeRedirect";
 
 const AUTH_EVENT_KEY = "silvio-auth:event";
@@ -40,90 +41,92 @@ export default function LoginPage() {
   }
 
   return (
-    <div style={{ minHeight: "85vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "24px 16px", background: "rgb(250,248,245)" }}>
-      <div style={{ width: "100%", maxWidth: "420px" }}>
+    <div className="min-h-[85vh] grid lg:grid-cols-2">
 
-        {/* Logo + titre */}
-        <div style={{ textAlign: "center", marginBottom: "32px" }}>
-          <img src="/logo-04.png" alt="SILVIO STORE" style={{ width: "64px", height: "64px", borderRadius: "999px", margin: "0 auto 16px", display: "block" }} />
-          <h1 style={{ fontFamily: "var(--font-playfair), Georgia, serif", fontSize: "28px", fontWeight: 700, color: "#1a1008", margin: "0 0 6px" }}>Connexion</h1>
-          <p style={{ fontSize: "14px", color: "#6b7280", margin: 0 }}>Accédez à votre compte SILVIO STORE</p>
-        </div>
-
-        {/* Card */}
-        <div style={{ background: "#fff", borderRadius: "20px", border: "1px solid rgba(217,119,6,0.15)", padding: "36px 32px", boxShadow: "0 4px 32px rgba(217,119,6,0.08), 0 1px 4px rgba(0,0,0,0.06)" }}>
-
-          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-            <div>
-              <label style={{ display: "block", fontSize: "12px", fontWeight: 700, color: "#374151", marginBottom: "6px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-                E-mail
-              </label>
-              <input
-                type="email" required value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="votre@email.com"
-                style={{ width: "100%", padding: "12px 16px", borderRadius: "10px", border: "1.5px solid #e5e7eb", fontSize: "14px", outline: "none", boxSizing: "border-box", transition: "border-color 0.2s", background: "#faf8f5" }}
-                onFocus={(e) => (e.target.style.borderColor = "#d97706")}
-                onBlur={(e) => (e.target.style.borderColor = "#e5e7eb")}
-              />
+      {/* Côté gauche — formulaire */}
+      <div className="flex items-center justify-center px-6 py-12 bg-[rgb(250,248,245)]">
+        <div className="w-full max-w-[400px]">
+          <div className="text-center mb-8">
+            <div className="relative h-16 w-16 mx-auto mb-4 rounded-full overflow-hidden">
+              <Image src="/logo-04.png" alt="SILVIO STORE" fill className="object-cover" sizes="64px" />
             </div>
-
-            <div>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
-                <label style={{ fontSize: "12px", fontWeight: 700, color: "#374151", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-                  Mot de passe
-                </label>
-                <Link href="/mot-de-passe-oublie" style={{ fontSize: "12px", color: "#d97706", textDecoration: "none", fontWeight: 600 }}>
-                  Oublié ?
-                </Link>
-              </div>
-              <input
-                type="password" required value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                style={{ width: "100%", padding: "12px 16px", borderRadius: "10px", border: "1.5px solid #e5e7eb", fontSize: "14px", outline: "none", boxSizing: "border-box", transition: "border-color 0.2s", background: "#faf8f5" }}
-                onFocus={(e) => (e.target.style.borderColor = "#d97706")}
-                onBlur={(e) => (e.target.style.borderColor = "#e5e7eb")}
-              />
-            </div>
-
-            {error && (
-              <div style={{ background: "rgba(220,38,38,0.06)", border: "1px solid rgba(220,38,38,0.20)", borderRadius: "8px", padding: "10px 14px", fontSize: "13px", color: "#dc2626" }}>
-                {error}
-              </div>
-            )}
-
-            <button
-              type="submit" disabled={loading}
-              style={{
-                width: "100%", padding: "14px", border: "none", borderRadius: "999px",
-                background: loading ? "#9ca3af" : "linear-gradient(135deg, #1a1008, #2c1c06)",
-                color: "#fff", fontSize: "14px", fontWeight: 700, cursor: loading ? "not-allowed" : "pointer",
-                display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
-                boxShadow: loading ? "none" : "0 4px 16px rgba(26,16,8,0.25)",
-                transition: "opacity 0.2s",
-              }}
-            >
-              {loading ? <><Loader2 className="h-4 w-4 animate-spin" /> Connexion...</> : "Se connecter"}
-            </button>
-          </form>
-
-          {/* Divider */}
-          <div style={{ display: "flex", alignItems: "center", gap: "12px", margin: "24px 0" }}>
-            <div style={{ flex: 1, height: "1px", background: "#f3f4f6" }} />
-            <span style={{ fontSize: "11px", color: "#9ca3af", fontWeight: 500 }}>Nouveau client ?</span>
-            <div style={{ flex: 1, height: "1px", background: "#f3f4f6" }} />
+            <h1 className="font-display text-2xl font-bold text-brand-950 mb-1">Connexion</h1>
+            <p className="text-sm text-brand-500">Accédez à votre compte SILVIO STORE</p>
           </div>
 
-          <Link href="/inscription" style={{
-            display: "flex", alignItems: "center", justifyContent: "center",
-            padding: "12px", borderRadius: "999px",
-            border: "1.5px solid rgba(217,119,6,0.40)", color: "#d97706",
-            fontSize: "14px", fontWeight: 700, textDecoration: "none",
-            transition: "background 0.2s",
-          }}>
-            Créer un compte
-          </Link>
+          <div className="bg-white rounded-2xl border border-brand-100 p-8 shadow-sm">
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div>
+                <label className="block text-xs font-bold text-brand-700 uppercase tracking-wide mb-1.5">E-mail</label>
+                <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
+                  placeholder="votre@email.com" className="input" />
+              </div>
+              <div>
+                <div className="flex justify-between items-center mb-1.5">
+                  <label className="text-xs font-bold text-brand-700 uppercase tracking-wide">Mot de passe</label>
+                  <Link href="/mot-de-passe-oublie" className="text-xs text-accent font-semibold hover:underline">Oublié ?</Link>
+                </div>
+                <input type="password" required value={password} onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••" className="input" />
+              </div>
+
+              {error && (
+                <div className="rounded-lg bg-red-50 border border-red-100 px-4 py-2.5 text-sm text-red-700">{error}</div>
+              )}
+
+              <button type="submit" disabled={loading}
+                className="w-full flex items-center justify-center gap-2 rounded-full py-3.5 text-sm font-bold text-white transition-opacity hover:opacity-90"
+                style={{ background: loading ? "#9ca3af" : "linear-gradient(135deg, #1a1008, #2c1c06)" }}>
+                {loading ? <><Loader2 className="h-4 w-4 animate-spin" /> Connexion...</> : "Se connecter"}
+              </button>
+            </form>
+
+            <div className="flex items-center gap-3 my-5">
+              <div className="flex-1 h-px bg-brand-100" />
+              <span className="text-xs text-brand-400 font-medium">Nouveau client ?</span>
+              <div className="flex-1 h-px bg-brand-100" />
+            </div>
+
+            <Link href="/inscription"
+              className="flex items-center justify-center w-full rounded-full py-3 text-sm font-bold text-accent border-2 border-accent/30 hover:border-accent hover:bg-accent/5 transition-all">
+              Créer un compte
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Côté droit — visuel de marque (masqué mobile) */}
+      <div className="hidden lg:flex flex-col items-center justify-center relative overflow-hidden text-white"
+        style={{ background: "linear-gradient(135deg, #1a1008 0%, #2c1c06 60%, #1a1008 100%)" }}>
+
+        {/* Glow */}
+        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(circle at 50% 40%, rgba(217,119,6,0.15) 0%, transparent 65%)" }} />
+
+        <div className="relative z-10 text-center px-12 max-w-md">
+          <p className="text-xs font-black uppercase tracking-[0.3em] text-accent mb-6">SILVIO STORE</p>
+          <h2 className="font-display text-4xl font-black leading-tight mb-4">
+            Accessoires premium<br />
+            <span style={{ color: "#d97706" }}>livrés chez vous</span>
+          </h2>
+          <p className="text-white/60 text-sm leading-relaxed mb-10">
+            Coques, pochettes, bracelets Apple Watch et chargeurs rapides. Paiement Mobile Money, livraison dans toute la sous région.
+          </p>
+
+          {/* Trust signals */}
+          <div className="space-y-3">
+            {[
+              { icon: Star,        text: "4.9/5 — Clients satisfaits" },
+              { icon: ShieldCheck, text: "Produits garantis authentiques" },
+              { icon: Truck,       text: "Livraison rapide sous-région" },
+            ].map(({ icon: Icon, text }) => (
+              <div key={text} className="flex items-center gap-3 text-sm text-white/70">
+                <div className="h-8 w-8 rounded-lg bg-accent/15 grid place-items-center shrink-0">
+                  <Icon className="h-4 w-4 text-accent" />
+                </div>
+                {text}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
