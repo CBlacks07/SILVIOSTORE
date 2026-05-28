@@ -1,10 +1,10 @@
 export const revalidate = 3600;
+export const metadata = { title: "Contact — SILVIO STORE" };
 
 import Link from "next/link";
 import { Mail, MapPin, Phone, Clock, Star } from "lucide-react";
 import { SITE } from "@/lib/constants";
-
-export const metadata = { title: "Contact — SILVIO STORE" };
+import { ContactForm } from "@/components/contact/ContactForm";
 
 export default function ContactPage() {
   const waUrl = "https://wa.me/" + SITE.contact.phone.replace(/\D/g, "");
@@ -32,11 +32,11 @@ export default function ContactPage() {
         <div className="grid sm:grid-cols-3 gap-5 mb-16">
           {[
             { icon: Phone, label: "Téléphone", lines: [SITE.contact.phone, SITE.contact.phone2].filter(Boolean) as string[], note: "Lun – Sam, 8h – 19h", href: "tel:" + SITE.contact.phone },
-            { icon: Mail, label: "E-mail", lines: [SITE.contact.email], note: "Réponse sous 24h", href: "mailto:" + SITE.contact.email },
-            { icon: MapPin, label: "Boutique", lines: [SITE.contact.address], note: "Passage bienvenu", href: "https://maps.google.com/?q=SILVIO+STORE+Lomé+Nukafu" },
+            { icon: Mail,  label: "E-mail",    lines: [SITE.contact.email], note: "Réponse sous 24h",  href: "mailto:" + SITE.contact.email },
+            { icon: MapPin,label: "Boutique",  lines: [SITE.contact.address], note: "Passage bienvenu", href: "https://maps.google.com/?q=SILVIO+STORE+Lomé+Nukafu" },
           ].map(({ icon: Icon, label, lines, note, href }) => (
             <a key={label} href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer"
-              className="p-6 hover:shadow-md transition-all group rounded-2xl"
+              className="p-6 hover:shadow-md transition-all rounded-2xl"
               style={{ background: "#fff", textDecoration: "none" }}
             >
               <div style={{ width: "40px", height: "40px", borderRadius: "10px", background: "rgba(217,119,6,0.10)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "12px" }}>
@@ -58,30 +58,7 @@ export default function ContactPage() {
           {/* Formulaire */}
           <div className="p-6 md:p-10 rounded-2xl" style={{ background: "#fff" }}>
             <h2 className="font-display text-xl font-bold text-brand-950 mb-6">Envoyez-nous un message</h2>
-            <form className="space-y-5" action={"mailto:" + SITE.contact.email} method="post" encType="text/plain">
-              <div className="grid sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wide text-brand-500 mb-1.5">Nom complet</label>
-                  <input name="Nom" required className="input" placeholder="Votre nom" />
-                </div>
-                <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wide text-brand-500 mb-1.5">E-mail</label>
-                  <input type="email" name="Email" required className="input" placeholder="votre@email.com" />
-                </div>
-              </div>
-              <div>
-                <label className="block text-xs font-semibold uppercase tracking-wide text-brand-500 mb-1.5">Sujet</label>
-                <input name="Sujet" required className="input" placeholder="De quoi s'agit-il ?" />
-              </div>
-              <div>
-                <label className="block text-xs font-semibold uppercase tracking-wide text-brand-500 mb-1.5">Message</label>
-                <textarea name="Message" required rows={5} className="input resize-none" placeholder="Décrivez votre demande..." />
-              </div>
-              <div className="flex items-center justify-between flex-wrap gap-3 pt-1">
-                <button type="submit" className="btn-primary">Envoyer le message</button>
-                <p className="text-xs text-brand-500">Réponse sous 24h.</p>
-              </div>
-            </form>
+            <ContactForm />
           </div>
 
           {/* Sidebar */}
@@ -107,8 +84,8 @@ export default function ContactPage() {
               <p style={{ fontSize: "10px", fontWeight: 800, letterSpacing: "0.15em", textTransform: "uppercase", color: "#9ca3af", marginBottom: "12px" }}>Horaires boutique</p>
               {[
                 { j: "Lun – Ven", h: "8 h – 19 h" },
-                { j: "Samedi", h: "9 h – 18 h" },
-                { j: "Dimanche", h: "Sur rendez-vous" },
+                { j: "Samedi",    h: "9 h – 18 h" },
+                { j: "Dimanche",  h: "Sur rendez-vous" },
               ].map((r) => (
                 <div key={r.j} style={{ display: "flex", justifyContent: "space-between", padding: "8px 0", borderBottom: "1px solid #f3f4f6" }}>
                   <span style={{ fontSize: "13px", color: "#6b7280" }}>{r.j}</span>
