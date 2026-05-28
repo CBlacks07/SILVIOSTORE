@@ -39,6 +39,13 @@ export function PageAnimations() {
     }
   }, [pathname]);
 
+  // Sécurité : ferme l'overlay après 5s maximum quoi qu'il arrive
+  useEffect(() => {
+    if (!covering) return;
+    const t = setTimeout(() => setCovering(false), 5000);
+    return () => clearTimeout(t);
+  }, [covering]);
+
   // Scroll reveal
   useEffect(() => {
     const observer = new IntersectionObserver(
