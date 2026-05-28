@@ -13,9 +13,10 @@ type Category = { id: string; name: string };
 type Props = {
   product?: Product;
   categories: Category[];
+  brands?: string[];
 };
 
-export function ProductForm({ product, categories }: Props) {
+export function ProductForm({ product, categories, brands = [] }: Props) {
   const router = useRouter();
   const isEdit = !!product;
 
@@ -145,7 +146,28 @@ export function ProductForm({ product, categories }: Props) {
           </div>
           <div>
             <label className="block text-sm font-medium text-brand-800 mb-1">Marque</label>
-            <input className="input" value={form.brand} onChange={(e) => setForm({ ...form, brand: e.target.value })} />
+            {brands.length > 0 ? (
+              <select
+                className="input"
+                value={brands.includes(form.brand) ? form.brand : form.brand ? "__autre__" : ""}
+                onChange={(e) => {
+                  if (e.target.value === "__autre__") return; // champ libre géré en dessous
+                  setForm({ ...form, brand: e.target.value });
+                }}
+              >
+                <option value="">— Choisir une marque —</option>
+                {brands.map((b) => <option key={b} value={b}>{b}</option>)}
+                <option value="__autre__">Autre (saisir manuellement)</option>
+              </select>
+            ) : null}
+            {(brands.length === 0 || !brands.includes(form.brand)) && (
+              <input
+                className={`input ${brands.length > 0 ? "mt-2" : ""}`}
+                placeholder={brands.length > 0 ? "Nom de la marque (autre)" : "Nom de la marque"}
+                value={brands.includes(form.brand) ? "" : form.brand}
+                onChange={(e) => setForm({ ...form, brand: e.target.value })}
+              />
+            )}
           </div>
         </div>
 

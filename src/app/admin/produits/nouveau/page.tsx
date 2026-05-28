@@ -4,9 +4,10 @@ import { sql } from "@/lib/db";
 import { ProductForm } from "@/components/admin/ProductForm";
 
 export default async function NewProductPage() {
-  const categories = await sql<{ id: string; name: string }[]>`
-    select id, name from categories order by name asc
-  `;
+  const [categories, brands] = await Promise.all([
+    sql<{ id: string; name: string }[]>`select id, name from categories order by name asc`,
+    sql<{ name: string }[]>`select name from brands where is_active = true order by name asc`,
+  ]);
   return (
     <>
       <header className="sticky top-0 z-20 bg-white/90 backdrop-blur border-b border-brand-100">
@@ -26,7 +27,7 @@ export default async function NewProductPage() {
       </header>
       <div className="px-4 py-4 md:px-8 md:py-6">
         <div className="max-w-3xl">
-          <ProductForm categories={categories} />
+          <ProductForm categories={categories} brands={brands.map(b => b.name)} />
         </div>
       </div>
     </>

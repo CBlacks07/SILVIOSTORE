@@ -10,9 +10,10 @@ export default async function EditProductPage({ params }: { params: { id: string
   const product = rows[0];
   if (!product) notFound();
 
-  const categories = await sql<{ id: string; name: string }[]>`
-    select id, name from categories order by name asc
-  `;
+  const [categories, brands] = await Promise.all([
+    sql<{ id: string; name: string }[]>`select id, name from categories order by name asc`,
+    sql<{ name: string }[]>`select name from brands where is_active = true order by name asc`,
+  ]);
 
   return (
     <>
@@ -33,7 +34,7 @@ export default async function EditProductPage({ params }: { params: { id: string
       </header>
       <div className="px-4 py-4 md:px-8 md:py-6">
         <div className="max-w-3xl">
-          <ProductForm product={product} categories={categories} />
+          <ProductForm product={product} categories={categories} brands={brands.map(b => b.name)} />
         </div>
       </div>
     </>
