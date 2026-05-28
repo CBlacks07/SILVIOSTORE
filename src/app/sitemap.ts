@@ -6,36 +6,59 @@ export const dynamic = "force-dynamic";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = process.env.NEXT_PUBLIC_SITE_URL || "https://silviostore.com";
 
-  const products = await sql<{ slug: string; updated_at: string }[]>`
-    SELECT slug, updated_at FROM products WHERE is_active = true ORDER BY updated_at DESC
-  `;
+  const [products, categories, brands] = await Promise.all([
+    sql<{ slug: string; updated_at: string; images: string[] }[]>`
+      SELECT slug, updated_at, images
+      FROM products
+      WHERE is_active = true
+      ORDER BY updated_at DESC
+    `,
+    sql<{ slug: string; updated_at: string }[]>`
+      SELECT slug, updated_at FROM categories ORDER BY sort_order ASC
+    `,
+    sql<{ slug: string }[]>`
+      SELECT slug FROM brands WHERE is_active = true ORDER BY name ASC
+    `,
+  ]);
 
-  const categories = await sql<{ slug: string }[]>`
-    SELECT slug FROM categories ORDER BY sort_order ASC
-  `;
+  const now = new Date();
 
   const staticPages: MetadataRoute.Sitemap = [
-    { url: base, lastModified: new Date(), changeFrequency: "daily", priority: 1 },
-    { url: `${base}/catalogue`, lastModified: new Date(), changeFrequency: "daily", priority: 0.9 },
-    { url: `${base}/contact`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.6 },
-    { url: `${base}/livraison`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.5 },
-    { url: `${base}/cgv`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.4 },
-    { url: `${base}/retours`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.4 },
+    { url: base,                          lastModified: now, changeFrequency: "daily",   priority: 1.0 },
+    { url: `${base}/catalogue`,           lastModified: now, changeFrequency: "daily",   priority: 0.9 },
+    { url: `${base}/contact`,             lastModified: now, changeFrequency: "monthly", priority: 0.6 },
+    { url: `${base}/livraison`,           lastModified: now, changeFrequency: "monthly", priority: 0.5 },
+    { url: `${base}/cgv`,                 lastModified: now, changeFrequency: "yearly",  priority: 0.3 },
+    { url: `${base}/retours`,             lastModified: now, changeFrequency: "monthly", priority: 0.4 },
+    { url: `${base}/connexion`,           lastModified: now, changeFrequency: "yearly",  priority: 0.2 },
   ];
 
+  // Produits — avec image pour Google Image Search
   const productPages: MetadataRoute.Sitemap = products.map((p) => ({
     url: `${base}/produit/${p.slug}`,
     lastModified: new Date(p.updated_at),
-    changeFrequency: "weekly",
-    priority: 0.8,
+    changeFrequency: "weekly" as const,
+    priority: 0.85,
+    ...(p.images?.[0] ? {
+      images: [{ url: p.images[0].startsWith("http") ? p.images[0] : `${base}${p.images[0]}` }],
+    } : {}),
   }));
 
+  // Catégories — page catalogue filtrée
   const categoryPages: MetadataRoute.Sitemap = categories.map((c) => ({
     url: `${base}/catalogue?categorie=${c.slug}`,
-    lastModified: new Date(),
-    changeFrequency: "weekly",
+    lastModified: new Date(c.updated_at),
+    changeFrequency: "weekly" as const,
     priority: 0.7,
   }));
 
-  return [...staticPages, ...productPages, ...categoryPages];
+  // Marques — page catalogue filtrée
+  const brandPages: MetadataRoute.Sitemap = brands.map((b) => ({
+    url: `${base}/catalogue?marque=${b.slug}`,
+    lastModified: now,
+    changeFrequency: "weekly" as const,
+    priority: 0.6,
+  }));
+
+  return [...staticPages, ...productPages, ...categoryPages, ...brandPages];
 }

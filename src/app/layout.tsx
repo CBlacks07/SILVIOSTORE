@@ -54,32 +54,54 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const organizationJsonLd = {
   "@context": "https://schema.org",
-  "@type": "Organization",
+  "@type": ["Organization", "LocalBusiness"],
+  "@id": `${SITE_URL}/#organization`,
   name: "SILVIO STORE",
   url: SITE_URL,
   logo: {
     "@type": "ImageObject",
-    url: `${SITE_URL}/logo-03.png`,
-    width: 512,
-    height: 512,
+    "@id": `${SITE_URL}/#logo`,
+    url: `${SITE_URL}/logo-04.png`,
+    width: 573,
+    height: 537,
+    caption: "SILVIO STORE",
   },
-  image: `${SITE_URL}/logo-03.png`,
-  description: "Pochettes de luxe et coques téléphone originales au Togo. Accessoires iPhone et Samsung authentiques : bracelets Apple Watch, protections écran, chargeurs rapides USB-C. Boutique en ligne livraison dans toute la sous région Afrique de l'Ouest. Paiement Mobile Money accepté.",
+  image: `${SITE_URL}/logo-04.png`,
+  description: "Boutique en ligne d'accessoires premium pour téléphone au Togo. Pochettes de luxe, coques originales, bracelets Apple Watch, protections écran et chargeurs rapides. Livraison dans toute la sous région. Paiement Mobile Money.",
   address: {
     "@type": "PostalAddress",
-    addressLocality: "Lomé",
-    addressCountry: "TG",
     streetAddress: "Nukafu",
+    addressLocality: "Lomé",
+    addressRegion: "Maritime",
+    addressCountry: "TG",
   },
-  contactPoint: {
-    "@type": "ContactPoint",
-    telephone: "+22892602519",
-    contactType: "customer service",
-    availableLanguage: "French",
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: "6.1319",
+    longitude: "1.2228",
   },
-  sameAs: [
-    `${SITE_URL}`,
+  contactPoint: [
+    {
+      "@type": "ContactPoint",
+      telephone: "+22892602519",
+      contactType: "customer service",
+      availableLanguage: "French",
+      hoursAvailable: {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+        opens: "08:00",
+        closes: "19:00",
+      },
+    },
   ],
+  sameAs: [
+    "https://www.facebook.com/silviostore",
+    "https://www.instagram.com/silviostore",
+  ],
+  priceRange: "XOF",
+  currenciesAccepted: "XOF",
+  paymentAccepted: "Mobile Money, Espèces",
+  openingHours: ["Mo-Fr 08:00-19:00", "Sa 09:00-18:00"],
 };
 
 const websiteJsonLd = {
