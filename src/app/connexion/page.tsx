@@ -75,21 +75,23 @@ export default function LoginPage() {
               <div className="rounded-lg bg-red-50 border border-red-100 px-4 py-2.5 text-sm text-red-700">{error}</div>
             )}
 
-            <button type="submit" disabled={loading}
-              className="w-full flex items-center justify-center gap-2 rounded-full py-3.5 text-sm font-bold text-white transition-opacity hover:opacity-90"
-              style={{ background: loading ? "#9ca3af" : "linear-gradient(135deg, #1a1008, #2c1c06)" }}>
-              {loading ? <><Loader2 className="h-4 w-4 animate-spin" /> Connexion...</> : "Se connecter"}
-            </button>
+            <div className="flex justify-center pt-2">
+              <button type="submit" disabled={loading}
+                className="flex items-center gap-2 rounded-full px-10 py-3.5 text-sm font-bold text-white transition-opacity hover:opacity-90"
+                style={{ background: loading ? "#9ca3af" : "linear-gradient(135deg, #1a1008, #2c1c06)" }}>
+                {loading ? <><Loader2 className="h-4 w-4 animate-spin" /> Connexion...</> : "Se connecter"}
+              </button>
+            </div>
           </form>
 
-          <div className="flex items-center gap-3 my-5">
+          <div className="flex items-center gap-3 mt-8 mb-5">
             <div className="flex-1 h-px bg-brand-100" />
             <span className="text-xs text-brand-400 font-medium">Nouveau client ?</span>
             <div className="flex-1 h-px bg-brand-100" />
           </div>
 
           <Link href="/inscription"
-            className="flex items-center justify-center w-full rounded-full py-3 text-sm font-bold text-accent border-2 border-accent/30 hover:border-accent hover:bg-accent/5 transition-all">
+            className="flex items-center justify-center w-full rounded-full py-3.5 text-sm font-bold text-accent border-2 border-accent/30 hover:border-accent hover:bg-accent/5 transition-all">
             Créer un compte
           </Link>
         </div>
