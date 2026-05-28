@@ -40,11 +40,9 @@ export async function Footer() {
         <div>
           <div className="flex items-center gap-3 mb-5">
             {(site.logo_footer_url || site.logo_url) && (
-              <img
-                src={site.logo_footer_url || site.logo_url}
-                alt={brandName}
-                style={{ width: "72px", height: "72px", borderRadius: "999px", objectFit: "cover", flexShrink: 0 }}
-              />
+              <div className="relative shrink-0" style={{ width: "64px", height: "64px", borderRadius: "999px", overflow: "hidden" }}>
+                <Image src={site.logo_footer_url || site.logo_url} alt={brandName} fill className="object-cover" sizes="64px" />
+              </div>
             )}
             <div className="font-display text-lg font-bold text-white leading-tight">
               {brandName}
@@ -160,9 +158,15 @@ export async function Footer() {
       </div>
 
       <div style={{ borderTop: "1px solid rgba(217,119,6,0.12)" }}>
-        <div className="container-page flex flex-col items-center justify-between gap-3 py-5 text-xs text-brand-400 sm:flex-row">
-          <span>&copy; {new Date().getFullYear()} {brandName}. Tous droits réservés.</span>
-          <span>Paiement sécurisé via FedaPay</span>
+        <div className="container-page py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <span className="text-xs text-brand-400">&copy; {new Date().getFullYear()} {brandName}. Tous droits réservés.</span>
+          <div className="flex items-center gap-2 flex-wrap justify-center">
+            {["Mobile Money", "Moov Money", "Wave", "FedaPay"].map((m) => (
+              <span key={m} className="text-[10px] font-bold px-2.5 py-1 rounded-md text-brand-400" style={{ border: "1px solid rgba(217,119,6,0.20)", background: "rgba(217,119,6,0.06)" }}>
+                {m}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
     </footer>

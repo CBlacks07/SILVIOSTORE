@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
@@ -17,6 +17,17 @@ export function ProductGallery({ images, alt, discount }: Props) {
   const hasMany = safeImages.length > 1;
 
   useEffect(() => { setMounted(true); }, []);
+
+  // Swipe tactile
+  const touchStartX = useRef<number | null>(null);
+  function onTouchStart(e: React.TouchEvent) { touchStartX.current = e.touches[0].clientX; }
+  function onTouchEnd(e: React.TouchEvent) {
+    if (touchStartX.current === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    if (Math.abs(dx) < 40) return;
+    if (dx < 0) next(); else prev();
+    touchStartX.current = null;
+  }
 
   // Close zoom on ESC
   useEffect(() => {
@@ -38,6 +49,8 @@ export function ProductGallery({ images, alt, discount }: Props) {
           className="relative w-full overflow-hidden rounded-3xl border border-brand-100 cursor-zoom-in"
           style={{ aspectRatio: "1/1", maxHeight: "clamp(280px, 80vw, 520px)", background: "rgb(248,248,250)" }}
           onClick={() => current && setZoomed(true)}
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
         >
           <AnimatePresence mode="wait">
             {current && (
