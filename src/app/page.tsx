@@ -1,13 +1,11 @@
 import Link from "next/link";
 import * as LucideIcons from "lucide-react";
+import dynamic from "next/dynamic";
 import { sql } from "@/lib/db";
 import { ProductCard } from "@/components/product/ProductCard";
 import { Hero } from "@/components/home/Hero";
 import { MarqueeStrip } from "@/components/ui/MarqueeStrip";
 import { Reveal } from "@/components/ui/Reveal";
-import { BrandLogo } from "@/components/home/BrandLogo";
-import { WhySilvioStore } from "@/components/home/WhySilvioStore";
-import { Testimonials } from "@/components/home/Testimonials";
 import { CategoriesMarquee } from "@/components/home/CategoriesMarquee";
 import { SelectionStrip } from "@/components/home/SelectionStrip";
 import { BannerCard } from "@/components/ui/BannerCard";
@@ -15,6 +13,10 @@ import { BannerSlider } from "@/components/ui/BannerSlider";
 import { getFeaturedProducts } from "@/lib/queries";
 import { getSetting, listActiveBanners, listActiveBrands } from "@/lib/settings";
 import type { Category } from "@/lib/types";
+
+const BrandLogo     = dynamic(() => import("@/components/home/BrandLogo").then(m => m.BrandLogo), { ssr: false });
+const WhySilvioStore = dynamic(() => import("@/components/home/WhySilvioStore").then(m => m.WhySilvioStore), { ssr: false });
+const Testimonials  = dynamic(() => import("@/components/home/Testimonials").then(m => m.Testimonials), { ssr: false });
 
 export const dynamic = "force-dynamic";
 

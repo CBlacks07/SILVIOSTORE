@@ -63,7 +63,9 @@ export function CategoriesMarquee({ categories }: { categories: Category[] }) {
             display: flex;
             gap: 0.75rem;
             animation: cats-scroll 18s linear infinite;
-            will-change: transform;
+          }
+          @media (prefers-reduced-motion: reduce) {
+            .categories-marquee-inner { animation: none; }
           }
         `}</style>
         <div className="categories-marquee-inner" style={{ animationPlayState: paused ? "paused" : "running" }}>

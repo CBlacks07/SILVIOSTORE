@@ -28,22 +28,27 @@ export function SelectionStrip({ products }: { products: Product[] }) {
   // Duplicate for seamless loop
   const items = [...products, ...products];
 
+  const visibleRef = useRef(false);
+
   const tick = useCallback(() => {
     const el = trackRef.current;
-    if (!el) return;
-    if (!pausedRef.current) {
+    if (el && !pausedRef.current && visibleRef.current) {
       el.scrollLeft += SPEED;
-      // Seamless loop: once we've scrolled past the first copy, reset to start
-      if (el.scrollLeft >= el.scrollWidth / 2) {
-        el.scrollLeft = 0;
-      }
+      if (el.scrollLeft >= el.scrollWidth / 2) el.scrollLeft = 0;
     }
     rafRef.current = requestAnimationFrame(tick);
   }, []);
 
   useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { visibleRef.current = entry.isIntersecting; },
+      { threshold: 0.1 }
+    );
+    observer.observe(el);
     rafRef.current = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafRef.current);
+    return () => { observer.disconnect(); cancelAnimationFrame(rafRef.current); };
   }, [tick]);
 
   // Mouse drag handlers
