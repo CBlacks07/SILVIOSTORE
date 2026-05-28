@@ -30,20 +30,20 @@ export function HeaderActions({ totalItems, hydrated, onCartOpen }: Props) {
         )}
       </button>
 
-      {/* Wishlist */}
-      <Link
-        href="/wishlist"
-        className="group relative p-2.5 text-white hover:text-accent transition-all duration-300"
-        title="Liste de souhaits"
-      >
-        <div className="absolute inset-0 bg-white/0 group-hover:bg-white/10 rounded-lg transition-all duration-300" />
-        <Heart className="h-5 w-5 relative z-10 group-hover:scale-110 transition-transform" />
-        {hydrated && wishlistCount > 0 && (
+      {/* Wishlist — visible seulement si au moins 1 favori */}
+      {hydrated && wishlistCount > 0 && (
+        <Link
+          href="/wishlist"
+          className="group relative p-2.5 text-white hover:text-accent transition-all duration-300"
+          title="Liste de souhaits"
+        >
+          <div className="absolute inset-0 bg-white/0 group-hover:bg-white/10 rounded-lg transition-all duration-300" />
+          <Heart className="h-5 w-5 relative z-10 group-hover:scale-110 transition-transform" fill="currentColor" />
           <span className="absolute top-0.5 right-0.5 bg-accent text-brand-950 text-[10px] font-black w-5 h-5 flex items-center justify-center rounded-full shadow-lg">
             {wishlistCount}
           </span>
-        )}
-      </Link>
+        </Link>
+      )}
 
       {/* Account */}
       <Link

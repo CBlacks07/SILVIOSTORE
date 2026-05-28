@@ -5,6 +5,7 @@ type WishlistState = {
   items: string[];
   toggle: (id: string) => void;
   has: (id: string) => boolean;
+  sync: (validIds: string[]) => void;
 };
 
 export const useWishlist = create<WishlistState>()(
@@ -21,7 +22,14 @@ export const useWishlist = create<WishlistState>()(
         }
       },
 
-      has: (id: string) => get().items.includes(id)
+      has: (id: string) => get().items.includes(id),
+
+      // Supprime les IDs qui n'existent plus en base
+      sync: (validIds: string[]) => {
+        const current = get().items;
+        const cleaned = current.filter((id) => validIds.includes(id));
+        if (cleaned.length !== current.length) set({ items: cleaned });
+      },
     }),
     {
       name: "silvio-wishlist",

@@ -21,6 +21,7 @@ type Product = {
 export default function WishlistPage() {
   const items = useWishlist((s) => s.items);
   const toggle = useWishlist((s) => s.toggle);
+  const sync   = useWishlist((s) => s.sync);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -36,10 +37,16 @@ export default function WishlistPage() {
       body: JSON.stringify({ ids: items })
     })
       .then((r) => r.json())
-      .then((data) => setProducts(data.products || []))
+      .then((data) => {
+        const valid: Product[] = data.products || [];
+        setProducts(valid);
+        // Supprime du store les IDs dont le produit n'existe plus en base
+        sync(valid.map((p) => p.id));
+      })
       .catch(() => setProducts([]))
       .finally(() => setLoading(false));
-  }, [items]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "40px 16px" }}>
