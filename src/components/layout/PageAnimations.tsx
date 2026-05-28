@@ -8,21 +8,29 @@ export function PageAnimations() {
   const prevPath = useRef(pathname);
   const [covering, setCovering] = useState(false);
 
-  // Intercepte les clics sur les liens pour afficher l'overlay AVANT la navigation
+  // Intercepte les clics — overlay uniquement si la PATHNAME change (pas juste les params)
   useEffect(() => {
     function onLinkClick(e: MouseEvent) {
       const a = (e.target as Element).closest("a");
       if (!a) return;
       const href = a.getAttribute("href");
       if (!href || href.startsWith("http") || href.startsWith("mailto") || href.startsWith("tel") || href.startsWith("#")) return;
-      if (href === pathname) return;
+
+      try {
+        const targetPathname = new URL(href, window.location.origin).pathname;
+        // Si même pathname (ex: /catalogue?categorie=X → /catalogue?categorie=Y), pas d'overlay
+        if (targetPathname === pathname) return;
+      } catch {
+        return;
+      }
+
       setCovering(true);
     }
     document.addEventListener("click", onLinkClick, true);
     return () => document.removeEventListener("click", onLinkClick, true);
   }, [pathname]);
 
-  // Quand la nouvelle page est montée, retire l'overlay et scroll en haut
+  // Retire l'overlay + scroll en haut quand la pathname change
   useEffect(() => {
     if (pathname !== prevPath.current) {
       prevPath.current = pathname;
@@ -53,25 +61,8 @@ export function PageAnimations() {
   if (!covering) return null;
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: 9999,
-        background: "#faf8f5",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <div style={{
-        width: "36px",
-        height: "36px",
-        borderRadius: "50%",
-        border: "3px solid #f0e8d8",
-        borderTopColor: "#d97706",
-        animation: "spin-nav 0.7s linear infinite",
-      }} />
+    <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "#faf8f5", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div style={{ width: "36px", height: "36px", borderRadius: "50%", border: "3px solid #f0e8d8", borderTopColor: "#d97706", animation: "spin-nav 0.7s linear infinite" }} />
       <style>{`@keyframes spin-nav { to { transform: rotate(360deg); } }`}</style>
     </div>
   );
