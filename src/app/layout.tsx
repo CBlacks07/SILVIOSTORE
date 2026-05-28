@@ -35,8 +35,12 @@ export async function generateMetadata(): Promise<Metadata> {
     metadataBase: new URL(SITE_URL),
     manifest: "/manifest.json",
     icons: {
-      icon: "/logo-04.png",
-      apple: "/logo-04.png",
+      icon: [
+        { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+        { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+      ],
+      apple: "/icon-192.png",
+      shortcut: "/icon-192.png",
     },
     openGraph: {
       type: "website",
