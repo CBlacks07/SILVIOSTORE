@@ -4,6 +4,36 @@ import { formatPrice } from "@/lib/utils";
 import type { Product } from "@/lib/types";
 import { WishlistButton } from "./WishlistButton";
 
+// Mapping couleurs françaises → hex
+const COLOR_MAP: Record<string, string> = {
+  noir: "#1a1a1a", black: "#1a1a1a",
+  blanc: "#f5f5f5", white: "#f5f5f5",
+  bleu: "#2563eb", blue: "#2563eb",
+  "bleu marine": "#1e3a5f", navy: "#1e3a5f",
+  "bleu ciel": "#38bdf8", "bleu clair": "#38bdf8",
+  rouge: "#dc2626", red: "#dc2626",
+  rose: "#ec4899", pink: "#ec4899",
+  "rose gold": "#e8a09a",
+  violet: "#7c3aed", purple: "#7c3aed",
+  mauve: "#a855f7",
+  vert: "#16a34a", green: "#16a34a",
+  "vert militaire": "#4a5240",
+  jaune: "#eab308", yellow: "#eab308",
+  orange: "#f97316",
+  gris: "#6b7280", grey: "#6b7280", gray: "#6b7280",
+  "gris foncé": "#374151",
+  argent: "#d1d5db", silver: "#d1d5db",
+  or: "#d97706", gold: "#d97706", doré: "#d97706",
+  marron: "#92400e", brown: "#92400e",
+  beige: "#d4b896",
+  transparent: "rgba(200,200,200,0.3)",
+};
+
+function resolveColor(value: string): string {
+  if (/^#[0-9a-f]{3,6}$/i.test(value)) return value;
+  return COLOR_MAP[value.toLowerCase().trim()] ?? "#9ca3af";
+}
+
 export function ProductCard({ product }: { product: Product }) {
   const discount =
     product.compare_at_price && product.compare_at_price > product.price
@@ -13,10 +43,16 @@ export function ProductCard({ product }: { product: Product }) {
   const cover = product.images?.[0];
   const outOfStock = product.stock <= 0;
 
+  // Détecte la variante couleur
+  const colorVariant = product.variants?.find((v) =>
+    /couleur|color|colour/i.test(v.name)
+  );
+  const colorOptions = colorVariant?.options?.filter((o) => o.stock > 0) ?? [];
+  const MAX_SWATCHES = 5;
+
   return (
     <div className="relative group bg-white rounded-2xl overflow-hidden border border-brand-100/60 hover:border-brand-200 hover:shadow-lg transition-all duration-300">
 
-      {/* Bouton cœur — EN DEHORS du Link, pas de conflit de navigation */}
       <WishlistButton productId={product.id} />
 
       <Link href={"/produit/" + product.slug} className="flex flex-col h-full">
@@ -65,6 +101,32 @@ export function ProductCard({ product }: { product: Product }) {
               <span className="text-[10px] text-brand-300 line-through tabular-nums">{formatPrice(product.compare_at_price)}</span>
             )}
           </div>
+
+          {/* Swatches couleur */}
+          {colorOptions.length > 0 && (
+            <div className="flex items-center gap-1.5 mt-2">
+              {colorOptions.slice(0, MAX_SWATCHES).map((opt, i) => (
+                <span
+                  key={i}
+                  title={opt.label}
+                  style={{
+                    width: "14px",
+                    height: "14px",
+                    borderRadius: "999px",
+                    background: resolveColor(opt.value || opt.label),
+                    border: "1.5px solid rgba(0,0,0,0.12)",
+                    display: "inline-block",
+                    flexShrink: 0,
+                  }}
+                />
+              ))}
+              {colorOptions.length > MAX_SWATCHES && (
+                <span className="text-[10px] font-bold text-brand-400">
+                  +{colorOptions.length - MAX_SWATCHES}
+                </span>
+              )}
+            </div>
+          )}
         </div>
       </Link>
     </div>
