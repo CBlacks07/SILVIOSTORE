@@ -295,7 +295,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
                   <div className="overflow-hidden rounded-lg border border-brand-100">
                     <table className="w-full text-sm">
                       <tbody>
-                        {product.specifications.map((s, i) => (
+                        {product.specifications.filter(s => !/couleur|color/i.test(s.label)).map((s, i) => (
                           <tr key={i} className={i % 2 === 0 ? "bg-brand-50/40" : "bg-white"}>
                             <th className="px-3 py-2 text-left text-xs font-semibold text-brand-600 w-2/5">{s.label}</th>
                             <td className="px-3 py-2 text-xs text-brand-900">{s.value}</td>

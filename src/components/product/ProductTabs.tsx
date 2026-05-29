@@ -16,7 +16,7 @@ export function ProductTabs({
   reviews?: ProductReview[];
 }) {
   const description = product.long_description || product.description || "";
-  const specs: ProductSpec[] = product.specifications ?? [];
+  const specs: ProductSpec[] = (product.specifications ?? []).filter(s => !/couleur|color/i.test(s.label));
   const faq: ProductFaq[] = faqItems ?? product.faq ?? [];
 
   const tabs: { key: TabKey; label: string; available: boolean; count?: number }[] = [
