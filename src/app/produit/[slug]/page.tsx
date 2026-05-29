@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ChevronRight, Truck, ShieldCheck, MessageCircle, Tag, Hash, PackageCheck } from "lucide-react";
 import type { Metadata } from "next";
-import { ProductCard } from "@/components/product/ProductCard";
+import { ProductCard, ColorSwatches, getColorOptions } from "@/components/product/ProductCard";
 import { ProductGallery } from "@/components/product/ProductGallery";
 import { AddToCartForm } from "@/components/product/AddToCartForm";
 import { StockUrgency } from "@/components/marketing/StockUrgency";
@@ -226,6 +226,17 @@ export default async function ProductPage({ params }: { params: { slug: string }
                 <span className="text-sm font-semibold text-red-600">Rupture de stock</span>
               )}
             </div>
+
+            {/* Swatches couleur */}
+            {(() => {
+              const colors = getColorOptions(product);
+              return colors.length > 0 ? (
+                <div>
+                  <p className="text-[10px] uppercase tracking-widest font-bold text-brand-400 mb-2">Couleur disponible</p>
+                  <ColorSwatches slug={product.slug} colorOptions={colors} max={10} size={24} />
+                </div>
+              ) : null;
+            })()}
 
             {/* Tagline — phrase forte */}
             {product.description && (

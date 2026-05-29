@@ -4,7 +4,6 @@ import { formatPrice } from "@/lib/utils";
 import type { Product } from "@/lib/types";
 import { WishlistButton } from "./WishlistButton";
 
-// Mapping couleurs françaises → hex
 const COLOR_MAP: Record<string, string> = {
   noir: "#1a1a1a", black: "#1a1a1a",
   blanc: "#f5f5f5", white: "#f5f5f5",
@@ -29,9 +28,66 @@ const COLOR_MAP: Record<string, string> = {
   transparent: "rgba(200,200,200,0.3)",
 };
 
-function resolveColor(value: string): string {
+export function resolveColor(value: string): string {
   if (/^#[0-9a-f]{3,6}$/i.test(value)) return value;
   return COLOR_MAP[value.toLowerCase().trim()] ?? "#9ca3af";
+}
+
+export function getColorOptions(product: Product) {
+  const colorVariant = product.variants?.find((v) =>
+    /couleur|color|colour/i.test(v.name)
+  );
+  if (colorVariant?.options?.length) {
+    return colorVariant.options
+      .filter((o) => o.stock > 0)
+      .map((o) => ({ label: o.label, value: o.value || o.label }));
+  }
+  const colorSpec = product.specifications?.find((s) =>
+    /couleur|color|colour/i.test(s.label)
+  );
+  if (colorSpec?.value) {
+    return colorSpec.value
+      .split(/[,;]/)
+      .map((v) => ({ label: v.trim(), value: v.trim() }))
+      .filter((v) => v.label.length > 0);
+  }
+  return [];
+}
+
+export function ColorSwatches({ slug, colorOptions, max = 5, size = 18 }: {
+  slug: string;
+  colorOptions: { label: string; value: string }[];
+  max?: number;
+  size?: number;
+}) {
+  if (colorOptions.length === 0) return null;
+  return (
+    <div className="flex items-center gap-1.5 flex-wrap">
+      {colorOptions.slice(0, max).map((opt, i) => (
+        <Link
+          key={i}
+          href={`/produit/${slug}?couleur=${encodeURIComponent(opt.label)}`}
+          title={opt.label}
+          style={{
+            width: `${size}px`,
+            height: `${size}px`,
+            borderRadius: "999px",
+            background: resolveColor(opt.value || opt.label),
+            border: "2px solid rgba(0,0,0,0.12)",
+            display: "inline-block",
+            flexShrink: 0,
+            transition: "transform 0.15s ease",
+          }}
+          className="hover:scale-125"
+        />
+      ))}
+      {colorOptions.length > max && (
+        <span className="text-[10px] font-bold text-brand-400">
+          +{colorOptions.length - max}
+        </span>
+      )}
+    </div>
+  );
 }
 
 export function ProductCard({ product }: { product: Product }) {
@@ -42,39 +98,16 @@ export function ProductCard({ product }: { product: Product }) {
 
   const cover = product.images?.[0];
   const outOfStock = product.stock <= 0;
-
-  // Détecte les couleurs — depuis les variantes OU les spécifications
-  const colorVariant = product.variants?.find((v) =>
-    /couleur|color|colour/i.test(v.name)
-  );
-
-  let colorOptions: { label: string; value: string }[] = [];
-
-  if (colorVariant?.options?.length) {
-    colorOptions = colorVariant.options.filter((o) => o.stock > 0);
-  } else {
-    // Fallback : spec "Couleur" avec valeurs séparées par virgule
-    const colorSpec = product.specifications?.find((s) =>
-      /couleur|color|colour/i.test(s.label)
-    );
-    if (colorSpec?.value) {
-      colorOptions = colorSpec.value
-        .split(/[,;]/)
-        .map((v) => ({ label: v.trim(), value: v.trim() }))
-        .filter((v) => v.label.length > 0);
-    }
-  }
-
-  const MAX_SWATCHES = 5;
+  const colorOptions = getColorOptions(product);
 
   return (
-    <div className="relative group bg-white rounded-2xl overflow-hidden border border-brand-100/60 hover:border-brand-200 hover:shadow-lg transition-all duration-300">
+    <div className="relative group bg-white rounded-2xl border border-brand-100/60 hover:border-brand-200 hover:shadow-lg transition-all duration-300">
 
       <WishlistButton productId={product.id} />
 
-      <Link href={"/produit/" + product.slug} className="flex flex-col h-full">
-        {/* Image */}
-        <div className="relative aspect-square w-full bg-brand-50 overflow-hidden">
+      <Link href={"/produit/" + product.slug} className="flex flex-col">
+        {/* Image — overflow-hidden uniquement ici */}
+        <div className="relative aspect-square w-full bg-brand-50 overflow-hidden rounded-t-2xl">
           {cover ? (
             <Image
               src={cover}
@@ -118,36 +151,13 @@ export function ProductCard({ product }: { product: Product }) {
               <span className="text-[10px] text-brand-300 line-through tabular-nums">{formatPrice(product.compare_at_price)}</span>
             )}
           </div>
-
         </div>
       </Link>
 
-      {/* Swatches couleur — EN DEHORS du Link pour être cliquables indépendamment */}
+      {/* Swatches — EN DEHORS du Link, pas clippées */}
       {colorOptions.length > 0 && (
-        <div className="flex items-center gap-2 px-3 pb-3 md:px-4 md:pb-4 -mt-1">
-          {colorOptions.slice(0, MAX_SWATCHES).map((opt, i) => (
-            <Link
-              key={i}
-              href={`/produit/${product.slug}?couleur=${encodeURIComponent(opt.label)}`}
-              title={opt.label}
-              style={{
-                width: "18px",
-                height: "18px",
-                borderRadius: "999px",
-                background: resolveColor(opt.value || opt.label),
-                border: "2px solid rgba(0,0,0,0.12)",
-                display: "inline-block",
-                flexShrink: 0,
-                transition: "transform 0.15s ease, box-shadow 0.15s ease",
-              }}
-              className="hover:scale-125 hover:shadow-md"
-            />
-          ))}
-          {colorOptions.length > MAX_SWATCHES && (
-            <span className="text-[10px] font-bold text-brand-400">
-              +{colorOptions.length - MAX_SWATCHES}
-            </span>
-          )}
+        <div className="px-3 pb-3 md:px-4 md:pb-4">
+          <ColorSwatches slug={product.slug} colorOptions={colorOptions} />
         </div>
       )}
     </div>
