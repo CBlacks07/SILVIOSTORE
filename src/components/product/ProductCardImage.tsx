@@ -15,11 +15,9 @@ type Props = {
 };
 
 export function ProductCardImage({ images, alt, discount, outOfStock, colorOptions }: Props) {
-  const [selectedColor, setSelectedColor] = useState<number | null>(null);
+  const [selectedColor, setSelectedColor] = useState<number>(0);
 
-  const cover = selectedColor !== null && images[selectedColor]
-    ? images[selectedColor]
-    : images[0];
+  const cover = images[selectedColor] ?? images[0];
 
   return (
     <>
@@ -65,7 +63,7 @@ export function ProductCardImage({ images, alt, discount, outOfStock, colorOptio
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                setSelectedColor(selectedColor === i ? null : i);
+                setSelectedColor(i);
               }}
               style={{
                 width: "18px",

@@ -15,10 +15,10 @@ type Props = {
 };
 
 export function ProductColorGallery({ images, alt, discount, colorOptions, slug }: Props) {
-  const [selectedColor, setSelectedColor] = useState<number | null>(null);
+  const [selectedColor, setSelectedColor] = useState<number>(0);
 
   // Image active = image à l'index de la couleur sélectionnée (si elle existe), sinon ordre normal
-  const activeImages = selectedColor !== null && images[selectedColor]
+  const activeImages = images[selectedColor]
     ? [images[selectedColor], ...images.filter((_, i) => i !== selectedColor)]
     : images;
 
@@ -45,7 +45,7 @@ export function ProductColorGallery({ images, alt, discount, colorOptions, slug 
                 key={i}
                 type="button"
                 title={opt.label}
-                onClick={() => setSelectedColor(selectedColor === i ? null : i)}
+                onClick={() => setSelectedColor(i)}
                 style={{
                   width: "26px",
                   height: "26px",
