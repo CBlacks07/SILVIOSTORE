@@ -1,8 +1,8 @@
 import Link from "next/link";
-import Image from "next/image";
 import { formatPrice } from "@/lib/utils";
 import type { Product } from "@/lib/types";
 import { WishlistButton } from "./WishlistButton";
+import { ProductCardImage } from "./ProductCardImage";
 
 const COLOR_MAP: Record<string, string> = {
   // Noirs
@@ -155,7 +155,6 @@ export function ProductCard({ product }: { product: Product }) {
       ? Math.round(((product.compare_at_price - product.price) / product.compare_at_price) * 100)
       : null;
 
-  const cover = product.images?.[0];
   const outOfStock = product.stock <= 0;
   const colorOptions = getColorOptions(product);
 
@@ -164,38 +163,16 @@ export function ProductCard({ product }: { product: Product }) {
 
       <WishlistButton productId={product.id} />
 
+      {/* Image + swatches interactifs (client component) */}
+      <ProductCardImage
+        images={product.images ?? []}
+        alt={product.name}
+        discount={discount}
+        outOfStock={outOfStock}
+        colorOptions={colorOptions}
+      />
+
       <Link href={"/produit/" + product.slug} className="flex flex-col">
-        {/* Image — overflow-hidden uniquement ici */}
-        <div className="relative aspect-square w-full bg-brand-50 overflow-hidden rounded-t-2xl">
-          {cover ? (
-            <Image
-              src={cover}
-              alt={product.name}
-              fill
-              sizes="(min-width:1024px) 20vw, (min-width:640px) 33vw, 50vw"
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-          ) : (
-            <div className="h-full w-full grid place-items-center text-brand-300 text-xs">
-              Aucune image
-            </div>
-          )}
-
-          {discount && discount > 0 && (
-            <span className="absolute left-2.5 top-2.5 z-10 text-[10px] font-black bg-accent text-white px-2 py-0.5 rounded-full">
-              -{discount}%
-            </span>
-          )}
-
-          {outOfStock && (
-            <div className="absolute inset-0 bg-white/50 flex items-center justify-center">
-              <span className="text-[11px] font-black uppercase tracking-widest text-brand-500 bg-white/90 px-3 py-1 rounded-full">
-                Rupture
-              </span>
-            </div>
-          )}
-        </div>
-
         {/* Info */}
         <div className="p-3 md:p-4 flex flex-col gap-1">
           {product.brand && (
@@ -213,12 +190,6 @@ export function ProductCard({ product }: { product: Product }) {
         </div>
       </Link>
 
-      {/* Swatches — EN DEHORS du Link, pas clippées */}
-      {colorOptions.length > 0 && (
-        <div className="px-3 pb-3 md:px-4 md:pb-4">
-          <ColorSwatches slug={product.slug} colorOptions={colorOptions} />
-        </div>
-      )}
     </div>
   );
 }
