@@ -12,9 +12,12 @@ export function AddToCartForm({ product }: { product: Product }) {
   const [added, setAdded] = useState(false);
   const addItem = useCart((s) => s.addItem);
 
-  // Couleur sélectionnée via les swatches
+  // Couleur + image sélectionnées via les swatches
   const selectedColorLabel = useProductColor((s) =>
     s.productId === product.id ? s.label : ""
+  );
+  const selectedColorImage = useProductColor((s) =>
+    s.productId === product.id ? s.image : null
   );
 
   const variantsGroup = product.variants?.[0];
@@ -29,7 +32,7 @@ export function AddToCartForm({ product }: { product: Product }) {
       productId: product.id,
       slug: product.slug,
       name: product.name,
-      image: product.images?.[0] ?? null,
+      image: selectedColorImage ?? product.images?.[0] ?? null,
       unitPrice: product.price,
       quantity: qty,
       variantLabel: finalVariant

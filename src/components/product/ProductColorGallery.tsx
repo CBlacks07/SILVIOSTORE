@@ -20,17 +20,17 @@ export function ProductColorGallery({ images, alt, discount, colorOptions, slug,
   const [selectedColor, setSelectedColor] = useState<number>(0);
   const setColor = useProductColor((s) => s.setColor);
 
-  // Initialise le store avec la première couleur au montage
+  // Initialise le store avec la première couleur + image au montage
   useEffect(() => {
     if (colorOptions.length > 0) {
-      setColor(productId, colorOptions[0].label);
+      setColor(productId, colorOptions[0].label, images[0] ?? null);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productId]);
 
   function selectColor(i: number) {
     setSelectedColor(i);
-    setColor(productId, colorOptions[i].label);
+    setColor(productId, colorOptions[i].label, images[i] ?? null);
   }
 
   const activeImages = images[selectedColor]

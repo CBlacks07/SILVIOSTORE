@@ -5,13 +5,15 @@ import { create } from "zustand";
 type ProductColorState = {
   productId: string;
   label: string;
-  setColor: (productId: string, label: string) => void;
+  image: string | null;
+  setColor: (productId: string, label: string, image?: string | null) => void;
   reset: () => void;
 };
 
 export const useProductColor = create<ProductColorState>((set) => ({
   productId: "",
   label: "",
-  setColor: (productId, label) => set({ productId, label }),
-  reset: () => set({ productId: "", label: "" }),
+  image: null,
+  setColor: (productId, label, image = null) => set({ productId, label, image }),
+  reset: () => set({ productId: "", label: "", image: null }),
 }));
