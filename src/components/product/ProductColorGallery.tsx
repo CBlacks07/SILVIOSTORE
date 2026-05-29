@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ProductGallery } from "./ProductGallery";
 import { resolveColor } from "./ProductCard";
+import { useProductColor } from "@/store/productColor";
 
 type ColorOption = { label: string; value: string };
 
@@ -12,12 +13,26 @@ type Props = {
   discount: number | null;
   colorOptions: ColorOption[];
   slug: string;
+  productId: string;
 };
 
-export function ProductColorGallery({ images, alt, discount, colorOptions, slug }: Props) {
+export function ProductColorGallery({ images, alt, discount, colorOptions, slug, productId }: Props) {
   const [selectedColor, setSelectedColor] = useState<number>(0);
+  const setColor = useProductColor((s) => s.setColor);
 
-  // Image active = image à l'index de la couleur sélectionnée (si elle existe), sinon ordre normal
+  // Initialise le store avec la première couleur au montage
+  useEffect(() => {
+    if (colorOptions.length > 0) {
+      setColor(productId, colorOptions[0].label);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [productId]);
+
+  function selectColor(i: number) {
+    setSelectedColor(i);
+    setColor(productId, colorOptions[i].label);
+  }
+
   const activeImages = images[selectedColor]
     ? [images[selectedColor], ...images.filter((_, i) => i !== selectedColor)]
     : images;
@@ -47,7 +62,7 @@ export function ProductColorGallery({ images, alt, discount, colorOptions, slug 
                 key={i}
                 type="button"
                 title={opt.label}
-                onClick={() => setSelectedColor(i)}
+                onClick={() => selectColor(i)}
                 style={{
                   width: "26px",
                   height: "26px",

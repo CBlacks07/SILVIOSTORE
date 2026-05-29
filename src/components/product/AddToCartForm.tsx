@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Check, Minus, Plus, ShoppingBag } from "lucide-react";
 import { useCart } from "@/store/cart";
+import { useProductColor } from "@/store/productColor";
 import type { Product } from "@/lib/types";
 
 export function AddToCartForm({ product }: { product: Product }) {
@@ -11,12 +12,19 @@ export function AddToCartForm({ product }: { product: Product }) {
   const [added, setAdded] = useState(false);
   const addItem = useCart((s) => s.addItem);
 
+  // Couleur sélectionnée via les swatches
+  const selectedColorLabel = useProductColor((s) =>
+    s.productId === product.id ? s.label : ""
+  );
+
   const variantsGroup = product.variants?.[0];
   const hasVariants = !!variantsGroup && variantsGroup.options.length > 0;
   const outOfStock = product.stock <= 0;
 
   function handleAdd() {
     if (hasVariants && !variant) return;
+    // Utilise la couleur sélectionnée si pas de variante classique
+    const finalVariant = variant || selectedColorLabel || "";
     addItem({
       productId: product.id,
       slug: product.slug,
@@ -24,7 +32,7 @@ export function AddToCartForm({ product }: { product: Product }) {
       image: product.images?.[0] ?? null,
       unitPrice: product.price,
       quantity: qty,
-      variantLabel: variant || ""
+      variantLabel: finalVariant
     });
     setAdded(true);
     setTimeout(() => setAdded(false), 1500);

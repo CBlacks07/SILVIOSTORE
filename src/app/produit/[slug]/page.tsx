@@ -167,6 +167,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
               discount={discount}
               colorOptions={getColorOptions(product)}
               slug={product.slug}
+              productId={product.id}
             />
           </div>
 
