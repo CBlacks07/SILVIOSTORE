@@ -12,8 +12,10 @@ export default async function ProfilePage() {
         count(*)::int as count,
         count(*) filter (where status in ('pending','paid','preparing','shipped'))::int as pending
       from orders where user_id = ${user.id}
-    `,
-    sql<{ count: number }[]>`select count(*)::int as count from addresses where user_id = ${user.id}`,
+    `.catch(() => [{ count: 0, pending: 0 }]),
+    sql<{ count: number }[]>`
+      select count(*)::int as count from addresses where user_id = ${user.id}
+    `.catch(() => [{ count: 0 }]),
   ]);
 
   const orderCount   = orderRows[0]?.count ?? 0;

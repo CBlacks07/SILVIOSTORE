@@ -58,26 +58,30 @@ export async function searchProducts(
 
   const offset = (Math.max(1, page) - 1) * PAGE_SIZE;
 
-  const [products, countRows] = await Promise.all([
-    sql<Product[]>`
-      select p.*
-      from products p
-      left join categories c on c.id = p.category_id
-      where p.is_active = true
-      ${catCond} ${brandCond} ${qCond} ${minCond} ${maxCond}
-      ${orderBy}
-      limit ${PAGE_SIZE} offset ${offset}
-    `,
-    sql<{ count: number }[]>`
-      select count(*)::int as count
-      from products p
-      left join categories c on c.id = p.category_id
-      where p.is_active = true
-      ${catCond} ${brandCond} ${qCond} ${minCond} ${maxCond}
-    `,
-  ]);
-
-  return { products, total: countRows[0]?.count ?? 0, pageSize: PAGE_SIZE };
+  try {
+    const [products, countRows] = await Promise.all([
+      sql<Product[]>`
+        select p.*
+        from products p
+        left join categories c on c.id = p.category_id
+        where p.is_active = true
+        ${catCond} ${brandCond} ${qCond} ${minCond} ${maxCond}
+        ${orderBy}
+        limit ${PAGE_SIZE} offset ${offset}
+      `,
+      sql<{ count: number }[]>`
+        select count(*)::int as count
+        from products p
+        left join categories c on c.id = p.category_id
+        where p.is_active = true
+        ${catCond} ${brandCond} ${qCond} ${minCond} ${maxCond}
+      `,
+    ]);
+    return { products, total: countRows[0]?.count ?? 0, pageSize: PAGE_SIZE };
+  } catch (e) {
+    console.error("[searchProducts] DB error:", e);
+    return { products: [], total: 0, pageSize: PAGE_SIZE };
+  }
 }
 
 export async function getProductBySlug(slug: string): Promise<Product | null> {
