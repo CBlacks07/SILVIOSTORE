@@ -2,8 +2,8 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ChevronRight, Truck, ShieldCheck, MessageCircle, Tag, Hash, PackageCheck } from "lucide-react";
 import type { Metadata } from "next";
-import { ProductCard, ColorSwatches, getColorOptions } from "@/components/product/ProductCard";
-import { ProductGallery } from "@/components/product/ProductGallery";
+import { ProductCard, getColorOptions } from "@/components/product/ProductCard";
+import { ProductColorGallery } from "@/components/product/ProductColorGallery";
 import { AddToCartForm } from "@/components/product/AddToCartForm";
 import { StockUrgency } from "@/components/marketing/StockUrgency";
 import { StockNotify } from "@/components/product/StockNotify";
@@ -159,12 +159,14 @@ export default async function ProductPage({ params }: { params: { slug: string }
 
         {/* Main Product Grid */}
         <div className="product-layout">
-          {/* Gallery */}
+          {/* Gallery + sélecteur couleur interactif */}
           <div className="order-2 lg:order-1">
-            <ProductGallery
+            <ProductColorGallery
               images={product.images ?? []}
               alt={`${product.name}${product.brand ? ` — ${product.brand}` : ""} | SILVIO STORE`}
               discount={discount}
+              colorOptions={getColorOptions(product)}
+              slug={product.slug}
             />
           </div>
 
@@ -226,17 +228,6 @@ export default async function ProductPage({ params }: { params: { slug: string }
                 <span className="text-sm font-semibold text-red-600">Rupture de stock</span>
               )}
             </div>
-
-            {/* Swatches couleur */}
-            {(() => {
-              const colors = getColorOptions(product);
-              return colors.length > 0 ? (
-                <div>
-                  <p className="text-[10px] uppercase tracking-widest font-bold text-brand-400 mb-2">Couleur disponible</p>
-                  <ColorSwatches slug={product.slug} colorOptions={colors} max={10} size={24} />
-                </div>
-              ) : null;
-            })()}
 
             {/* Tagline — phrase forte */}
             {product.description && (
