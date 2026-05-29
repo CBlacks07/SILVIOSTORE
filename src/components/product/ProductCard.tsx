@@ -119,33 +119,38 @@ export function ProductCard({ product }: { product: Product }) {
             )}
           </div>
 
-          {/* Swatches couleur */}
-          {colorOptions.length > 0 && (
-            <div className="flex items-center gap-1.5 mt-2">
-              {colorOptions.slice(0, MAX_SWATCHES).map((opt, i) => (
-                <span
-                  key={i}
-                  title={opt.label}
-                  style={{
-                    width: "14px",
-                    height: "14px",
-                    borderRadius: "999px",
-                    background: resolveColor(opt.value || opt.label),
-                    border: "1.5px solid rgba(0,0,0,0.12)",
-                    display: "inline-block",
-                    flexShrink: 0,
-                  }}
-                />
-              ))}
-              {colorOptions.length > MAX_SWATCHES && (
-                <span className="text-[10px] font-bold text-brand-400">
-                  +{colorOptions.length - MAX_SWATCHES}
-                </span>
-              )}
-            </div>
-          )}
         </div>
       </Link>
+
+      {/* Swatches couleur — EN DEHORS du Link pour être cliquables indépendamment */}
+      {colorOptions.length > 0 && (
+        <div className="flex items-center gap-2 px-3 pb-3 md:px-4 md:pb-4 -mt-1">
+          {colorOptions.slice(0, MAX_SWATCHES).map((opt, i) => (
+            <Link
+              key={i}
+              href={`/produit/${product.slug}?couleur=${encodeURIComponent(opt.label)}`}
+              title={opt.label}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                width: "18px",
+                height: "18px",
+                borderRadius: "999px",
+                background: resolveColor(opt.value || opt.label),
+                border: "2px solid rgba(0,0,0,0.12)",
+                display: "inline-block",
+                flexShrink: 0,
+                transition: "transform 0.15s ease, box-shadow 0.15s ease",
+              }}
+              className="hover:scale-125 hover:shadow-md"
+            />
+          ))}
+          {colorOptions.length > MAX_SWATCHES && (
+            <span className="text-[10px] font-bold text-brand-400">
+              +{colorOptions.length - MAX_SWATCHES}
+            </span>
+          )}
+        </div>
+      )}
     </div>
   );
 }
