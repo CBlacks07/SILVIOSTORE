@@ -24,7 +24,7 @@ export function ProductColorGallery({ images, alt, discount, colorOptions, slug 
 
   return (
     <div className="space-y-4">
-      <ProductGallery images={activeImages} alt={alt} discount={discount} />
+      <ProductGallery images={activeImages} alt={alt} discount={discount} hideThumbnails={colorOptions.length > 0} />
 
       {colorOptions.length > 0 && (
         <div>

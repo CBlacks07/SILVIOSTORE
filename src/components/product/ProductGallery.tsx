@@ -6,9 +6,9 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, ZoomIn, X } from "lucide-react";
 
-type Props = { images: string[]; alt: string; discount: number | null };
+type Props = { images: string[]; alt: string; discount: number | null; hideThumbnails?: boolean };
 
-export function ProductGallery({ images, alt, discount }: Props) {
+export function ProductGallery({ images, alt, discount, hideThumbnails = false }: Props) {
   const [index, setIndex] = useState(0);
   const [zoomed, setZoomed] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -92,8 +92,8 @@ export function ProductGallery({ images, alt, discount }: Props) {
           )}
         </div>
 
-        {/* Thumbnails */}
-        {hasMany && (
+        {/* Thumbnails — masquées si les couleurs les remplacent */}
+        {hasMany && !hideThumbnails && (
           <div className="flex gap-3 overflow-x-auto pb-2 px-0.5">
             {safeImages.slice(0, 12).map((src, i) => (
               <button key={src + i} type="button" onClick={() => setIndex(i)} aria-label={"Image " + (i + 1)}
