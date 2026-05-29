@@ -43,11 +43,28 @@ export function ProductCard({ product }: { product: Product }) {
   const cover = product.images?.[0];
   const outOfStock = product.stock <= 0;
 
-  // Détecte la variante couleur
+  // Détecte les couleurs — depuis les variantes OU les spécifications
   const colorVariant = product.variants?.find((v) =>
     /couleur|color|colour/i.test(v.name)
   );
-  const colorOptions = colorVariant?.options?.filter((o) => o.stock > 0) ?? [];
+
+  let colorOptions: { label: string; value: string }[] = [];
+
+  if (colorVariant?.options?.length) {
+    colorOptions = colorVariant.options.filter((o) => o.stock > 0);
+  } else {
+    // Fallback : spec "Couleur" avec valeurs séparées par virgule
+    const colorSpec = product.specifications?.find((s) =>
+      /couleur|color|colour/i.test(s.label)
+    );
+    if (colorSpec?.value) {
+      colorOptions = colorSpec.value
+        .split(/[,;]/)
+        .map((v) => ({ label: v.trim(), value: v.trim() }))
+        .filter((v) => v.label.length > 0);
+    }
+  }
+
   const MAX_SWATCHES = 5;
 
   return (
