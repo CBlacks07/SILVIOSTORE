@@ -78,7 +78,6 @@ const COLOR_MAP: Record<string, string> = {
   argent: "#d1d5db", silver: "#d1d5db",
   or: "#d97706", gold: "#d97706", doré: "#d97706",
   bronze: "#cd7f32", copper: "#b87333", cuivre: "#b87333",
-  "rose gold": "#e8a09a",
 
   // Spéciaux
   transparent: "rgba(200,200,200,0.25)",
