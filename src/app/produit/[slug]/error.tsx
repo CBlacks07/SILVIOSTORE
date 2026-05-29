@@ -15,7 +15,7 @@ export default function ProductError({ reset }: { reset: () => void }) {
           Ce produit ne peut pas s&apos;afficher pour le moment. Réessayez ou parcourez le catalogue.
         </p>
         <div className="flex gap-3 justify-center">
-          <button onClick={reset}
+          <button onClick={() => window.location.reload()}
             className="inline-flex items-center gap-2 rounded-xl border border-brand-200 bg-white px-5 py-2.5 text-sm font-semibold text-brand-700 hover:border-accent hover:text-accent transition-all">
             <RefreshCw className="h-4 w-4" /> Réessayer
           </button>
