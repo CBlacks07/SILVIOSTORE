@@ -130,7 +130,6 @@ export function ProductCard({ product }: { product: Product }) {
               key={i}
               href={`/produit/${product.slug}?couleur=${encodeURIComponent(opt.label)}`}
               title={opt.label}
-              onClick={(e) => e.stopPropagation()}
               style={{
                 width: "18px",
                 height: "18px",
