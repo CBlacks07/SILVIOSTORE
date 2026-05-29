@@ -23,6 +23,7 @@ const COLOR_MAP: Record<string, string> = {
   // Bleus
   bleu: "#2563eb", blue: "#2563eb",
   "bleu marine": "#1e3a5f", navy: "#1e3a5f", "bleu nuit": "#1e2a4a",
+  marine: "#000080",
   "bleu ciel": "#38bdf8", "bleu clair": "#7dd3fc", "bleu glacier": "#bae6fd",
   "bleu roi": "#1d4ed8", cobalt: "#0047ab",
   turquoise: "#06b6d4", cyan: "#06b6d4",
@@ -67,6 +68,7 @@ const COLOR_MAP: Record<string, string> = {
   // Marrons & terres
   marron: "#92400e", brown: "#92400e",
   caramel: "#c47c45", café: "#6f4e37", coffee: "#6f4e37",
+  "marron chocolat": "#654321", "chocolat marron": "#654321",
   chocolat: "#3d1a00", chocolate: "#3d1a00",
   terracotta: "#cc4e2a", "terre cuite": "#cc4e2a",
   nude: "#e8c9a0", sand: "#d4b896",
