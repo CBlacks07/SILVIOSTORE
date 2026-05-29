@@ -35,9 +35,11 @@ export function ProductColorGallery({ images, alt, discount, colorOptions, slug 
       {colorOptions.length > 0 && (
         <div>
           <p className="text-[10px] uppercase tracking-widest font-bold text-brand-400 mb-2">
-            {selectedColor !== null ? (
-              <>Couleur : <span className="text-brand-700">{colorOptions[selectedColor]?.label}</span></>
-            ) : "Choisir une couleur"}
+            {(() => {
+              const label = colorOptions[selectedColor]?.label ?? "";
+              const isHex = /^#[0-9a-f]{3,6}$/i.test(label);
+              return isHex ? "Couleur sélectionnée" : `Couleur : ${label}`;
+            })()}
           </p>
           <div className="flex items-center gap-2 flex-wrap">
             {colorOptions.map((opt, i) => (

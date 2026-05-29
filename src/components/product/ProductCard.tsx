@@ -77,6 +77,8 @@ const COLOR_MAP: Record<string, string> = {
   // Métaux
   argent: "#d1d5db", silver: "#d1d5db",
   or: "#d97706", gold: "#d97706", doré: "#d97706",
+  "or clair": "#d4af37", "doré clair": "#d4af37", "or jaune": "#d4af37",
+  "or foncé": "#b8860b", "vieil or": "#b8860b",
   bronze: "#cd7f32", copper: "#b87333", cuivre: "#b87333",
 
   // Spéciaux
