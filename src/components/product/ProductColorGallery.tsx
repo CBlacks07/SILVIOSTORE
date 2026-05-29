@@ -53,14 +53,10 @@ export function ProductColorGallery({ images, alt, discount, colorOptions, slug 
                   background: resolveColor(opt.value || opt.label),
                   flexShrink: 0,
                   cursor: "pointer",
-                  border: selectedColor === i
-                    ? "3px solid #d97706"
-                    : "2px solid rgba(0,0,0,0.12)",
-                  boxShadow: selectedColor === i
-                    ? "0 0 0 2px rgba(217,119,6,0.30)"
-                    : "none",
-                  transition: "all 0.15s ease",
-                  transform: selectedColor === i ? "scale(1.2)" : "scale(1)",
+                  border: "2px solid rgba(0,0,0,0.12)",
+                  outline: selectedColor === i ? "2.5px solid #d97706" : "2.5px solid transparent",
+                  outlineOffset: "3px",
+                  transition: "outline 0.15s ease",
                 }}
               />
             ))}
