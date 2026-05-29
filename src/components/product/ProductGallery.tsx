@@ -6,9 +6,9 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, ZoomIn, X } from "lucide-react";
 
-type Props = { images: string[]; alt: string; discount: number | null; hideThumbnails?: boolean };
+type Props = { images: string[]; alt: string; discount: number | null; hideThumbnails?: boolean; hideArrows?: boolean };
 
-export function ProductGallery({ images, alt, discount, hideThumbnails = false }: Props) {
+export function ProductGallery({ images, alt, discount, hideThumbnails = false, hideArrows = false }: Props) {
   const [index, setIndex] = useState(0);
   const [zoomed, setZoomed] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -73,7 +73,7 @@ export function ProductGallery({ images, alt, discount, hideThumbnails = false }
             </span>
           )}
 
-          {hasMany && (
+          {hasMany && !hideArrows && (
             <>
               <button type="button" onClick={(e) => { e.stopPropagation(); prev(); }} aria-label="Précédente"
                 className="absolute left-3 top-1/2 -translate-y-1/2 z-10 grid h-9 w-9 place-items-center rounded-full border border-brand-100 transition-all hover:scale-105"
