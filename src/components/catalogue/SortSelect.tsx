@@ -14,7 +14,7 @@ export function SortSelect({ value }: { value: string }) {
       next.delete("tri");
     }
     const qs = next.toString();
-    router.push(qs ? "/catalogue?" + qs : "/catalogue");
+    router.push(qs ? "/catalogue?" + qs : "/catalogue", { scroll: false });
   }
 
   return (

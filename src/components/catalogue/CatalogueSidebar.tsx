@@ -49,6 +49,7 @@ export function CatalogueSidebar({ categories, brands, activeCategory, activeBra
             {!catQuery && (
               <Link
                 href="/catalogue"
+                scroll={false}
                 className={
                   "block rounded px-2 py-1.5 transition-colors " +
                   (!activeCategory
@@ -63,6 +64,7 @@ export function CatalogueSidebar({ categories, brands, activeCategory, activeBra
               <Link
                 key={c.slug}
                 href={"/catalogue?categorie=" + c.slug}
+                scroll={false}
                 className={
                   "block rounded px-2 py-1.5 transition-colors " +
                   (activeCategory === c.slug
@@ -110,7 +112,7 @@ export function CatalogueSidebar({ categories, brands, activeCategory, activeBra
 
         <div className="border-t border-brand-100 pt-4 flex flex-wrap gap-2">
           <button type="submit" className="btn-primary">Filtrer</button>
-          <Link href="/catalogue" className="btn-outline">Réinitialiser</Link>
+          <Link href="/catalogue" scroll={false} className="btn-outline">Réinitialiser</Link>
         </div>
       </form>
     </aside>

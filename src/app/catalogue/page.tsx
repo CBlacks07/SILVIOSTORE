@@ -151,13 +151,14 @@ export default async function CataloguePage({ searchParams }: { searchParams: Se
               <Link
                 key={f.key}
                 href={f.removeHref}
+                scroll={false}
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border-2 border-brand-200 text-brand-800 text-sm font-semibold hover:border-accent hover:bg-accent/5 transition-all shadow-sm hover:shadow-md"
               >
                 {f.label}
                 <X className="h-4 w-4 text-brand-500" />
               </Link>
             ))}
-            <Link href="/catalogue" className="text-sm font-bold text-accent hover:text-accent-dark transition-colors ml-2 underline underline-offset-4">
+            <Link href="/catalogue" scroll={false} className="text-sm font-bold text-accent hover:text-accent-dark transition-colors ml-2 underline underline-offset-4">
               Tout effacer
             </Link>
           </div>
