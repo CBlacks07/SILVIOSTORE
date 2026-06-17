@@ -108,7 +108,7 @@ export default async function HomePage() {
       </Reveal>
 
       {brands.length > 0 && (
-        <section className="py-14 overflow-hidden" style={{ borderTop: "1px solid rgba(217,119,6,0.10)", borderBottom: "1px solid rgba(217,119,6,0.10)" }}>
+        <section className="py-14" style={{ borderTop: "1px solid rgba(217,119,6,0.10)", borderBottom: "1px solid rgba(217,119,6,0.10)" }}>
           <div className="container-page text-center mb-10">
             <p className="text-xs font-black uppercase tracking-[0.28em] text-accent mb-3">Marques</p>
             <h2 className="font-display text-2xl md:text-3xl font-bold text-brand-950 tracking-tight">
@@ -116,28 +116,10 @@ export default async function HomePage() {
             </h2>
             <p className="mt-3 text-sm text-brand-600">Originaux, compatibles et garantis dans la sous région.</p>
           </div>
-          <div style={{ position: "relative", overflow: "hidden" }}>
-            {/* Fade edges */}
-            <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: "80px", background: "linear-gradient(to right, rgb(250,248,245), transparent)", zIndex: 1, pointerEvents: "none" }} />
-            <div style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: "80px", background: "linear-gradient(to left, rgb(250,248,245), transparent)", zIndex: 1, pointerEvents: "none" }} />
-            <style>{`
-              @keyframes brands-scroll {
-                from { transform: translateX(0); }
-                to   { transform: translateX(-50%); }
-              }
-              .brands-marquee {
-                display: flex;
-                align-items: center;
-                gap: clamp(40px, 6vw, 80px);
-                animation: brands-scroll 22s linear infinite;
-                will-change: transform;
-                width: max-content;
-              }
-              .brands-marquee:hover { animation-play-state: paused; }
-            `}</style>
-            <div className="brands-marquee" style={{ padding: "8px 0" }}>
-              {[...brands, ...brands].map((b, i) => (
-                <div key={b.id + i} style={{ flexShrink: 0 }}>
+          <div className="container-page">
+            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "center", gap: "clamp(32px, 5vw, 64px)", padding: "8px 0" }}>
+              {brands.map((b) => (
+                <div key={b.id}>
                   <BrandLogo name={b.name} logo_url={b.logo_url} />
                 </div>
               ))}
