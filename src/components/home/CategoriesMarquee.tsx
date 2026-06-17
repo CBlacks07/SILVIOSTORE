@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 
 type Category = { slug: string; name: string };
