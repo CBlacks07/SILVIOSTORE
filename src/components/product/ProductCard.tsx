@@ -1,8 +1,6 @@
-import Link from "next/link";
-import { formatPrice } from "@/lib/utils";
 import type { Product } from "@/lib/types";
 import { WishlistButton } from "./WishlistButton";
-import { ProductCardImage } from "./ProductCardImage";
+import { ProductCardClient } from "./ProductCardClient";
 
 const COLOR_MAP: Record<string, string> = {
   // Noirs
@@ -169,32 +167,12 @@ export function ProductCard({ product }: { product: Product }) {
 
       <WishlistButton productId={product.id} />
 
-      {/* Image + swatches interactifs (client component) */}
-      <ProductCardImage
-        images={product.images ?? []}
-        alt={product.name}
+      <ProductCardClient
+        product={product}
         discount={discount}
         outOfStock={outOfStock}
         colorOptions={colorOptions}
       />
-
-      <Link href={"/produit/" + product.slug} className="flex flex-col">
-        {/* Info */}
-        <div className="p-3 md:p-4 flex flex-col gap-1">
-          {product.brand && (
-            <span className="text-[9px] uppercase tracking-widest text-accent font-black">{product.brand}</span>
-          )}
-          <h3 className="text-xs md:text-sm font-semibold text-brand-950 line-clamp-2 leading-snug group-hover:text-accent transition-colors">
-            {product.name}
-          </h3>
-          <div className="flex items-center gap-2 mt-1">
-            <span className="text-sm md:text-base font-black text-brand-950 tabular-nums">{formatPrice(product.price)}</span>
-            {product.compare_at_price && product.compare_at_price > product.price && (
-              <span className="text-[10px] text-brand-300 line-through tabular-nums">{formatPrice(product.compare_at_price)}</span>
-            )}
-          </div>
-        </div>
-      </Link>
 
     </div>
   );
