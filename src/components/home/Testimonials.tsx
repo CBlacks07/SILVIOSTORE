@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { TestimonialsSettings } from "@/lib/types";
 
@@ -65,15 +65,29 @@ export function Testimonials({ data }: { data: TestimonialsSettings }) {
     initial: t.name.charAt(0).toUpperCase(),
   }));
 
-  // Groupes de 2
-  const pages: (typeof testimonials)[] = [];
-  for (let i = 0; i < testimonials.length; i += 2) {
-    pages.push(testimonials.slice(i, i + 2));
-  }
+  const [perPage, setPerPage] = useState(2);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 640px)");
+    const update = () => setPerPage(mq.matches ? 1 : 2);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
+  const pages = useMemo(() => {
+    const chunks: (typeof testimonials)[] = [];
+    for (let i = 0; i < testimonials.length; i += perPage) {
+      chunks.push(testimonials.slice(i, i + perPage));
+    }
+    return chunks;
+  }, [testimonials, perPage]);
 
   const [page, setPage] = useState(0);
   const [direction, setDirection] = useState(1);
   const numPages = pages.length;
+
+  useEffect(() => { setPage(0); }, [perPage]);
 
   useEffect(() => {
     if (numPages <= 1) return;
