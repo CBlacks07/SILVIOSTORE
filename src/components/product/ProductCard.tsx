@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Product } from "@/lib/types";
 import { WishlistButton } from "./WishlistButton";
 import { ProductCardClient } from "./ProductCardClient";
