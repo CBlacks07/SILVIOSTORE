@@ -116,10 +116,13 @@ export default async function HomePage() {
             </h2>
             <p className="mt-3 text-sm text-brand-600">Originaux, compatibles et garantis dans la sous région.</p>
           </div>
-          <div className="container-page">
-            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "center", gap: "clamp(32px, 5vw, 64px)", padding: "8px 0" }}>
+          <div style={{ position: "relative" }}>
+            <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: "60px", background: "linear-gradient(to right, rgb(250,248,245), transparent)", zIndex: 1, pointerEvents: "none" }} />
+            <div style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: "60px", background: "linear-gradient(to left, rgb(250,248,245), transparent)", zIndex: 1, pointerEvents: "none" }} />
+            <style>{`.brands-scroll::-webkit-scrollbar { display: none; }`}</style>
+            <div className="brands-scroll" style={{ display: "flex", alignItems: "center", gap: "clamp(32px, 5vw, 64px)", overflowX: "auto", scrollbarWidth: "none", padding: "8px 60px", WebkitOverflowScrolling: "touch" as any }}>
               {brands.map((b) => (
-                <div key={b.id}>
+                <div key={b.id} style={{ flexShrink: 0 }}>
                   <BrandLogo name={b.name} logo_url={b.logo_url} />
                 </div>
               ))}
