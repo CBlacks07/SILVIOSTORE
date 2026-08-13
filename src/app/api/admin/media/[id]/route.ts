@@ -1,9 +1,8 @@
 import { NextResponse } from "next/server";
+import { del } from "@vercel/blob";
 import { sql } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
 import { isValidUUID, invalidId } from "@/lib/utils";
-import { unlink } from "node:fs/promises";
-import path from "node:path";
 
 export async function DELETE(_req: Request, { params }: { params: { id: string } }) {
   const auth = await requireAdmin();
@@ -15,8 +14,9 @@ export async function DELETE(_req: Request, { params }: { params: { id: string }
   `;
   if (!rows[0]) return NextResponse.json({ error: "Non trouvé" }, { status: 404 });
 
-  const filePath = path.join(process.cwd(), "public", rows[0].url);
-  try { await unlink(filePath); } catch {}
+  if (rows[0].url.includes(".public.blob.vercel-storage.com")) {
+    try { await del(rows[0].url); } catch (e) { console.warn("Blob delete failed", e); }
+  }
 
   await sql`delete from media where id = ${params.id}`;
   return NextResponse.json({ ok: true });
