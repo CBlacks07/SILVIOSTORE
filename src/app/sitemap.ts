@@ -6,12 +6,15 @@ export const dynamic = "force-dynamic";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = process.env.NEXT_PUBLIC_SITE_URL || "https://silviostore.com";
 
+  // La catégorie "smartphones" est masquée côté vitrine depuis le pivot accessoires
+  // premium (2026-04-20) : elle reste en base pour un retour en arrière éventuel,
+  // mais n'est plus liée nulle part sur le site → on ne l'expose pas dans le sitemap.
   const [products, categories, brands] = await Promise.all([
     sql<{ slug: string; updated_at: string }[]>`
       SELECT slug, updated_at FROM products WHERE is_active = true ORDER BY updated_at DESC
     `,
     sql<{ slug: string }[]>`
-      SELECT slug FROM categories ORDER BY sort_order ASC
+      SELECT slug FROM categories WHERE slug <> 'smartphones' ORDER BY sort_order ASC
     `,
     sql<{ slug: string }[]>`
       SELECT slug FROM brands WHERE is_active = true ORDER BY name ASC
@@ -20,14 +23,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const now = new Date();
 
+  // Uniquement les pages publiques à contenu stable et sans état utilisateur.
+  // Panier, wishlist, comparateur, connexion/inscription, mots de passe et
+  // checkout/commande n'ont aucune valeur SEO propre → exclues (voir robots.ts).
   const staticPages: MetadataRoute.Sitemap = [
     { url: base,                          lastModified: now, changeFrequency: "daily",   priority: 1.0 },
     { url: `${base}/catalogue`,           lastModified: now, changeFrequency: "daily",   priority: 0.9 },
     { url: `${base}/contact`,             lastModified: now, changeFrequency: "monthly", priority: 0.6 },
     { url: `${base}/livraison`,           lastModified: now, changeFrequency: "monthly", priority: 0.5 },
-    { url: `${base}/cgv`,                 lastModified: now, changeFrequency: "yearly",  priority: 0.3 },
     { url: `${base}/retours`,             lastModified: now, changeFrequency: "monthly", priority: 0.4 },
-    { url: `${base}/connexion`,           lastModified: now, changeFrequency: "yearly",  priority: 0.2 },
+    { url: `${base}/cgv`,                 lastModified: now, changeFrequency: "yearly",  priority: 0.3 },
   ];
 
   const productPages: MetadataRoute.Sitemap = products.map((p) => ({
