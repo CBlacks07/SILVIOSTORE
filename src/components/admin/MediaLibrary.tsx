@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import NextImage from "next/image";
 import { AlertTriangle, Copy, Film, Grid3x3, Image, Loader2, Plus, Search, Trash2, Upload, X } from "lucide-react";
+import { readUploadResponse } from "@/lib/utils";
 
 type MediaItem = {
   id: string;
@@ -41,6 +42,7 @@ export function MediaLibrary({ stats: initialStats }: { stats: Stats }) {
   // le dashboard Vercel plutôt que via cette médiathèque) — on les signale
   // au lieu d'afficher une vignette vide.
   const [brokenIds, setBrokenIds] = useState<Set<string>>(new Set());
+  const [uploadError, setUploadError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   async function load() {
@@ -65,6 +67,7 @@ export function MediaLibrary({ stats: initialStats }: { stats: Stats }) {
   async function upload(files: FileList | null) {
     if (!files || files.length === 0) return;
     setUploading(true);
+    setUploadError(null);
     try {
       const fd = new FormData();
       Array.from(files).forEach((f) => fd.append("files", f));
@@ -73,7 +76,10 @@ export function MediaLibrary({ stats: initialStats }: { stats: Stats }) {
         `/api/admin/upload?folder=${uploadFolder}${isVideo ? "&type=video" : ""}`,
         { method: "POST", body: fd }
       );
-      if (res.ok) await load();
+      await readUploadResponse(res);
+      await load();
+    } catch (err: any) {
+      setUploadError(err.message);
     } finally {
       setUploading(false);
       if (inputRef.current) inputRef.current.value = "";
@@ -175,10 +181,11 @@ export function MediaLibrary({ stats: initialStats }: { stats: Stats }) {
             onChange={(e) => { upload(e.target.files); e.target.value = ""; }}
           />
         </div>
+        {uploadError && <p className="text-sm text-red-700">{uploadError}</p>}
       </div>
 
       {/* Main area — grid + optional detail panel */}
-      <div className={selected ? "grid grid-cols-1 lg:grid-cols-[1fr,300px] gap-4" : ""}>
+      <div className={selected ? "grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-4" : ""}>
         {/* Grid */}
         <div>
           {loading ? (

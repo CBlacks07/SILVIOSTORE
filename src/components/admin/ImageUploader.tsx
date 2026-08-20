@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Images, Link as LinkIcon, Loader2, Upload, X } from "lucide-react";
 import { MediaPicker } from "@/components/admin/MediaPicker";
+import { readUploadResponse } from "@/lib/utils";
 
 type Folder = "products" | "banners" | "brands" | "site" | "general";
 
@@ -38,8 +39,7 @@ export function ImageUploader({ value, onChange, folder, label, emptyMinHeight =
       const fd = new FormData();
       fd.append("files", file);
       const res = await fetch("/api/admin/upload?folder=" + folder, { method: "POST", body: fd });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Erreur d'upload");
+      const data = await readUploadResponse(res);
       const nextUrl = data.urls?.[0] || "";
       onChange(nextUrl);
       setUrlDraft(nextUrl);

@@ -10,6 +10,10 @@ const IMAGE_MAX = 10 * 1024 * 1024;
 const VIDEO_MAX = 100 * 1024 * 1024;
 const ALLOWED_FOLDERS = ["products", "banners", "brands", "site"] as const;
 
+// Sur une connexion lente, l'envoi d'une photo de plusieurs Mo peut dépasser
+// la limite par défaut des fonctions Vercel avant même d'atteindre Blob.
+export const maxDuration = 60;
+
 export async function POST(req: Request) {
   const auth = await requireAdmin();
   if (!auth.ok) return NextResponse.json({ error: auth.message }, { status: auth.status });

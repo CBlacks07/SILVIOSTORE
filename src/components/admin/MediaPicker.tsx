@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { createPortal } from "react-dom";
 import NextImage from "next/image";
 import { AlertTriangle, Film, Image, Loader2, Search, Upload, X } from "lucide-react";
+import { readUploadResponse } from "@/lib/utils";
 
 type MediaItem = {
   id: string;
@@ -37,6 +38,7 @@ export function MediaPicker({ onSelect, onClose, accept = "image", folder: defau
   // Fichiers dont l'URL Blob ne répond plus (supprimés hors de cette appli) —
   // on les grise plutôt que de laisser choisir une image morte.
   const [brokenIds, setBrokenIds] = useState<Set<string>>(new Set());
+  const [uploadError, setUploadError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => { setMounted(true); }, []);
@@ -63,6 +65,7 @@ export function MediaPicker({ onSelect, onClose, accept = "image", folder: defau
   async function upload() {
     if (!pendingFiles || pendingFiles.length === 0) return;
     setUploading(true);
+    setUploadError(null);
     try {
       const fd = new FormData();
       pendingFiles.forEach((f) => fd.append("files", f));
@@ -71,11 +74,12 @@ export function MediaPicker({ onSelect, onClose, accept = "image", folder: defau
         `/api/admin/upload?folder=${uploadFolder}${isVideo ? "&type=video" : ""}`,
         { method: "POST", body: fd }
       );
-      if (res.ok) {
-        await load();
-        setTab("library");
-        setPendingFiles(null);
-      }
+      await readUploadResponse(res);
+      await load();
+      setTab("library");
+      setPendingFiles(null);
+    } catch (err: any) {
+      setUploadError(err.message);
     } finally {
       setUploading(false);
       if (inputRef.current) inputRef.current.value = "";
@@ -84,6 +88,7 @@ export function MediaPicker({ onSelect, onClose, accept = "image", folder: defau
 
   function handleFileChange(files: FileList | null) {
     if (!files || files.length === 0) return;
+    setUploadError(null);
     setPendingFiles(Array.from(files));
     if (inputRef.current) inputRef.current.value = "";
   }
@@ -199,6 +204,8 @@ export function MediaPicker({ onSelect, onClose, accept = "image", folder: defau
                     </button>
                   </div>
                 </div>
+
+                {uploadError && <p className="text-sm text-red-700 text-center max-w-sm">{uploadError}</p>}
               </>
             )}
 

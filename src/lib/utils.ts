@@ -36,3 +36,24 @@ export function slugify(input: string): string {
 export function truncate(text: string, max = 80): string {
   return text.length > max ? text.slice(0, max - 1).trimEnd() + "..." : text;
 }
+
+/**
+ * Lit une réponse fetch de l'API d'upload en tolérant les réponses non-JSON
+ * (page d'erreur Vercel, timeout de fonction sur connexion lente...). Sans
+ * ça, res.json() lève une erreur cryptique (ou l'appelant échoue en
+ * silence) au lieu d'un message clair pour l'utilisateur.
+ */
+export async function readUploadResponse(res: Response): Promise<{ urls: string[] }> {
+  let data: any = null;
+  try {
+    data = await res.json();
+  } catch {
+    // réponse non-JSON — probable timeout ou erreur infra
+  }
+  if (!res.ok) {
+    throw new Error(
+      data?.error || `Échec de l'upload (${res.status}). Réessayez, idéalement avec une meilleure connexion.`
+    );
+  }
+  return data || { urls: [] };
+}

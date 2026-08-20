@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Loader2, Plus, Trash2, Upload, X, Images, Link as LinkIcon, GripVertical } from "lucide-react";
-import { slugify } from "@/lib/utils";
+import { slugify, readUploadResponse } from "@/lib/utils";
 import type { Product, ProductFaq, ProductSpec } from "@/lib/types";
 import { MediaPicker } from "@/components/admin/MediaPicker";
 
@@ -60,8 +60,7 @@ export function ProductForm({ product, categories, brands = [] }: Props) {
       for (const file of Array.from(files)) fd.append("files", file);
 
       const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Erreur d'upload");
+      const data = await readUploadResponse(res);
 
       setImages((prev) => [...prev, ...data.urls]);
     } catch (err: any) {
