@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Copy, Film, Grid3x3, Image, Loader2, Plus, Search, Trash2, Upload, X } from "lucide-react";
+import NextImage from "next/image";
+import { AlertTriangle, Copy, Film, Grid3x3, Image, Loader2, Plus, Search, Trash2, Upload, X } from "lucide-react";
 
 type MediaItem = {
   id: string;
@@ -36,6 +37,10 @@ export function MediaLibrary({ stats: initialStats }: { stats: Stats }) {
   const [uploading, setUploading] = useState(false);
   const [uploadFolder, setUploadFolder] = useState("general");
   const [deleting, setDeleting] = useState<string | null>(null);
+  // Fichiers dont l'URL Blob ne répond plus (ex: supprimés directement dans
+  // le dashboard Vercel plutôt que via cette médiathèque) — on les signale
+  // au lieu d'afficher une vignette vide.
+  const [brokenIds, setBrokenIds] = useState<Set<string>>(new Set());
   const inputRef = useRef<HTMLInputElement>(null);
 
   async function load() {
@@ -197,17 +202,25 @@ export function MediaLibrary({ stats: initialStats }: { stats: Stats }) {
                   onClick={() => setSelected(selected?.id === item.id ? null : item)}
                   className={
                     "group relative overflow-hidden rounded-xl border-2 bg-white transition-all flex flex-col " +
-                    (selected?.id === item.id ? "border-accent shadow-md" : "border-brand-100 hover:border-brand-300 hover:shadow-sm")
+                    (brokenIds.has(item.id)
+                      ? "border-red-200 hover:border-red-300"
+                      : selected?.id === item.id ? "border-accent shadow-md" : "border-brand-100 hover:border-brand-300 hover:shadow-sm")
                   }
                 >
-                  <div className="aspect-square w-full overflow-hidden">
-                    {item.type === "image" ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
+                  <div className="relative aspect-square w-full overflow-hidden">
+                    {brokenIds.has(item.id) ? (
+                      <div className="h-full w-full flex flex-col items-center justify-center gap-1.5 bg-red-50 text-red-400 px-2 text-center">
+                        <AlertTriangle className="h-6 w-6" />
+                        <span className="text-[10px] font-medium leading-tight">Fichier introuvable</span>
+                      </div>
+                    ) : item.type === "image" ? (
+                      <NextImage
                         src={item.url}
                         alt={item.filename}
-                        className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-200"
-                        loading="lazy"
+                        fill
+                        sizes="200px"
+                        className="object-cover group-hover:scale-105 transition-transform duration-200"
+                        onError={() => setBrokenIds((prev) => new Set(prev).add(item.id))}
                       />
                     ) : (
                       <div className="h-full w-full flex items-center justify-center bg-brand-900">
@@ -217,7 +230,9 @@ export function MediaLibrary({ stats: initialStats }: { stats: Stats }) {
                   </div>
                   <div className="px-2 py-2 bg-white border-t border-brand-50 w-full text-left">
                     <p className="text-[11px] font-medium text-brand-800 truncate leading-tight">{item.filename}</p>
-                    <p className="text-[10px] text-brand-400 mt-0.5">{item.folder} · {formatSize(item.size_bytes)}</p>
+                    <p className="text-[10px] text-brand-400 mt-0.5">
+                      {brokenIds.has(item.id) ? "Supprimez cette entrée — le fichier n'existe plus sur Blob" : `${item.folder} · ${formatSize(item.size_bytes)}`}
+                    </p>
                   </div>
                   {selected?.id === item.id && (
                     <div className="absolute top-2 right-2 h-5 w-5 rounded-full bg-accent flex items-center justify-center shadow">
@@ -232,7 +247,7 @@ export function MediaLibrary({ stats: initialStats }: { stats: Stats }) {
 
         {/* Detail panel */}
         {selected && (
-          <div className="space-y-4">
+          <div className="space-y-4 w-full max-w-sm mx-auto lg:max-w-none lg:mx-0">
             <div className="card overflow-hidden">
               <div className="flex items-center justify-between px-4 py-3 border-b border-brand-100">
                 <p className="text-sm font-semibold text-brand-950">Détails</p>
@@ -241,10 +256,21 @@ export function MediaLibrary({ stats: initialStats }: { stats: Stats }) {
                 </button>
               </div>
 
-              <div className="bg-brand-50 border-b border-brand-100 flex items-center justify-center" style={{ height: "180px" }}>
-                {selected.type === "image" ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={selected.url} alt="" className="max-h-full max-w-full object-contain p-3" />
+              <div className="relative bg-brand-50 border-b border-brand-100 flex items-center justify-center" style={{ height: "180px" }}>
+                {brokenIds.has(selected.id) ? (
+                  <div className="flex flex-col items-center gap-1.5 text-red-400">
+                    <AlertTriangle className="h-6 w-6" />
+                    <span className="text-xs font-medium">Fichier introuvable sur Blob</span>
+                  </div>
+                ) : selected.type === "image" ? (
+                  <NextImage
+                    src={selected.url}
+                    alt=""
+                    fill
+                    sizes="300px"
+                    className="object-contain p-3"
+                    onError={() => setBrokenIds((prev) => new Set(prev).add(selected.id))}
+                  />
                 ) : (
                   <video src={selected.url} controls className="max-h-full max-w-full" />
                 )}

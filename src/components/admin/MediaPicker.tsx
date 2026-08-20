@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { createPortal } from "react-dom";
-import { Film, Image, Loader2, Search, Upload, X } from "lucide-react";
+import NextImage from "next/image";
+import { AlertTriangle, Film, Image, Loader2, Search, Upload, X } from "lucide-react";
 
 type MediaItem = {
   id: string;
@@ -33,6 +34,9 @@ export function MediaPicker({ onSelect, onClose, accept = "image", folder: defau
   const [tab, setTab] = useState<"library" | "upload">("library");
   const [mounted, setMounted] = useState(false);
   const [pendingFiles, setPendingFiles] = useState<File[] | null>(null);
+  // Fichiers dont l'URL Blob ne répond plus (supprimés hors de cette appli) —
+  // on les grise plutôt que de laisser choisir une image morte.
+  const [brokenIds, setBrokenIds] = useState<Set<string>>(new Set());
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => { setMounted(true); }, []);
@@ -248,30 +252,50 @@ export function MediaPicker({ onSelect, onClose, accept = "image", folder: defau
                 </div>
               ) : (
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))", gap: "0.75rem" }}>
-                  {items.map((item) => (
-                    <button
-                      key={item.id}
-                      type="button"
-                      onClick={() => { onSelect(item.url); onClose(); }}
-                      className="group relative overflow-hidden rounded-xl border-2 border-brand-100 bg-brand-50 hover:border-accent transition-all"
-                    >
-                      <div className="aspect-square">
-                        {item.type === "image" ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img src={item.url} alt={item.filename} className="h-full w-full object-cover" loading="lazy" />
-                        ) : (
-                          <div className="h-full w-full flex items-center justify-center bg-brand-900">
-                            <Film className="h-6 w-6 text-brand-400" />
+                  {items.map((item) => {
+                    const broken = brokenIds.has(item.id);
+                    return (
+                      <button
+                        key={item.id}
+                        type="button"
+                        disabled={broken}
+                        onClick={() => { onSelect(item.url); onClose(); }}
+                        className={
+                          "group relative overflow-hidden rounded-xl border-2 bg-brand-50 transition-all " +
+                          (broken ? "border-red-200 cursor-not-allowed" : "border-brand-100 hover:border-accent")
+                        }
+                      >
+                        <div className="relative aspect-square">
+                          {broken ? (
+                            <div className="h-full w-full flex flex-col items-center justify-center gap-1 bg-red-50 text-red-400 px-2 text-center">
+                              <AlertTriangle className="h-5 w-5" />
+                              <span className="text-[9px] font-medium leading-tight">Fichier introuvable</span>
+                            </div>
+                          ) : item.type === "image" ? (
+                            <NextImage
+                              src={item.url}
+                              alt={item.filename}
+                              fill
+                              sizes="150px"
+                              className="object-cover"
+                              onError={() => setBrokenIds((prev) => new Set(prev).add(item.id))}
+                            />
+                          ) : (
+                            <div className="h-full w-full flex items-center justify-center bg-brand-900">
+                              <Film className="h-6 w-6 text-brand-400" />
+                            </div>
+                          )}
+                        </div>
+                        {!broken && (
+                          <div className="absolute inset-0 bg-accent/0 group-hover:bg-accent/10 transition-colors flex items-center justify-center">
+                            <span className="opacity-0 group-hover:opacity-100 bg-accent text-white text-[11px] font-bold px-2 py-1 rounded-full transition-opacity">
+                              Sélectionner
+                            </span>
                           </div>
                         )}
-                      </div>
-                      <div className="absolute inset-0 bg-accent/0 group-hover:bg-accent/10 transition-colors flex items-center justify-center">
-                        <span className="opacity-0 group-hover:opacity-100 bg-accent text-white text-[11px] font-bold px-2 py-1 rounded-full transition-opacity">
-                          Sélectionner
-                        </span>
-                      </div>
-                    </button>
-                  ))}
+                      </button>
+                    );
+                  })}
                 </div>
               )}
             </div>
