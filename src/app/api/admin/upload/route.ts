@@ -1,11 +1,21 @@
 import { NextResponse } from "next/server";
 import { put } from "@vercel/blob";
+import heicConvert from "heic-convert";
 import { requireAdmin } from "@/lib/auth";
 import { sql } from "@/lib/db";
 import crypto from "node:crypto";
 
 const IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/svg+xml"];
 const VIDEO_TYPES = ["video/mp4", "video/webm", "video/ogg", "video/quicktime"];
+// Format par défaut des photos iPhone. Aucun navigateur (hors Safari
+// partiellement) ne sait l'afficher — Cloudinary le convertissait avant,
+// Vercel Blob stocke le fichier brut tel quel. On le convertit en JPEG
+// nous-mêmes plutôt que de rejeter l'upload. Certains navigateurs/OS
+// renvoient un type vide pour le HEIC, d'où le repli sur l'extension.
+const HEIC_TYPES = ["image/heic", "image/heif"];
+function isHeicFile(entry: File): boolean {
+  return HEIC_TYPES.includes(entry.type) || /\.hei[cf]$/i.test(entry.name);
+}
 const IMAGE_MAX = 10 * 1024 * 1024;
 const VIDEO_MAX = 100 * 1024 * 1024;
 const ALLOWED_FOLDERS = ["products", "banners", "brands", "site"] as const;
@@ -41,19 +51,39 @@ export async function POST(req: Request) {
     for (const entry of formData.getAll("files")) {
       if (!(entry instanceof File)) continue;
 
-      if (!allowedTypes.includes(entry.type)) {
+      const heic = kind === "image" && isHeicFile(entry);
+
+      if (!heic && !allowedTypes.includes(entry.type)) {
         return NextResponse.json({ error: "Type de fichier non autorisé : " + entry.type }, { status: 400 });
       }
       if (entry.size > maxSize) {
         return NextResponse.json({ error: "Fichier trop volumineux (max " + maxLabel + ")" }, { status: 400 });
       }
 
-      const ext = entry.name.includes(".") ? entry.name.slice(entry.name.lastIndexOf(".")) : "";
+      let uploadBody: File | Buffer = entry;
+      let contentType = entry.type || "image/jpeg";
+      let ext = entry.name.includes(".") ? entry.name.slice(entry.name.lastIndexOf(".")) : "";
+
+      if (heic) {
+        try {
+          const inputBuffer = Buffer.from(await entry.arrayBuffer());
+          uploadBody = await heicConvert({ buffer: inputBuffer, format: "JPEG", quality: 0.9 });
+          contentType = "image/jpeg";
+          ext = ".jpg";
+        } catch (convErr) {
+          console.error("heic_convert_failed", convErr);
+          return NextResponse.json(
+            { error: "Impossible de convertir cette photo HEIC. Réessayez avec une autre photo." },
+            { status: 400 }
+          );
+        }
+      }
+
       const pathname = `${folder}/${crypto.randomUUID()}${ext}`;
 
-      const blob = await put(pathname, entry, {
+      const blob = await put(pathname, uploadBody, {
         access: "public",
-        contentType: entry.type,
+        contentType,
       });
 
       const fileUrl = blob.url;
@@ -63,7 +93,7 @@ export async function POST(req: Request) {
       try {
         await sql`
           insert into media (filename, url, type, mime_type, size_bytes, folder)
-          values (${entry.name}, ${fileUrl}, ${kind}, ${entry.type}, ${entry.size}, ${folder})
+          values (${entry.name}, ${fileUrl}, ${kind}, ${contentType}, ${entry.size}, ${folder})
           on conflict (url) do nothing
         `;
       } catch (dbErr) {
