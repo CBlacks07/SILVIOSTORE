@@ -137,11 +137,11 @@ export function MediaPicker({ onSelect, onClose, accept = "image", folder: defau
                   <p className="text-sm text-brand-500">Le fichier sera ajouté à la bibliothèque et sélectionné automatiquement.</p>
                 </div>
 
-                <div className="flex items-center gap-3">
+                <div className="flex flex-wrap items-center justify-center gap-3 w-full max-w-xs sm:max-w-none">
                   <select
                     value={uploadFolder}
                     onChange={(e) => setUploadFolder(e.target.value)}
-                    className="input"
+                    className="input w-full sm:w-auto"
                   >
                     {FOLDERS.map((f) => <option key={f} value={f}>{f}</option>)}
                   </select>
@@ -149,7 +149,7 @@ export function MediaPicker({ onSelect, onClose, accept = "image", folder: defau
                   <button
                     type="button"
                     onClick={() => inputRef.current?.click()}
-                    className="btn-accent"
+                    className="btn-accent w-full sm:w-auto justify-center"
                   >
                     <Upload className="h-4 w-4" />Choisir un fichier
                   </button>
@@ -171,31 +171,33 @@ export function MediaPicker({ onSelect, onClose, accept = "image", folder: defau
                   </ul>
                 </div>
 
-                <div className="flex items-center gap-3">
+                <div className="flex flex-wrap items-center justify-center gap-3 w-full max-w-xs sm:max-w-none">
                   <select
                     value={uploadFolder}
                     onChange={(e) => setUploadFolder(e.target.value)}
-                    className="input"
+                    className="input w-full sm:w-auto"
                   >
                     {FOLDERS.map((f) => <option key={f} value={f}>{f}</option>)}
                   </select>
 
-                  <button
-                    type="button"
-                    onClick={() => { setPendingFiles(null); }}
-                    className="btn-outline"
-                  >
-                    Annuler
-                  </button>
+                  <div className="flex items-center gap-3 w-full sm:w-auto">
+                    <button
+                      type="button"
+                      onClick={() => { setPendingFiles(null); }}
+                      className="btn-outline flex-1 sm:flex-none justify-center"
+                    >
+                      Annuler
+                    </button>
 
-                  <button
-                    type="button"
-                    onClick={upload}
-                    disabled={uploading}
-                    className="btn-accent"
-                  >
-                    {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Enregistrer"}
-                  </button>
+                    <button
+                      type="button"
+                      onClick={upload}
+                      disabled={uploading}
+                      className="btn-accent flex-1 sm:flex-none justify-center"
+                    >
+                      {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Enregistrer"}
+                    </button>
+                  </div>
                 </div>
               </>
             )}
