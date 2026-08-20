@@ -12,6 +12,7 @@ type Props = {
   folder: Folder;
   label?: string;
   emptyMinHeight?: "sm" | "md" | "lg";
+  onUploadingChange?: (uploading: boolean) => void;
 };
 
 const emptyHeightClass: Record<NonNullable<Props["emptyMinHeight"]>, string> = {
@@ -20,7 +21,7 @@ const emptyHeightClass: Record<NonNullable<Props["emptyMinHeight"]>, string> = {
   lg: "min-h-[240px]"
 };
 
-export function ImageUploader({ value, onChange, folder, label, emptyMinHeight = "md" }: Props) {
+export function ImageUploader({ value, onChange, folder, label, emptyMinHeight = "md", onUploadingChange }: Props) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showUrlInput, setShowUrlInput] = useState(false);
@@ -31,6 +32,7 @@ export function ImageUploader({ value, onChange, folder, label, emptyMinHeight =
     const file = e.target.files?.[0];
     if (!file) return;
     setUploading(true);
+    onUploadingChange?.(true);
     setError(null);
     try {
       const fd = new FormData();
@@ -45,6 +47,7 @@ export function ImageUploader({ value, onChange, folder, label, emptyMinHeight =
       setError(err.message);
     } finally {
       setUploading(false);
+      onUploadingChange?.(false);
       e.target.value = "";
     }
   }

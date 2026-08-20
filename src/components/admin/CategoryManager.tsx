@@ -15,6 +15,7 @@ export function CategoryManager({ initial }: { initial: Category[] }) {
   const [newName, setNewName] = useState("");
   const [newDesc, setNewDesc] = useState("");
   const [newImage, setNewImage] = useState("");
+  const [uploadingImage, setUploadingImage] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -131,13 +132,13 @@ export function CategoryManager({ initial }: { initial: Category[] }) {
             </div>
             <div>
               <label className="mb-1 block text-sm font-medium text-brand-800">Image de couverture</label>
-              <ImageUploader value={newImage} onChange={setNewImage} folder="site" emptyMinHeight="sm" />
+              <ImageUploader value={newImage} onChange={setNewImage} folder="site" emptyMinHeight="sm" onUploadingChange={setUploadingImage} />
             </div>
           </div>
 
           <div className="flex justify-end pt-2">
-            <button type="submit" disabled={busy} className="btn-accent px-8">
-              {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : "Créer la catégorie"}
+            <button type="submit" disabled={busy || uploadingImage} className="btn-accent px-8">
+              {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : uploadingImage ? "Envoi de l'image…" : "Créer la catégorie"}
             </button>
           </div>
         </form>

@@ -70,19 +70,23 @@ export function BannerManager({ initial }: { initial: Banner[] }) {
   const router = useRouter();
   const [banners, setBanners] = useState(initial);
   const [draft, setDraft] = useState<Draft | null>(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   function edit(b: Banner) {
     setDraft(toDraft(b));
+    setUploadingImage(false);
   }
 
   function create() {
     setDraft({ ...EMPTY });
+    setUploadingImage(false);
   }
 
   function cancel() {
     setDraft(null);
+    setUploadingImage(false);
     setError(null);
   }
 
@@ -194,7 +198,7 @@ export function BannerManager({ initial }: { initial: Banner[] }) {
             </Field>
 
             <Field label="Image" full>
-              <ImageUploader value={draft.image_url} onChange={(url) => setDraft({ ...draft, image_url: url })} folder="banners" />
+              <ImageUploader value={draft.image_url} onChange={(url) => setDraft({ ...draft, image_url: url })} folder="banners" onUploadingChange={setUploadingImage} />
             </Field>
 
             <Field label="Lien de destination">
@@ -254,8 +258,8 @@ export function BannerManager({ initial }: { initial: Banner[] }) {
           </label>
 
           <div className="flex flex-wrap gap-3 border-t border-brand-100 pt-4">
-            <button className="btn-primary" onClick={save} disabled={busy} type="button">
-              {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : "Enregistrer"}
+            <button className="btn-primary" onClick={save} disabled={busy || uploadingImage} type="button">
+              {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : uploadingImage ? "Envoi de l'image…" : "Enregistrer"}
             </button>
             <button className="btn-outline" onClick={cancel} type="button">
               Annuler

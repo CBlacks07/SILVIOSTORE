@@ -450,8 +450,8 @@ export function ProductForm({ product, categories, brands = [] }: Props) {
           </button>
         ) : <span className="hidden sm:block" />}
 
-        <button type="submit" disabled={saving} className="btn-primary w-full sm:w-auto justify-center">
-          {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : isEdit ? "Enregistrer" : "Créer le produit"}
+        <button type="submit" disabled={saving || uploading} className="btn-primary w-full sm:w-auto justify-center">
+          {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : uploading ? "Envoi de l'image…" : isEdit ? "Enregistrer" : "Créer le produit"}
         </button>
       </div>
     </form>

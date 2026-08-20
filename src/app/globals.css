@@ -613,11 +613,16 @@ video {
 }
 
 /* Header Search Responsive */
+/* En dessous de 640px, logo + icônes panier/compte ne laissent plus assez de
+   place pour la pile icône + champ + bouton "Chercher" : le champ texte se
+   retrouve écrasé à ~0px (visible mais inutilisable). On masque la barre du
+   header sur cette plage et on s'appuie sur la recherche pleine largeur du
+   menu mobile (HeaderMobileMenu), qui n'a pas cette contrainte. */
 .header-search-container {
   display: flex;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 639px) {
   .header-search-container {
     display: none;
   }

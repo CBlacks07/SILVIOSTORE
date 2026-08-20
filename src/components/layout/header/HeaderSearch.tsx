@@ -81,7 +81,7 @@ export function HeaderSearch() {
             onKeyDown={(e) => { if (e.key === "Escape") close(); }}
             placeholder="Rechercher un produit..."
             autoComplete="off"
-            style={{ flex: 1, minWidth: 0, background: "transparent", border: "none", outline: "none", fontSize: "14px", color: "#1a1008", padding: "0 4px" }}
+            style={{ flex: 1, minWidth: "60px", background: "transparent", border: "none", outline: "none", fontSize: "14px", color: "#1a1008", padding: "0 4px" }}
           />
           {q && (
             <button type="button" onClick={close} style={{ background: "none", border: "none", cursor: "pointer", padding: "0 6px", color: "#9ca3af", display: "flex", alignItems: "center" }}>

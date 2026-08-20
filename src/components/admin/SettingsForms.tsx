@@ -52,14 +52,27 @@ function useSave<T>(key: SettingsKey) {
   return { busy, msg, save };
 }
 
+// Plusieurs ImageUploader peuvent coexister dans une même section (ex: logos,
+// slides du hero). Le compteur permet de savoir si au moins un upload est en
+// cours, pour bloquer "Enregistrer" tant que l'image n'est pas encore liée.
+function useUploadGate() {
+  const [count, setCount] = useState(0);
+  function onUploadingChange(uploading: boolean) {
+    setCount((c) => Math.max(0, c + (uploading ? 1 : -1)));
+  }
+  return { uploading: count > 0, onUploadingChange };
+}
+
 function Section(props: {
   title: string;
   description?: string;
   busy: boolean;
+  uploading?: boolean;
   msg: { ok: boolean; text: string } | null;
   onSave: () => void;
   children: React.ReactNode;
 }) {
+  const blocked = props.busy || props.uploading;
   return (
     <div className="card space-y-5 p-6">
       <div>
@@ -70,9 +83,11 @@ function Section(props: {
       {props.children}
 
       <div className="flex items-center gap-3 border-t border-brand-100 pt-4">
-        <button type="button" onClick={props.onSave} className="btn-primary" disabled={props.busy}>
+        <button type="button" onClick={props.onSave} className="btn-primary" disabled={blocked}>
           {props.busy ? (
             <Loader2 className="h-4 w-4 animate-spin" />
+          ) : props.uploading ? (
+            "Envoi de l'image…"
           ) : (
             <>
               <Save className="h-4 w-4" />
@@ -94,9 +109,10 @@ function Section(props: {
 export function SiteInfoForm({ initial }: { initial: SiteSettings }) {
   const [v, setV] = useState(initial);
   const { busy, msg, save } = useSave<SiteSettings>("site");
+  const { uploading, onUploadingChange } = useUploadGate();
 
   return (
-    <Section title="Informations de la boutique" busy={busy} msg={msg} onSave={() => save(v)}>
+    <Section title="Informations de la boutique" busy={busy} uploading={uploading} msg={msg} onSave={() => save(v)}>
       <div className="grid gap-4 md:grid-cols-2">
         <Field label="Logo Header (rectangle)" full>
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 bg-brand-50/50 p-4 rounded-xl border border-brand-100">
@@ -113,6 +129,7 @@ export function SiteInfoForm({ initial }: { initial: SiteSettings }) {
                 onChange={(url) => setV({ ...v, logo_url: url })}
                 folder="site"
                 emptyMinHeight="sm"
+                onUploadingChange={onUploadingChange}
               />
               <p className="mt-1.5 text-[11px] text-brand-500">Affiché dans la barre de navigation (header).</p>
             </div>
@@ -134,6 +151,7 @@ export function SiteInfoForm({ initial }: { initial: SiteSettings }) {
                 onChange={(url) => setV({ ...v, logo_footer_url: url })}
                 folder="site"
                 emptyMinHeight="sm"
+                onUploadingChange={onUploadingChange}
               />
               <p className="mt-1.5 text-[11px] text-brand-500">Affiché dans le footer (format carré ou rond recommandé).</p>
             </div>
@@ -203,6 +221,7 @@ export function HomeHeroForm({ initial }: { initial: HomeHeroSettings }) {
     slides: initial.slides || [],
   });
   const { busy, msg, save } = useSave<HomeHeroSettings>("home_hero");
+  const { uploading, onUploadingChange } = useUploadGate();
 
   function addSlide() {
     setV((prev) => ({
@@ -252,6 +271,7 @@ export function HomeHeroForm({ initial }: { initial: HomeHeroSettings }) {
       title="Bannière principale (hero)"
       description="Gérez les images et les textes qui défilent en haut de la page d'accueil."
       busy={busy}
+      uploading={uploading}
       msg={msg}
       onSave={() => save(v)}
     >
@@ -291,7 +311,7 @@ export function HomeHeroForm({ initial }: { initial: HomeHeroSettings }) {
 
                 <div className="grid gap-5 md:grid-cols-2">
                   <Field label="Image du slide" full>
-                    <ImageUploader value={slide.image_url || ""} onChange={(url) => updateSlide(index, { image_url: url })} folder="site" emptyMinHeight="sm" />
+                    <ImageUploader value={slide.image_url || ""} onChange={(url) => updateSlide(index, { image_url: url })} folder="site" emptyMinHeight="sm" onUploadingChange={onUploadingChange} />
                   </Field>
                   <Field label="Petit badge (optionnel)">
                     <input className="input" placeholder="Ex: Nouveauté" value={slide.badge_text || ""} onChange={(e) => updateSlide(index, { badge_text: e.target.value })} />
