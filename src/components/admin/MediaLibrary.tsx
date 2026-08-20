@@ -328,7 +328,7 @@ export function MediaLibrary({ stats: initialStats }: { stats: Stats }) {
                   type="button"
                   onClick={() => deleteItem(selected.id)}
                   disabled={deleting === selected.id}
-                  className="w-full flex items-center justify-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-700 hover:bg-red-100 transition-colors disabled:opacity-50"
+                  className="inline-flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-700 hover:bg-red-100 transition-colors disabled:opacity-50"
                 >
                   {deleting === selected.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
                   Supprimer
