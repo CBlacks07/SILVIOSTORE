@@ -51,9 +51,11 @@ export async function readUploadResponse(res: Response): Promise<{ urls: string[
     // réponse non-JSON — probable timeout ou erreur infra
   }
   if (!res.ok) {
-    throw new Error(
-      data?.error || `Échec de l'upload (${res.status}). Réessayez, idéalement avec une meilleure connexion.`
-    );
+    if (data?.error) throw new Error(data.error);
+    if (res.status === 413) {
+      throw new Error("Fichier trop volumineux pour être envoyé (limite serveur 4,5 Mo). Essayez une vidéo/photo plus légère.");
+    }
+    throw new Error(`Échec de l'upload (${res.status}). Réessayez, idéalement avec une meilleure connexion.`);
   }
   return data || { urls: [] };
 }

@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import NextImage from "next/image";
 import { AlertTriangle, Copy, Film, Grid3x3, Image, Loader2, Plus, Search, Trash2, Upload, X } from "lucide-react";
 import { readUploadResponse } from "@/lib/utils";
+import { prepareImageForUpload } from "@/lib/prepareImageForUpload";
 
 type MediaItem = {
   id: string;
@@ -70,7 +71,8 @@ export function MediaLibrary({ stats: initialStats }: { stats: Stats }) {
     setUploadError(null);
     try {
       const fd = new FormData();
-      Array.from(files).forEach((f) => fd.append("files", f));
+      const prepared = await Promise.all(Array.from(files).map(prepareImageForUpload));
+      prepared.forEach((f) => fd.append("files", f));
       const isVideo = Array.from(files).some((f) => f.type.startsWith("video/"));
       const res = await fetch(
         `/api/admin/upload?folder=${uploadFolder}${isVideo ? "&type=video" : ""}`,

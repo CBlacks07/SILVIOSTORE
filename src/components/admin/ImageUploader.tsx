@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Images, Link as LinkIcon, Loader2, Upload, X } from "lucide-react";
 import { MediaPicker } from "@/components/admin/MediaPicker";
 import { readUploadResponse } from "@/lib/utils";
+import { prepareImageForUpload } from "@/lib/prepareImageForUpload";
 
 type Folder = "products" | "banners" | "brands" | "site" | "general";
 
@@ -37,7 +38,7 @@ export function ImageUploader({ value, onChange, folder, label, emptyMinHeight =
     setError(null);
     try {
       const fd = new FormData();
-      fd.append("files", file);
+      fd.append("files", await prepareImageForUpload(file));
       const res = await fetch("/api/admin/upload?folder=" + folder, { method: "POST", body: fd });
       const data = await readUploadResponse(res);
       const nextUrl = data.urls?.[0] || "";
@@ -83,7 +84,7 @@ export function ImageUploader({ value, onChange, folder, label, emptyMinHeight =
               <div className="flex flex-col items-center text-xs text-brand-500">
                 <Upload className="mb-1 h-6 w-6" />
                 <span className="font-medium">Téléverser une image</span>
-                <span className="mt-0.5 text-[11px] text-brand-400">JPG, PNG, WebP - 5 Mo max</span>
+                <span className="mt-0.5 text-[11px] text-brand-400">JPG, PNG, WebP, HEIC (photos iPhone) — compressée automatiquement si besoin</span>
               </div>
             )}
             <input type="file" accept="image/*" className="hidden" onChange={handleFile} />

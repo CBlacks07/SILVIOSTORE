@@ -16,8 +16,12 @@ const HEIC_TYPES = ["image/heic", "image/heif"];
 function isHeicFile(entry: File): boolean {
   return HEIC_TYPES.includes(entry.type) || /\.hei[cf]$/i.test(entry.name);
 }
-const IMAGE_MAX = 10 * 1024 * 1024;
-const VIDEO_MAX = 100 * 1024 * 1024;
+// Vercel limite le corps des requêtes vers ses fonctions serveur à 4,5 Mo —
+// une limite de plateforme, non configurable. Les images sont compressées
+// côté navigateur avant l'envoi (voir prepareImageForUpload) donc restent
+// rarement au-dessus ; les vidéos, elles, ne le sont pas encore.
+const IMAGE_MAX = 4 * 1024 * 1024;
+const VIDEO_MAX = 4 * 1024 * 1024;
 const ALLOWED_FOLDERS = ["products", "banners", "brands", "site"] as const;
 
 // Sur une connexion lente, l'envoi d'une photo de plusieurs Mo peut dépasser
@@ -43,7 +47,7 @@ export async function POST(req: Request) {
 
     const allowedTypes = kind === "video" ? VIDEO_TYPES : IMAGE_TYPES;
     const maxSize = kind === "video" ? VIDEO_MAX : IMAGE_MAX;
-    const maxLabel = kind === "video" ? "100 Mo" : "10 Mo";
+    const maxLabel = "4 Mo (limite serveur Vercel)";
 
     const formData = await req.formData();
     const urls: string[] = [];

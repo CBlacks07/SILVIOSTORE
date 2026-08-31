@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import NextImage from "next/image";
 import { AlertTriangle, Film, Image, Loader2, Search, Upload, X } from "lucide-react";
 import { readUploadResponse } from "@/lib/utils";
+import { prepareImageForUpload } from "@/lib/prepareImageForUpload";
 
 type MediaItem = {
   id: string;
@@ -68,7 +69,8 @@ export function MediaPicker({ onSelect, onClose, accept = "image", folder: defau
     setUploadError(null);
     try {
       const fd = new FormData();
-      pendingFiles.forEach((f) => fd.append("files", f));
+      const prepared = await Promise.all(pendingFiles.map(prepareImageForUpload));
+      prepared.forEach((f) => fd.append("files", f));
       const isVideo = pendingFiles.some((f) => f.type.startsWith("video/"));
       const res = await fetch(
         `/api/admin/upload?folder=${uploadFolder}${isVideo ? "&type=video" : ""}`,
