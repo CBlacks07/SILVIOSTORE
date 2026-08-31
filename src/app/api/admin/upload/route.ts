@@ -67,13 +67,32 @@ export async function POST(req: Request) {
       if (heic) {
         try {
           const inputBuffer = Buffer.from(await entry.arrayBuffer());
-          uploadBody = await heicConvert({ buffer: inputBuffer, format: "JPEG", quality: 0.9 });
+          const converted = await heicConvert({ buffer: inputBuffer, format: "JPEG", quality: 0.9 });
+
+          // Certaines photos HEIC (HDR/gain map, rafales, formats propriétaires
+          // récents) ne font pas planter la conversion mais produisent un JPEG
+          // corrompu — mieux vaut le détecter ici que stocker un fichier mort.
+          const isValidJpeg =
+            converted.length > 1024 &&
+            converted[0] === 0xff && converted[1] === 0xd8 &&
+            converted[converted.length - 2] === 0xff && converted[converted.length - 1] === 0xd9;
+
+          if (!isValidJpeg) {
+            throw new Error("converted output is not a valid JPEG");
+          }
+
+          uploadBody = converted;
           contentType = "image/jpeg";
           ext = ".jpg";
         } catch (convErr) {
-          console.error("heic_convert_failed", convErr);
+          console.error("heic_convert_failed", entry.name, convErr);
           return NextResponse.json(
-            { error: "Impossible de convertir cette photo HEIC. Réessayez avec une autre photo." },
+            {
+              error:
+                "Cette photo (" + entry.name + ") n'a pas pu être convertie — probablement un format HEIC récent " +
+                "(HDR) non pris en charge. Dans Réglages > Appareil photo > Formats sur l'iPhone, choisissez " +
+                "\"Le plus compatible\" pour que les prochaines photos soient en JPEG directement.",
+            },
             { status: 400 }
           );
         }
