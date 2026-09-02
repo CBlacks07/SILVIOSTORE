@@ -104,13 +104,19 @@ export default async function ProductPage({ params }: { params: { slug: string }
       ? Math.round(((product.compare_at_price - product.price) / product.compare_at_price) * 100)
       : null;
 
-  const waUrl = buildWhatsappUrl(
-    site.phone,
-    `Bonjour SILVIO STORE, je suis intéressé par : ${product.name} (${formatPrice(product.price)}).`
-  );
-
-
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://silviostore.com";
+
+  const waMessage = [
+    "Bonjour SILVIO STORE, je suis intéressé(e) par ce produit :",
+    "",
+    `*${product.name}*`,
+    ...(product.brand ? [`Marque : ${product.brand}`] : []),
+    `Prix : ${formatPrice(product.price)}`,
+    "",
+    `${siteUrl}/produit/${product.slug}`,
+  ].join("\n");
+
+  const waUrl = buildWhatsappUrl(site.phone, waMessage);
   const avgRating = reviews.length
     ? reviews.reduce((s, r) => s + r.rating, 0) / reviews.length
     : null;

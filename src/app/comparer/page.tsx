@@ -58,7 +58,7 @@ export default async function ComparePage({
       </div>
 
       <div style={{ overflowX: "auto" }}>
-        <table style={{ width: "100%", borderCollapse: "separate", borderSpacing: "0", minWidth: "500px" }}>
+        <table style={{ width: "100%", borderCollapse: "separate", borderSpacing: "0", minWidth: "500px", tableLayout: "fixed" }}>
           {/* Product headers */}
           <thead>
             <tr>
