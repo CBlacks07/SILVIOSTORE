@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Inter, Roboto, Playfair_Display } from "next/font/google";
 import { getSetting } from "@/lib/settings";
 import { sanitizeSiteName } from "@/lib/siteBrand";
 import { Header } from "@/components/layout/Header";
@@ -14,9 +13,8 @@ import "./globals.css";
 import "./theme.css";
 import "./typography.css";
 
-const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800", "900"], variable: "--font-inter" });
-const playfair = Playfair_Display({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800", "900"], style: ["normal", "italic"], variable: "--font-playfair" });
-const roboto = Roboto({ subsets: ["latin"], weight: ["300", "400", "500", "700"], variable: "--font-roboto" });
+const GOOGLE_FONTS_URL =
+  "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:wght@300;400;500;700&display=swap";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://silviostore.com";
 
@@ -122,7 +120,13 @@ const websiteJsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={`${inter.variable} ${roboto.variable} ${playfair.variable}`}>
+    <html lang="fr">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href={GOOGLE_FONTS_URL} rel="stylesheet" />
+        <style dangerouslySetInnerHTML={{ __html: `:root{--font-inter:'Inter',system-ui,sans-serif;--font-playfair:'Playfair Display',Georgia,serif;--font-roboto:'Roboto',system-ui,sans-serif}` }} />
+      </head>
       <body className="min-h-screen flex flex-col font-sans">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
