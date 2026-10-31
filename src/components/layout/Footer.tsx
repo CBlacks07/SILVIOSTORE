@@ -19,7 +19,7 @@ export async function Footer() {
         end asc,
         sort_order asc,
         name asc
-    `,
+    `.catch(() => [] as Pick<Category, "slug" | "name">[]),
     getSetting("social"),
     getSetting("footer_links")
   ]);

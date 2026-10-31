@@ -18,7 +18,7 @@ export async function Header() {
         end asc,
         sort_order asc,
         name asc
-    `
+    `.catch(() => [] as Pick<Category, "slug" | "name">[]),
   ]);
 
   const brandName = sanitizeSiteName(site.name) || "SILVIO STORE";
