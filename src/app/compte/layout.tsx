@@ -4,6 +4,8 @@ import { LogOut, MapPin, Package, User, ChevronRight } from "lucide-react";
 import { getCurrentUser } from "@/lib/auth";
 import { SignOutButton } from "@/components/auth/SignOutButton";
 
+export const dynamic = "force-dynamic";
+
 const NAV = [
   { href: "/compte",           label: "Mon profil",   icon: User },
   { href: "/compte/commandes", label: "Mes commandes", icon: Package },

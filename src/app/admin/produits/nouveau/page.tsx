@@ -3,10 +3,12 @@ import { ArrowLeft } from "lucide-react";
 import { sql } from "@/lib/db";
 import { ProductForm } from "@/components/admin/ProductForm";
 
+export const dynamic = "force-dynamic";
+
 export default async function NewProductPage() {
   const [categories, brands] = await Promise.all([
-    sql<{ id: string; name: string }[]>`select id, name from categories order by name asc`,
-    sql<{ name: string }[]>`select name from brands where is_active = true order by name asc`,
+    sql<{ id: string; name: string }[]>`select id, name from categories order by name asc`.catch(() => [] as { id: string; name: string }[]),
+    sql<{ name: string }[]>`select name from brands where is_active = true order by name asc`.catch(() => [] as { name: string }[]),
   ]);
   return (
     <>

@@ -3,6 +3,8 @@ import { getCurrentUser } from "@/lib/auth";
 import { sql } from "@/lib/db";
 import { AdminLayoutClient } from "@/components/admin/AdminLayoutClient";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const user = await getCurrentUser();
   if (!user) redirect("/connexion?redirect=/admin");
