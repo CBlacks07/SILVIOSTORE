@@ -166,7 +166,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
         {/* Main Product Grid */}
         <div className="product-layout">
           {/* Gallery + sélecteur couleur interactif */}
-          <div className="order-2 lg:order-1">
+          <div>
             <ProductColorGallery
               images={product.images ?? []}
               alt={`${product.name}${product.brand ? ` — ${product.brand}` : ""} | SILVIO STORE`}
@@ -178,7 +178,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
           </div>
 
           {/* Product Info */}
-          <div className="order-1 lg:order-2 space-y-6">
+          <div className="space-y-6">
             {/* Brand + Compare */}
             <div className="flex items-center gap-2 flex-wrap">
               {product.brand && (

@@ -20,11 +20,11 @@ const ICON_MAP: Record<string, LucideIcon> = {
   MapPin, Clock, Award, Shield, Sparkles,
 };
 
-const SelectionStrip = lazy(() => import("@/components/home/SelectionStrip").then(m => ({ default: m.SelectionStrip })), { ssr: false });
-const BannerSlider   = lazy(() => import("@/components/ui/BannerSlider").then(m => ({ default: m.BannerSlider })), { ssr: false });
+const SelectionStrip = lazy(() => import("@/components/home/SelectionStrip").then(m => ({ default: m.SelectionStrip })), { ssr: false, loading: () => <div className="h-72 rounded-2xl animate-pulse bg-brand-100" /> });
+const BannerSlider   = lazy(() => import("@/components/ui/BannerSlider").then(m => ({ default: m.BannerSlider })), { ssr: false, loading: () => <div className="h-48 sm:h-64 rounded-2xl animate-pulse bg-brand-100" /> });
 const BrandLogo      = lazy(() => import("@/components/home/BrandLogo").then(m => ({ default: m.BrandLogo })), { ssr: false });
-const WhySilvioStore = lazy(() => import("@/components/home/WhySilvioStore").then(m => ({ default: m.WhySilvioStore })), { ssr: false });
-const Testimonials   = lazy(() => import("@/components/home/Testimonials").then(m => ({ default: m.Testimonials })), { ssr: false });
+const WhySilvioStore = lazy(() => import("@/components/home/WhySilvioStore").then(m => ({ default: m.WhySilvioStore })), { ssr: false, loading: () => <div className="h-40 rounded-2xl animate-pulse bg-brand-100" /> });
+const Testimonials   = lazy(() => import("@/components/home/Testimonials").then(m => ({ default: m.Testimonials })), { ssr: false, loading: () => <div className="h-40 rounded-2xl animate-pulse bg-brand-100" /> });
 
 export const revalidate = 60;
 
@@ -88,7 +88,7 @@ export default async function HomePage() {
             <p className="text-xs font-black uppercase tracking-[0.28em] text-accent mb-2">Catalogue</p>
             <h2 className="font-display text-2xl md:text-3xl font-bold text-brand-950 tracking-tight">Nos catégories</h2>
           </div>
-          <Link href="/catalogue" className="hidden sm:btn-hero-outline">
+          <Link href="/catalogue" className="hidden sm:inline-flex btn-hero-outline">
             Tout voir
           </Link>
         </div>
@@ -102,7 +102,7 @@ export default async function HomePage() {
             <h2 className="font-display text-2xl md:text-3xl font-bold text-brand-950 tracking-tight">Notre sélection du moment</h2>
             <p className="mt-1 text-sm text-brand-600">Luxe, tendance et protection — les pièces que nos clients adorent.</p>
           </div>
-          <Link href="/catalogue" className="hidden sm:btn-hero-outline">
+          <Link href="/catalogue" className="hidden sm:inline-flex btn-hero-outline">
             Voir tout
           </Link>
         </div>
@@ -195,7 +195,7 @@ export default async function HomePage() {
             {
               "@type": "Question",
               "name": "Où acheter des pochettes de luxe pour téléphone au Togo ?",
-              "acceptedAnswer": { "@type": "Answer", "text": "SILVIO STORE à Lomé-Nukafu propose une large sélection de pochettes de luxe et coques originales pour iPhone et Samsung. Commandez en ligne sur silviostore.com avec livraison partout en Afrique de l'Ouest." }
+              "acceptedAnswer": { "@type": "Answer", "text": "SILVIO STORE à Lomé-Nukafu propose une large sélection de pochettes de luxe et coques originales pour iPhone et Samsung. Commandez en ligne sur silviostore.com avec livraison partout dans la sous région." }
             },
             {
               "@type": "Question",
@@ -205,7 +205,7 @@ export default async function HomePage() {
             {
               "@type": "Question",
               "name": "Peut-on payer en Mobile Money sur SILVIO STORE ?",
-              "acceptedAnswer": { "@type": "Answer", "text": "Oui, SILVIO STORE accepte le paiement Mobile Money (MTN, Moov, Orange, Togocel) via FedaPay. Livraison dans toute la sous région Afrique de l'Ouest." }
+              "acceptedAnswer": { "@type": "Answer", "text": "Oui, SILVIO STORE accepte le paiement Mobile Money (MTN, Moov, Orange, Togocel) via FedaPay. Livraison dans toute la sous région." }
             },
             {
               "@type": "Question",
