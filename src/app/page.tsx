@@ -1,24 +1,32 @@
 import Link from "next/link";
-import * as LucideIcons from "lucide-react";
+import {
+  Truck, ShieldCheck, CreditCard, Headset, Package,
+  Star, Heart, Gift, Tag, Zap, Globe, Phone, Mail,
+  MapPin, Clock, Award, Shield, Sparkles, type LucideIcon,
+} from "lucide-react";
 import lazy from "next/dynamic";
 import { sql } from "@/lib/db";
-import { ProductCard } from "@/components/product/ProductCard";
 import { Hero } from "@/components/home/Hero";
 import { MarqueeStrip } from "@/components/ui/MarqueeStrip";
 import { Reveal } from "@/components/ui/Reveal";
 import { CategoriesMarquee } from "@/components/home/CategoriesMarquee";
-import { SelectionStrip } from "@/components/home/SelectionStrip";
-import { BannerCard } from "@/components/ui/BannerCard";
-import { BannerSlider } from "@/components/ui/BannerSlider";
 import { getFeaturedProducts } from "@/lib/queries";
 import { getSetting, listActiveBanners, listActiveBrands } from "@/lib/settings";
 import type { Category } from "@/lib/types";
 
-const BrandLogo      = lazy(() => import("@/components/home/BrandLogo").then(m => m.BrandLogo), { ssr: false });
-const WhySilvioStore = lazy(() => import("@/components/home/WhySilvioStore").then(m => m.WhySilvioStore), { ssr: false });
-const Testimonials   = lazy(() => import("@/components/home/Testimonials").then(m => m.Testimonials), { ssr: false });
+const ICON_MAP: Record<string, LucideIcon> = {
+  Truck, ShieldCheck, CreditCard, Headset, Package,
+  Star, Heart, Gift, Tag, Zap, Globe, Phone, Mail,
+  MapPin, Clock, Award, Shield, Sparkles,
+};
 
-export const dynamic = "force-dynamic";
+const SelectionStrip = lazy(() => import("@/components/home/SelectionStrip").then(m => ({ default: m.SelectionStrip })), { ssr: false });
+const BannerSlider   = lazy(() => import("@/components/ui/BannerSlider").then(m => ({ default: m.BannerSlider })), { ssr: false });
+const BrandLogo      = lazy(() => import("@/components/home/BrandLogo").then(m => ({ default: m.BrandLogo })), { ssr: false });
+const WhySilvioStore = lazy(() => import("@/components/home/WhySilvioStore").then(m => ({ default: m.WhySilvioStore })), { ssr: false });
+const Testimonials   = lazy(() => import("@/components/home/Testimonials").then(m => ({ default: m.Testimonials })), { ssr: false });
+
+export const revalidate = 60;
 
 export default async function HomePage() {
   const [featured, categories, hero, cta, topBanners, brands, features, testimonials, midBanners] = await Promise.all([
@@ -53,7 +61,7 @@ export default async function HomePage() {
       {features?.enabled && (
         <Reveal as="section" className="container-page py-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
           {(features.items || []).map((item: any) => {
-            const Icon = (LucideIcons as any)[item.icon] || LucideIcons.Package;
+            const Icon = ICON_MAP[item.icon] || Package;
             return (
               <div key={item.title} className="card card-hover px-4 py-3 flex items-center gap-3" style={{ borderColor: "rgba(217,119,6,0.15)" }}>
                 <div className="rounded-lg bg-gradient-to-br from-accent/15 to-accent/5 p-2 text-accent ring-1 ring-accent/15 shrink-0">

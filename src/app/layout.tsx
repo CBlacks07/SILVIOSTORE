@@ -1,7 +1,4 @@
 import type { Metadata } from "next";
-
-export const dynamic = "force-dynamic";
-
 import { getSetting } from "@/lib/settings";
 import { sanitizeSiteName } from "@/lib/siteBrand";
 import { Header } from "@/components/layout/Header";
