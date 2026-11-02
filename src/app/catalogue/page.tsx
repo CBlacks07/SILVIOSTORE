@@ -10,7 +10,7 @@ import { CatalogueSidebar } from "@/components/catalogue/CatalogueSidebar";
 import { getCategories, searchProducts } from "@/lib/queries";
 import { listActiveBanners, listActiveBrands } from "@/lib/settings";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 type Search = {
   q: string;

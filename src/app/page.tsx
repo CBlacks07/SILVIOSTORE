@@ -20,11 +20,11 @@ const ICON_MAP: Record<string, LucideIcon> = {
   MapPin, Clock, Award, Shield, Sparkles,
 };
 
-const SelectionStrip = lazy(() => import("@/components/home/SelectionStrip").then(m => ({ default: m.SelectionStrip })), { ssr: false, loading: () => <div className="h-72 rounded-2xl animate-pulse bg-brand-100" /> });
-const BannerSlider   = lazy(() => import("@/components/ui/BannerSlider").then(m => ({ default: m.BannerSlider })), { ssr: false, loading: () => <div className="h-48 sm:h-64 rounded-2xl animate-pulse bg-brand-100" /> });
+const SelectionStrip = lazy(() => import("@/components/home/SelectionStrip").then(m => ({ default: m.SelectionStrip })), { ssr: false, loading: () => <div className="h-72 rounded-2xl skeleton-shimmer" /> });
+const BannerSlider   = lazy(() => import("@/components/ui/BannerSlider").then(m => ({ default: m.BannerSlider })), { ssr: false, loading: () => <div className="h-48 sm:h-64 rounded-2xl skeleton-shimmer" /> });
 const BrandLogo      = lazy(() => import("@/components/home/BrandLogo").then(m => ({ default: m.BrandLogo })), { ssr: false });
-const WhySilvioStore = lazy(() => import("@/components/home/WhySilvioStore").then(m => ({ default: m.WhySilvioStore })), { ssr: false, loading: () => <div className="h-40 rounded-2xl animate-pulse bg-brand-100" /> });
-const Testimonials   = lazy(() => import("@/components/home/Testimonials").then(m => ({ default: m.Testimonials })), { ssr: false, loading: () => <div className="h-40 rounded-2xl animate-pulse bg-brand-100" /> });
+const WhySilvioStore = lazy(() => import("@/components/home/WhySilvioStore").then(m => ({ default: m.WhySilvioStore })), { ssr: false, loading: () => <div className="h-40 rounded-2xl skeleton-shimmer" /> });
+const Testimonials   = lazy(() => import("@/components/home/Testimonials").then(m => ({ default: m.Testimonials })), { ssr: false, loading: () => <div className="h-40 rounded-2xl skeleton-shimmer" /> });
 
 export const revalidate = 60;
 

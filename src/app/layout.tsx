@@ -9,6 +9,8 @@ import { WhatsAppFloat } from "@/components/layout/WhatsAppFloat";
 import { MarketingProvider } from "@/components/marketing/MarketingProvider";
 import { CompareBar } from "@/components/product/CompareBar";
 import { CartToast } from "@/components/cart/CartToast";
+import { FontLoader } from "@/components/layout/FontLoader";
+import { BackToTop } from "@/components/ui/BackToTop";
 import "./globals.css";
 import "./theme.css";
 import "./typography.css";
@@ -124,12 +126,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href={GOOGLE_FONTS_URL} rel="stylesheet" />
-        <style dangerouslySetInnerHTML={{ __html: `:root{--font-inter:'Inter',system-ui,sans-serif;--font-playfair:'Playfair Display',Georgia,serif;--font-roboto:'Roboto',system-ui,sans-serif}` }} />
+        {/* Fonts chargées en async via FontLoader (client) pour ne pas bloquer le rendu */}
+        <style dangerouslySetInnerHTML={{ __html: `:root{--font-inter:Inter,system-ui,sans-serif;--font-playfair:'Playfair Display',Georgia,serif;--font-roboto:Roboto,system-ui,sans-serif}` }} />
       </head>
       <body className="min-h-screen flex flex-col font-sans">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
+        <FontLoader href={GOOGLE_FONTS_URL} />
         <a href="#main-content" className="skip-to-content">Aller au contenu</a>
         <AuthSync />
         <PageAnimations />
@@ -138,6 +141,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Footer />
         <WhatsAppFloat />
         <CartToast />
+        <BackToTop />
         <CompareBar />
         <MarketingProvider />
       </body>

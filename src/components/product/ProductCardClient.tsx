@@ -33,7 +33,7 @@ export function ProductCardClient({ product, discount, outOfStock, colorOptions 
               alt={product.name}
               fill
               sizes="(min-width:1024px) 20vw, (min-width:640px) 33vw, 50vw"
-              className="object-cover transition-all duration-500"
+              className="object-cover transition-all duration-500 group-hover:scale-105"
             />
           ) : (
             <div className="h-full w-full grid place-items-center text-brand-300 text-xs">
@@ -51,6 +51,32 @@ export function ProductCardClient({ product, discount, outOfStock, colorOptions 
             <div className="absolute inset-0 bg-white/50 flex items-center justify-center">
               <span className="text-[11px] font-black uppercase tracking-widest text-brand-500 bg-white/90 px-3 py-1 rounded-full">
                 Rupture
+              </span>
+            </div>
+          )}
+
+          {/* Hover CTA overlay — desktop only */}
+          {!outOfStock && (
+            <div
+              className="absolute inset-0 flex items-end justify-center pb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none"
+              aria-hidden
+            >
+              <span
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  padding: "6px 18px",
+                  background: "#1a1008",
+                  color: "#fff",
+                  fontSize: "11px",
+                  fontWeight: 700,
+                  letterSpacing: "0.06em",
+                  textTransform: "uppercase",
+                  borderRadius: "999px",
+                  boxShadow: "0 4px 16px rgba(0,0,0,0.30)",
+                }}
+              >
+                Voir le produit
               </span>
             </div>
           )}

@@ -1,7 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
-import type { ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 type Props = {
   children: ReactNode;
@@ -11,25 +10,40 @@ type Props = {
   as?: "div" | "section";
 };
 
-const ease = [0.22, 1, 0.36, 1] as const;
-
 export function Reveal({ children, delay = 0, y = 20, className, as = "div" }: Props) {
-  const reduce = useReducedMotion();
-  const Component = as === "section" ? motion.section : motion.div;
+  const ref = useRef<HTMLElement>(null);
+  const [visible, setVisible] = useState(false);
+  const [reduced, setReduced] = useState(false);
 
-  if (reduce) {
-    return <Component className={className}>{children}</Component>;
-  }
+  useEffect(() => {
+    setReduced(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  }, []);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || reduced) { setVisible(true); return; }
+    const ob = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); ob.disconnect(); } },
+      { threshold: 0.08, rootMargin: "0px 0px -60px 0px" }
+    );
+    ob.observe(el);
+    return () => ob.disconnect();
+  }, [reduced]);
+
+  const Tag = as as any;
 
   return (
-    <Component
+    <Tag
+      ref={ref}
       className={className}
-      initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.5, ease, delay }}
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "none" : `translateY(${y}px)`,
+        transition: reduced ? "none" : `opacity 0.55s ease ${delay}s, transform 0.55s cubic-bezier(0.22,1,0.36,1) ${delay}s`,
+        willChange: visible ? "auto" : "opacity, transform",
+      }}
     >
       {children}
-    </Component>
+    </Tag>
   );
 }
